@@ -1,6 +1,3 @@
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-
 // class CPU
 abstract class CPU {}
 
@@ -76,12 +73,6 @@ abstract class AbstractFactory {
 
 public class Testing1 {
     public static void main(String[] args) {
-
-
-        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
-        LocalDateTime systemDefault = LocalDateTime.now(ZoneOffset.systemDefault());
-
-
         AbstractFactory factory = AbstractFactory.getFactory(Architecture.EMBER);
         CPU cpu = factory.createCPU();
     }

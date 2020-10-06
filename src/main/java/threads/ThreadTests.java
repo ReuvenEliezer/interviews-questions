@@ -15,7 +15,7 @@ public class ThreadTests {
 
         SynchronizedCounter synchronizedCounter = new SynchronizedCounter();
 
-        for(int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10000; i++) {
             executorService.submit(() -> synchronizedCounter.increment());
         }
 

@@ -1,10 +1,25 @@
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
-import java.lang.reflect.Array;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class InterviewsTest {
+
+
+    @Test
+    public void test() {
+        List<Integer> integers1 = Arrays.asList(1);
+        Set<Integer> integers2 = new HashSet<>(Arrays.asList(2, 1));
+        boolean contains = integers1.contains(1);
+        boolean b = integers1.retainAll(integers2);
+    }
 
     @Test
     public void ZoomIntoTest() {
@@ -66,6 +81,199 @@ public class InterviewsTest {
         return -1;
     }
 
+    @Test
+    public void nsoTest() {
+        // מקבלים מספר ובודקים האם הוא מספר מושלם - במידה וכן מחזירים את המספרים שמרכיבים אותו ככזה
+//        https://he.wikipedia.org/wiki/%D7%9E%D7%A1%D7%A4%D7%A8_%D7%9E%D7%A9%D7%95%D7%9B%D7%9C%D7%9C#cite_note-2
+        StopWatch watch = new StopWatch();
+        watch.start("for each");
+        long n = 8589869056l;
+        List<Long> forEachResult = calcAllPerfectNumbersUpTo_ForEach(n);
+        watch.stop();
+        watch.start("map");
+        List<Long> mapReduceResult = calcAllPerfectNumbersUpTo_MapReduce(n);
+        watch.stop();
+        System.out.println("forEachResult: " + forEachResult.size());
+        System.out.println("mapReduceResult: " + mapReduceResult.size());
+        System.out.println(watch.getTotalTimeSeconds());
+        System.out.println(watch.prettyPrint());
+        Assert.assertEquals(forEachResult.size(), mapReduceResult.size());
+        Assert.assertEquals(forEachResult, mapReduceResult);
+    }
+
+    @Test
+    public void maxDepthTree_Test() {
+        BinaryTree tree = new BinaryTree();
+
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+
+        System.out.println("Height of tree is : " +
+                tree.maxDepth(tree.root));
+        tree.sumValues(tree.root);
+        System.out.println(result);
+    }
+
+    class Node {
+        int data;
+        Node left, right;
+
+        Node(int item) {
+            data = item;
+            left = right = null;
+        }
+    }
+
+    class BinaryTree {
+        Node root;
+
+        /* Compute the "maxDepth" of a tree -- the number of
+           nodes along the longest path from the root node
+           down to the farthest leaf node.*/
+        int maxDepth(Node node) {
+            if (node == null)
+                return 0;
+            /* compute the depth of each subtree */
+            int lDepth = maxDepth(node.left);
+            int rDepth = maxDepth(node.right);
+
+            /* use the larger one */
+            if (lDepth > rDepth)
+                return (lDepth + 1);
+            else
+                return (rDepth + 1);
+        }
+
+        public int sumValues(Node root) {
+            if (root == null)
+                return 0;
+            result += root.data;
+            return sumValues(root.left) + sumValues(root.right);
+        }
+    }
+
+    int result;
+
+    @Test
+    public void getCurrentMaxElementInOF1() {
+
+    }
+
+
+    @Test
+    public void reverseArray_Test() {
+        System.out.println("Before reversing: ");
+        int[] ints = {11, 22, 33, 44,55};
+        System.out.println(Arrays.toString(ints));
+        for (int i = 0; i < ints.length / 2; i++) {
+            int temp = ints[i];
+            ints[i] = ints[ints.length - 1 - i];
+            ints[ints.length - 1 - i] = temp;
+        }
+
+        System.out.println("After reversing: ");
+        System.out.println(Arrays.toString(ints));
+
+
+        System.out.println();
+        for (int i = ints.length - 1; i >= 0; i--) {
+            System.out.println(ints[i]);
+        }
+    }
+
+    @Test
+    public void removeDuplicatesIntArr_Test() {
+        int[] ints = {5, 5, 1, 2};
+        List<Integer> integerHashSet = new ArrayList<>();
+        // HashSet<Integer> indexToRemove = new HashSet<>();
+
+        for (int i = 0; i < ints.length; i++) {
+            int value = ints[i];
+            if (!integerHashSet.contains(value)) {
+                // indexToRemove.add(value);
+                // } else {
+                integerHashSet.add(value);
+            }
+        }
+
+        // Collections.sort(integerHashSet);
+//        for (Integer integer : indexToRemove) {
+//            ints = ArrayUtils.removeElement(ints, integer);
+//        }
+        // Iterator<Integer> iterator = integerHashSet.iterator();
+        // int index = 0;
+        // while (iterator.hasNext()) {
+        //     Integer next = iterator.next();
+        //     ints[index] = next;
+        //     index++;
+        // }
+
+        ints = integerHashSet.stream().mapToInt(Integer::intValue).toArray();
+//        for (int i = 0; i < integerHashSet.size(); i++) {
+//            ints[i] = integerHashSet.ge
+//            ints[] =ArrayUtils.removeElement(ints, integer);
+//        }
+    }
+
+
+    @Test
+    public void arrayListVsLinkedList_MaxSizeTest() {
+        Integer[] myArray = {10, 20, 30};
+        Integer result = Arrays.stream(myArray)
+                .reduce(0, (a, b) -> (a + b) / myArray.length
+
+                );
+
+//        https://stackoverflow.com/questions/3767979/how-much-data-can-a-list-can-hold-at-the-maximum
+        int maxArrayValue = Integer.MAX_VALUE;
+        List<Long> arrayList = new ArrayList<>();
+        List<Long> linkedList = new LinkedList<>();
+
+//        LongStream.range(0, maxArrayValue-1000000).parallel().forEach(i -> {
+//            arrayList.add(i);
+//            linkedList.add(i);
+//        });
+        for (long i = 0; i < maxArrayValue; i++) {
+            arrayList.add(i);
+//            linkedList.add(i);
+        }
+        int u = 0;
+    }
+
+    @Test
+    public void intSumTest() {
+        int maxArrayValue = Integer.MAX_VALUE;
+        AtomicInteger count = new AtomicInteger();
+        IntStream.range(0, maxArrayValue).parallel().forEach(i -> count.getAndIncrement());
+        int result = count.get();
+        System.out.println("result: " + result);
+        count.getAndIncrement();
+        int resultAfterCountIsOverMaxValueOfInt = count.get();
+        System.out.println("resultAfterCountIsOverMaxValueOfInt: " + resultAfterCountIsOverMaxValueOfInt);
+    }
+
+    public List<Long> calcAllPerfectNumbersUpTo_ForEach(long n) {
+        List<Long> result = new ArrayList<>();
+        long sum = 0;
+        for (long i = 1; i < n; i++) {
+            if (n % i == 0) {
+                sum += i;
+                result.add(i);
+            }
+        }
+        if (sum == n) return result;
+        return new ArrayList<>();
+    }
+
+    public List<Long> calcAllPerfectNumbersUpTo_MapReduce(long n) {
+        Supplier<Stream<Long>> boxed = () -> LongStream.range(1l, n).parallel().filter(i -> (n % i == 0)).boxed();
+        if (boxed.get().parallel().reduce(0l, Long::sum) == n)
+            return boxed.get().parallel().collect(Collectors.toList());
+        return new ArrayList<>();
+    }
 
     private static int binarySearchRecursive(int[] nums, int target, int start, int end) {
         if (start > end) {
@@ -145,6 +353,109 @@ public class InterviewsTest {
     }
 
     @Test
+    public void microsoftDamkaTest() {
+        // Damka
+        // move up right or up left
+        // do not exceed board
+        // must move to empty space on board
+        // must move over enemy pawns
+        // can move over 1 or more enemy pawns
+        // after successfully moving, can move again but only over enemy pawns
+        // jaffar has only one pawn! find it, then calculate
+        // The board is n*n in size
+        // Jaffar      - 'O'
+        // Allading    - 'X'
+        // empty space - '.'
+        String[] matrixStrArr = {
+                "..X...",
+                "......",
+                "....X.",
+                ".X....",
+                "..X.X.",
+                "...O.."
+        };
+
+        microsoftDamka(matrixStrArr);
+    }
+
+    private int microsoftDamka(String[] matrixStrArr) {
+        Position japperPosition = findJaffar(matrixStrArr);
+        if (japperPosition == null)
+            return 0; //not found Japper;
+
+        Position japperTempPosition = japperPosition;
+        eat(matrixStrArr, japperPosition, 0);
+//        int sumLeft = canMoveUpperLeft(matrixStrArr, japperTempPosition, 0);
+//        int sumRight = canMoveUpperRight(matrixStrArr, japperTempPosition, 0);
+
+//        if (sumLeft>)
+        return 0;
+    }
+
+    private int eat(String[] matrixStrArr, Position position, int sum) {
+        //TODO impl
+        if (position.y - 1 < 0)
+            return sum;
+        if (canMoveUpperLeft(matrixStrArr, position)) return sum;
+        if (canMoveUpperRight(matrixStrArr, position)) return sum;
+        return sum;
+    }
+
+    private boolean canMoveUpperRight(String[] matrixStrArr, Position position) {
+
+//        if (position.y - 1 < 0)
+//            return sum;
+        if (position.x + 1 < 0)
+            return false;
+        return true;
+//        String y = matrixStrArr[position.y - 1];
+//
+//        char c = y.charAt(position.x + 1);
+//        if (c == 'X' && position.y - 1>=0) {
+//            return canMoveUpperRight(matrixStrArr, new Position(position.x + 1 ,position.y - 1 ), sum++);
+//        }
+//        return sum;
+    }
+
+    private boolean canMoveUpperLeft(String[] matrixStrArr, Position position) {
+
+        if (position.x - 1 < 0)
+            return false;
+
+        return true;
+//        String y = matrixStrArr[position.y - 1];
+//
+//        char c = y.charAt(position.x - 1);
+//        if (c == 'X') {
+//            return canMoveUpperLeft(matrixStrArr, new Position(position.x - 1 ,position.y - 1 ), sum++);
+//        }
+//        return sum;
+    }
+
+    private Position findJaffar(String[] matrixStrArr) {
+        for (int yPosition = 0; yPosition < matrixStrArr.length; yPosition++) {
+            String s = matrixStrArr[yPosition];
+            for (int xPosiotion = 0; xPosiotion < s.length(); xPosiotion++) {
+                int charValue = s.charAt(xPosiotion);
+                if ('O' == charValue)
+                    return new Position(xPosiotion, yPosition);
+            }
+        }
+        return null;
+    }
+
+    public class Position {
+        public int x;
+        public int y;
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+    }
+
+    @Test
     public void microsoftCharacterTest() {
 //        char[][] matrixChars = {
 //                {'.', '.', 'X', '.', '.', '.'},
@@ -187,9 +498,13 @@ public class InterviewsTest {
 //        }
 //        return "NO";
 
+
         HashSet<Integer> characterHashSet = new HashSet<>();
-        for (int ch : str.toCharArray())
-            characterHashSet.add(ch);
+        for (int ch : str.toCharArray()) {
+            if (characterHashSet.size() <= 50) //all character type A-Z a-z
+                characterHashSet.add(ch);
+        }
+
         int diffFromUpperToLowerChar = 'z' - 'Z';
         // From Z to A
         for (int upperCaseIndex = 'Z'; upperCaseIndex >= 'A'; upperCaseIndex--) {

@@ -1,9 +1,7 @@
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
-import java.awt.*;
-import java.time.Period;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,14 +40,69 @@ public class HashMapConcurrency {
     }
 
     @Test
+    public void forEachVsStreamVsParallelStream_Test() {
+        IntStream range = IntStream.range(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        StopWatch stopWatch = new StopWatch();
+
+        stopWatch.start("for each");
+        int forEachResult = 0;
+        for (int i = Integer.MIN_VALUE; i < Integer.MAX_VALUE; i++) {
+            if (i % 15 == 0)
+                forEachResult++;
+        }
+        stopWatch.stop();
+
+
+        stopWatch.start("stream");
+        long streamResult = range
+                .filter(v -> (v % 15 == 0))
+                .count();
+        stopWatch.stop();
+
+
+        range = IntStream.range(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        stopWatch.start("parallel stream");
+        long parallelStreamResult = range
+                .parallel()
+                .filter(v -> (v % 15 == 0))
+                .count();
+        stopWatch.stop();
+
+        System.out.println(String.format("forEachResult: %s%s" +
+                        "parallelStreamResult: %s%s" +
+                        "streamResult: %s%s",
+                forEachResult, System.lineSeparator(),
+                parallelStreamResult, System.lineSeparator(),
+                streamResult, System.lineSeparator()));
+
+        System.out.println("prettyPrint: " + stopWatch.prettyPrint());
+        System.out.println("Time Elapsed: " + stopWatch.getTotalTimeSeconds());
+    }
+
+
+    @Test
     public void concurrentHashMap_test() {
         testIt(new HashMap<>());
         testIt(new ConcurrentHashMap<>());
     }
 
+    @Test(expected = OutOfMemoryError.class)
+    public void outOfMemoryError_test() {
+        long[][] ary = new long[Integer.MAX_VALUE][Integer.MAX_VALUE];
+    }
+
     private static void testIt(Map<Integer, Integer> map) {
-        IntStream.range(0, 2000).parallel().forEach(i -> map.put(i, -1));
+        IntStream.range(0, 2000)
+                .parallel()
+                .forEach(i -> map.put(i, -1));
         System.out.println(map.size());
+    }
+
+    @Test
+    public void concurrentHashMap(){
+        ConcurrentHashMap<Integer,String> concurrentHashMap=new ConcurrentHashMap();
+        String s = concurrentHashMap.putIfAbsent(1, "1");
+        String s1 = concurrentHashMap.putIfAbsent(1, "1");
     }
 
     @Test
