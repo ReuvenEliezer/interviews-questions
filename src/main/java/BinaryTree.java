@@ -23,7 +23,7 @@ class BinaryTree {
     static void inOrder(Node node) {
         if (node == null)
             return;
-        System.out.print(node.data + " ");
+        System.out.println(node.data + " ");
 
         inOrder(node.left);
         inOrder(node.right);
@@ -44,6 +44,16 @@ class BinaryTree {
 
         System.out.println("Sum Values of tree is : " +
                 tree.sumValues(tree.root));
+
+
+        System.out.println("Preorder traversal of binary tree is ");
+        tree.printPreorder(tree.root);
+
+        System.out.println("Inorder traversal of binary tree is ");
+        tree.printInorder(tree.root);
+
+        System.out.println("Postorder traversal of binary tree is ");
+        tree.printPostorder(tree.root);
 
         System.out.println("Before mirror:");
         inOrder(tree.root);
@@ -73,6 +83,50 @@ class BinaryTree {
             return 0;
         System.out.println(root.data);
         return root.data + sumValues(root.left) + sumValues(root.right);
+    }
+
+    void printPostorder(Node node) {
+        if (node == null)
+            return;
+
+        // first recur on left subtree
+        printPostorder(node.left);
+
+        // then recur on right subtree
+        printPostorder(node.right);
+
+        // now deal with the node
+        System.out.println(node.data + " ");
+    }
+
+    /* Given a binary tree, print its nodes in inorder*/
+    void printInorder(Node node) {
+        if (node == null)
+            return;
+
+        /* first recur on left child */
+        printInorder(node.left);
+
+        /* then print the data of node */
+        System.out.println(node.data + " ");
+
+        /* now recur on right child */
+        printInorder(node.right);
+    }
+
+    /* Given a binary tree, print its nodes in preorder*/
+    void printPreorder(Node node) {
+        if (node == null)
+            return;
+
+        /* first print data of node */
+        System.out.println(node.data + " ");
+
+        /* then recur on left sutree */
+        printPreorder(node.left);
+
+        /* now recur on right subtree */
+        printPreorder(node.right);
     }
 
 }

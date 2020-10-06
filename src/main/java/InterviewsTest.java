@@ -166,7 +166,7 @@ public class InterviewsTest {
     @Test
     public void reverseArray_Test() {
         System.out.println("Before reversing: ");
-        int[] ints = {11, 22, 33, 44,55};
+        int[] ints = {11, 22, 33, 44, 55};
         System.out.println(Arrays.toString(ints));
         for (int i = 0; i < ints.length / 2; i++) {
             int temp = ints[i];
@@ -474,8 +474,8 @@ public class InterviewsTest {
 //                {'.', '.', '.', 'O', '.', '.'}
 //        };
 
-//        String s = "WeTestCodErs";
-        String s = "Tt";
+        String s = "WeTestCodErs";
+//        String s = "Tt";
 
         String result = solution(s);
         System.out.println("result: " + result);
@@ -483,7 +483,7 @@ public class InterviewsTest {
 
     // find max letter that appears both in upper and lower case
     public String solution(String str) {
-//        HashSet<Character> characterHashSet = new HashSet<>();
+//        HashSet<Character> characterHashSet = new LinkedHashSet<>();
 //        for (char ch : str.toCharArray())
 //            characterHashSet.add(ch);
 //        int diffFromUpperToLowerChar = 'Z' - 'z';
@@ -499,10 +499,11 @@ public class InterviewsTest {
 //        return "NO";
 
 
-        HashSet<Integer> characterHashSet = new HashSet<>();
+        HashSet<Integer> characterHashSet = new LinkedHashSet<>();
         for (int ch : str.toCharArray()) {
-            if (characterHashSet.size() <= 50) //all character type A-Z a-z
-                characterHashSet.add(ch);
+            if (characterHashSet.size() > 26*2) //optimization - all character type A-Z a-z
+                break;
+            characterHashSet.add(ch);
         }
 
         int diffFromUpperToLowerChar = 'z' - 'Z';
@@ -511,7 +512,7 @@ public class InterviewsTest {
             if (characterHashSet.contains(upperCaseIndex)) {
                 int lowerCase = upperCaseIndex + diffFromUpperToLowerChar;
                 if (characterHashSet.contains(lowerCase))
-                    return String.valueOf(upperCaseIndex);
+                    return String.valueOf((char) upperCaseIndex);
             }
         }
         return "NO";
