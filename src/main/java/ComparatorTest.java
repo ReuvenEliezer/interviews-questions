@@ -1,7 +1,5 @@
 import org.junit.Test;
 
-import java.lang.reflect.Array;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -126,10 +124,10 @@ public class ComparatorTest {
     public void SortingObject() {
         List<Employee> employees = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        employees.add(new Employee(1010, "Rajeev", 100000.00, now));
-        employees.add(new Employee(1004, "Chris", 95000.50, now.plusDays(2)));
-        employees.add(new Employee(1015, "David", 134000.00, now.plusDays(1)));
-        Collections.sort(employees, Comparator.comparing(Employee::getSalary));
+        employees.add(new Employee(1010, "Rajeev", 100.00, now));
+        employees.add(new Employee(1004, "Chris", 95.50, now.plusDays(2)));
+        employees.add(new Employee(1015, "David", 134.00, now.plusDays(1)));
+        Collections.sort(employees, Comparator.comparing(Employee::getSalary).reversed());
         employees.forEach(System.out::println);
     }
 
@@ -144,11 +142,29 @@ public class ComparatorTest {
         PriorityQueue<Employee> employeePriorityQueue = new PriorityQueue<>(Comparator.comparing(Employee::getSalary));
 
         LocalDateTime now = LocalDateTime.now();
-        employeePriorityQueue.add(new Employee(1010, "Rajeev", 100000.00, now));
-        employeePriorityQueue.add(new Employee(1004, "Chris", 95000.50, now.plusDays(2)));
-        employeePriorityQueue.add(new Employee(1015, "David", 134000.00, now.plusDays(1)));
+        Employee rajeev = new Employee(1010, "Rajeev", 100.00, now);
+        employeePriorityQueue.add(rajeev);
+        employeePriorityQueue.add(new Employee(1004, "Chris", 950.50, now.plusDays(2)));
+        employeePriorityQueue.add(new Employee(1015, "David", 134.00, now.plusDays(1)));
+        employeePriorityQueue.remove(rajeev);
+        rajeev.setSalary(500d);
+        employeePriorityQueue.add(rajeev);
+        while (!employeePriorityQueue.isEmpty()) {
+            System.out.println(employeePriorityQueue.remove());
+        }
 
-        employeePriorityQueue.forEach(System.out::println);
+
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(new Employee(1010, "e1", 100.00, LocalDateTime.now()));
+        employeeList.add(new Employee(1010, "e2", 130.00, LocalDateTime.now()));
+        employeeList.add(new Employee(1010, "e3", 150.00, LocalDateTime.now()));
+        employeeList.add(new Employee(1010, "e4", 170.00, LocalDateTime.now()));
+
+        Employee chris = new Employee(1004, "Chris", 145.50, LocalDateTime.now());
+        int index = Collections.binarySearch(employeeList, chris);
+        int insertionIndex = -1 * (index + 1);
+        employeeList.add(insertionIndex, chris);
+        System.out.println(insertionIndex);
     }
 
     @Test

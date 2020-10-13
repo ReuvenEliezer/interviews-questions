@@ -17,7 +17,8 @@ public class VolatileTest {
     }
 
     class TestVolatile extends Thread {
-        volatile boolean keepRunning = true;
+        volatile
+        boolean keepRunning = true;
 
         @Override
         public void run() {

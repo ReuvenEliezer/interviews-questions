@@ -1,10 +1,10 @@
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-class Employee {//implements Comparable<Employee> {
+class Employee implements Comparable<Employee> {
     private int id;
     private String name;
-    private double salary;
+    private Double salary;
     private LocalDateTime joiningDate;
 
     public Employee(int id, String name, double salary, LocalDateTime joiningDate) {
@@ -30,11 +30,11 @@ class Employee {//implements Comparable<Employee> {
         this.name = name;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -70,6 +70,11 @@ class Employee {//implements Comparable<Employee> {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public int compareTo(Employee o) {
+        return this.getSalary().compareTo(o.getSalary());
     }
 
     @Override
