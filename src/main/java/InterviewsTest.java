@@ -501,7 +501,7 @@ public class InterviewsTest {
 
         HashSet<Integer> characterHashSet = new LinkedHashSet<>();
         for (int ch : str.toCharArray()) {
-            if (characterHashSet.size() > 26*2) //optimization - all character type A-Z a-z
+            if (characterHashSet.size() > 26 * 2) //optimization - all character type A-Z a-z
                 break;
             characterHashSet.add(ch);
         }
@@ -517,5 +517,207 @@ public class InterviewsTest {
         }
         return "NO";
     }
+
+    @Test
+    public void balancedParenthesesExpression_Test() {
+//        String expression= "[()]{}{[()()]()}";
+        String expression = "}";
+        boolean balancedParenthesesExpression = isBalancedParenthesesExpression(expression);
+    }
+
+    public boolean isBalancedParenthesesExpression(String expression) {
+        HashMap<Character, Character> mappings = new HashMap<>();
+        mappings.put(')', '(');
+        mappings.put('}', '{');
+        mappings.put(']', '[');
+        // Initialize a stack to be used in the algorithm.
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+
+            // If the current character is a closing bracket.
+            if (mappings.containsKey(c)) {
+
+                // Get the top element of the stack. If the stack is empty, set a dummy value of '#'
+
+                // If the mapping for this bracket doesn't match the stack's top element, return false.
+                if (stack.empty() || stack.pop() != mappings.get(c)) {
+                    return false;
+                }
+            } else {
+                // If it was an opening bracket, push to the stack.
+                stack.push(c);
+            }
+        }
+
+        // If the stack still contains elements, then it is an invalid expression.
+        return stack.isEmpty();
+    }
+
+    @Test
+    public void pivotIndexTest() {
+        /**
+         * https://leetcode.com/interview/1/
+         Given an array of integers nums, write a method that returns the "pivot" index of this array.
+
+         We define the pivot index as the index where the sum of all the numbers to the left of the index is equal to the sum of all the numbers to the right of the index.
+
+         If no such index exists, we should return -1. If there are multiple pivot indexes, you should return the left-most pivot index.
+
+
+
+         Example 1:
+
+         Input: nums = [1,7,3,6,5,6]
+         Output: 3
+         Explanation:
+         The sum of the numbers to the left of index 3 (nums[3] = 6) is equal to the sum of numbers to the right of index 3.
+         Also, 3 is the first index where this occurs.
+         Example 2:
+
+         Input: nums = [1,2,3]
+         Output: -1
+         Explanation:
+         There is no index that satisfies the conditions in the problem statement.
+
+
+         Constraints:
+
+         The length of nums will be in the range [0, 10000].
+         Each element nums[i] will be an integer in the range [-1000, 1000]
+         */
+//        int[] ints = {1, 7, 3, 6, 5, 6};
+//        int[] ints = {1, 7, 3, 6, 5, 6};
+        int[] ints = {-1, -1, 0, 0, -1, -1};
+        int result = pivotIndex(ints);
+    }
+
+    public int pivotIndex(int[] nums) {
+
+        Map<Integer, Integer> indexToSumLeftToRight = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            Integer integer = indexToSumLeftToRight.get(i - 1);
+            if (integer != null) {
+                indexToSumLeftToRight.put(i, integer + nums[i]);
+            } else {
+                indexToSumLeftToRight.put(i, nums[i]);
+            }
+        }
+
+        Map<Integer, Integer> indexToSum1 = new HashMap<>();
+        for (int i = nums.length - 1; i >= 0; i--) {
+            Integer integer = indexToSum1.get(i + 1);
+            if (integer != null) {
+                indexToSum1.put(i, integer + nums[i]);
+            } else {
+                indexToSum1.put(i, nums[i]);
+            }
+        }
+
+//        If there are multiple pivot indexes, you should return the left-most pivot index.
+        for (int i = 0; i < nums.length; i++) {
+            if (indexToSumLeftToRight.get(i).equals(indexToSum1.get(i)))
+                return i;
+        }
+
+        return -1;
+    }
+
+    @Test
+    public void earnixTest() {
+//  Write methods to implement the multiply, subtract, and divide operations for integers.
+//  The results of all of these are integers. Use only the add method
+        add(-5, 3);
+        int multiply = multiply(5, -3);
+        int subtract = subtract(5, 3);
+    }
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return add(a, negate(b));
+    }
+
+    public int multiply(int a, int b) {
+        int result = 0;
+        int iterationNum = 0;
+        if (b > 0) {
+            while (iterationNum < b) {
+                iterationNum = add(iterationNum, 1);
+                result = add(a, result);
+            }
+        } else {
+            while (iterationNum > b) {
+                iterationNum = add(iterationNum, -1);
+                result = add(-a, result);
+            }
+        }
+
+        return result;
+    }
+
+    public int negate(int value) {//TODO fix
+        int iterationNum = 0;
+        int breakNum = 0;
+        if (value > iterationNum) {
+            while (breakNum >= 0) {
+                iterationNum = add(iterationNum, -1);
+                breakNum = add(iterationNum, value);
+            }
+            return add(iterationNum,breakNum);
+        }
+        return value;
+    }
+
+
+    @Test
+    public void ATATTest() {
+        String s1 = "9384";
+        Assert.assertEquals(4, solve(s1));
+        String s2 = "138925";
+        Assert.assertEquals(4, solve(s2));
+    }
+
+    private int solve(String s) {
+
+        Map<Integer, Integer> indexToSumMap = new HashMap<>();
+        List<Integer> values = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            String digitAsStr = s.substring(i, i + 1);
+            Integer digitValue = Integer.valueOf(digitAsStr);
+            values.add(digitValue);
+            indexToSumMap.put(i, digitValue);
+        }
+
+        List<Integer> prefixSun = new ArrayList<>();
+        prefixSun.add(values.get(0));
+        for (int i = 1; i < values.size()/2; i++) {
+            Integer sum = values.get(i - 1);
+            prefixSun.add(values.get(i) + sum);
+        }
+
+        List<Integer> suffixSun = new ArrayList<>();
+        suffixSun.add(values.get(values.size() - 1));
+        for (int i = values.size() - 2; i >= values.size()/2; i--) {
+            Integer sum = values.get(i + 1);
+            suffixSun.add(values.get(i) + sum);
+        }
+
+
+        for (int i = 0; i < values.size() - 1; i++) {
+            Integer prefixSunValue = prefixSun.get(i);
+            Integer suffixSunValue = suffixSun.get(i);
+            if (prefixSunValue.equals(suffixSunValue)) {
+                return (i+1)*2;
+            }
+
+        }
+
+        return -1;
+    }
+
 
 }

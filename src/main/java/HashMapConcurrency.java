@@ -1,6 +1,7 @@
 import org.junit.Test;
 import org.springframework.util.StopWatch;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -9,7 +10,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 public class HashMapConcurrency {
-
+    @Test
+    public void printArrayTest() {
+        Employee employee = new Employee(1, "d", 10, LocalDateTime.now());
+        employee.setList(Arrays.asList("a", "b"));
+       System.out.println(employee.toString());
+    }
     @Test
     public void hashMapConcurrency_Test() throws InterruptedException {
         Map<String, Integer> cricketTeamScore = new HashMap<>();

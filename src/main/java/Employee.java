@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 class Employee implements Comparable<Employee> {
@@ -6,12 +7,23 @@ class Employee implements Comparable<Employee> {
     private String name;
     private Double salary;
     private LocalDateTime joiningDate;
+    private List<String> list;
 
     public Employee(int id, String name, double salary, LocalDateTime joiningDate) {
         this.id = id;
         this.name = name;
         this.salary = salary;
         this.joiningDate = joiningDate;
+    }
+
+
+
+    public List<String> getList() {
+        return list;
+    }
+
+    public void setList(List<String> list) {
+        this.list = list;
     }
 
     public int getId() {
@@ -84,6 +96,7 @@ class Employee implements Comparable<Employee> {
                 ", name='" + name + '\'' +
                 ", salary=" + salary +
                 ", joiningDate=" + joiningDate +
+                ", list=" + list +
                 '}';
     }
 

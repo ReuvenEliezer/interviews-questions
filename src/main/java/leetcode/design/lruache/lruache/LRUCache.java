@@ -1,4 +1,4 @@
-package leetcodedesign.lruache;
+package leetcode.design.lruache.lruache;
 
 public interface LRUCache {
 

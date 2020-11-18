@@ -131,6 +131,13 @@ public class ComparatorTest {
         employees.forEach(System.out::println);
     }
 
+    @Test
+    public void medianTest(){
+        PriorityQueue<Integer> employeePriorityQueue = new PriorityQueue<>(Comparator.comparingInt(Integer::intValue));
+        employeePriorityQueue.add(100);
+        employeePriorityQueue.add(10);
+        employeePriorityQueue.add(1500);
+    }
 
     @Test
     public void PriorityQueue() {
@@ -146,6 +153,9 @@ public class ComparatorTest {
         employeePriorityQueue.add(rajeev);
         employeePriorityQueue.add(new Employee(1004, "Chris", 950.50, now.plusDays(2)));
         employeePriorityQueue.add(new Employee(1015, "David", 134.00, now.plusDays(1)));
+
+
+        int size = employeePriorityQueue.size();
         employeePriorityQueue.remove(rajeev);
         rajeev.setSalary(500d);
         employeePriorityQueue.add(rajeev);

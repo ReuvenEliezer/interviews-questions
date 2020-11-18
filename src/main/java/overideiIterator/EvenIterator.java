@@ -1,7 +1,11 @@
 package overideiIterator;
 
+import org.junit.Test;
+
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class EvenIterator implements Iterator<Integer> {
     private List<Integer> list;
@@ -25,5 +29,14 @@ public class EvenIterator implements Iterator<Integer> {
     @Override
     public Integer next() {
         return list.get(current++);
+    }
+
+    @Test
+    public void evenIteratorPrinterTest() {
+        List<Integer> integerList = IntStream.range(0, 10).boxed().collect(Collectors.toList());
+        EvenIterator evenIterator = new EvenIterator(integerList);
+        while (evenIterator.hasNext()) {
+            System.out.println(evenIterator.next());
+        }
     }
 }

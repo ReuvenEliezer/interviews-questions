@@ -1,4 +1,4 @@
-package leetcodedesign.lruache;
+package leetcode.design.lruache.lruache;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

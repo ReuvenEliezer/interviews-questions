@@ -14,6 +14,26 @@ public class RandomTest {
     }
 
     @Test
+    public void _Test() {
+        int size = 100000;
+        int iteration = 10;
+
+        HashSet<Integer> selectedSet = new HashSet<>();
+
+        Random random = new Random();
+
+        for (int i = 0; i < iteration; i++) {
+            int randomValue = random.nextInt(size);
+            System.out.println("randomValue: "+randomValue);
+            if (!selectedSet.contains(randomValue))
+                selectedSet.add(randomValue);
+            else selectedSet.add(randomValue+1);
+            System.out.println("randomValue+1: "+(randomValue+1));
+        }
+        selectedSet.stream().forEach(System.out::println);
+    }
+
+    @Test
     public void RandomOnLinkedList_Test() {
         int linkedListSize = 1000000;
 

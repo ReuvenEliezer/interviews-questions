@@ -1,4 +1,4 @@
-package leetcodedesign.lruache;
+package leetcode.design.lruache.lruache;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;

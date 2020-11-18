@@ -4,7 +4,6 @@ import org.junit.Test;
 
 public class VolatileTest {
 
-
     @Test
     public void TestVolatile() throws InterruptedException {
         TestVolatile t = new TestVolatile();
