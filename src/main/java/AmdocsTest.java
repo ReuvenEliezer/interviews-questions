@@ -1,6 +1,8 @@
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class AmdocsTest {
 
@@ -73,6 +75,8 @@ public class AmdocsTest {
     private long findMaxPassedCarsInPeriodTimeInterval(List<Shot> shotList) {
         Collections.sort(shotList, Comparator.comparing(Shot::getTimeStamp));
 
+        Long timeResult;
+        Integer carCountResult;
         Shot first = shotList.get(0);
         Shot last = shotList.get(shotList.size() - 1);
         Map<Long, Integer> totalCarsToStartPeriodTimeMap = new HashMap<>(); //for each timeInterval period
@@ -118,5 +122,96 @@ public class AmdocsTest {
         }
     }
 
+
+    @Test
+    public void scheduleTest() {
+
+
+    }
+
+    public class Schedule {
+//        private Map<Long, List<Task>> taskToTimeMap = new HashMap<>();
+//        private long elapsedTime;
+        private PriorityBlockingQueue<TaskTime> queue = new PriorityBlockingQueue(2, Comparator.comparing(TaskTime::getTaskExecutionTime));
+
+        void schedule(Task task, LocalDateTime localDateTime) {
+            queue.add(new TaskTime(task, localDateTime));
+        }
+
+        public void tick() {//this is called every second
+            TaskTime taskTime = queue.peek();
+            if (taskTime.getTaskExecutionTime().isBefore(LocalDateTime.now())) {
+                queue.remove(taskTime);
+            }
+        }
+
+//        void schedule(Task task, long time) {
+//            if (taskToTimeMap.containsKey(time)) {
+//                    taskToTimeMap.get(time).add(task);
+//            } else {
+//                List<Task> tasks = new ArrayList<>();
+//                tasks.add(task);
+//                taskToTimeMap.put(time, tasks);
+//            }
+//        }
+//
+//        public void tick() {//this is called every second
+//            List<Task> tasks = taskToTimeMap.get(elapsedTime);
+//            if (tasks != null) {
+//                for (Task task : tasks) {
+//                    //task.doExec();
+//                }
+//                taskToTimeMap.remove(elapsedTime);
+//            }
+//            elapsedTime++;
+//        }
+    }
+
+    public class Task {
+
+    }
+
+
+    public class TaskTime {
+
+        private Task task;
+        private LocalDateTime taskExecutionTime;
+
+        public TaskTime(Task task, LocalDateTime taskExecutionTime) {
+            this.task = task;
+            this.taskExecutionTime = taskExecutionTime;
+        }
+
+        public Task getTask() {
+            return task;
+        }
+
+        public LocalDateTime getTaskExecutionTime() {
+            return taskExecutionTime;
+        }
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TaskTime taskTime = (TaskTime) o;
+            return Objects.equals(task, taskTime.task) &&
+                    Objects.equals(taskExecutionTime, taskTime.taskExecutionTime);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(task, taskExecutionTime);
+        }
+
+        @Override
+        public String toString() {
+            return "TaskTime{" +
+                    "Task=" + task +
+                    ", taskExecutionTime=" + taskExecutionTime +
+                    '}';
+        }
+    }
 
 }
