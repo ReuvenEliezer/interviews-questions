@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -118,7 +119,7 @@ public class ComparatorTest {
     public void HeapSortTest() {
 
     }
-    
+
 
     @Test
     public void SortingObject() {
@@ -132,11 +133,29 @@ public class ComparatorTest {
     }
 
     @Test
-    public void medianTest(){
+    public void medianTest() {
         PriorityQueue<Integer> employeePriorityQueue = new PriorityQueue<>(Comparator.comparingInt(Integer::intValue));
         employeePriorityQueue.add(100);
         employeePriorityQueue.add(10);
         employeePriorityQueue.add(1500);
+    }
+
+    @Test
+    public void equalsHashCodeTest() {
+        LocalDateTime now = LocalDateTime.now();
+        Employee employ1 = new Employee(1, "a", 11d, now);
+        Employee employ2 = new Employee(1, "a", 10d, now);
+        boolean equals = employ1.equals(employ2);
+
+        Assert.assertTrue(equals);
+        Set<Employee> nodesHashSet = new HashSet<>();
+        nodesHashSet.add(employ1);
+        boolean contains = nodesHashSet.contains(employ2); //we needs to Override hashCode method for returns true
+        Assert.assertTrue(contains);
+
+        int employ1HashCode = employ1.hashCode();
+        int employ2HashCode = employ2.hashCode();
+
     }
 
     @Test

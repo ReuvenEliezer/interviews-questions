@@ -30,6 +30,7 @@ public class AmdocsTest {
 
     }
 
+
     private void printNodes(Node node) {
         if (node == null)
             return;
@@ -62,33 +63,38 @@ public class AmdocsTest {
      */
     @Test
     public void carTest() {
-        List<Shot> shotList = new ArrayList<>();
-        shotList.add(new Shot(0, "12345678"));
-        shotList.add(new Shot(1, "12345678"));
-        shotList.add(new Shot(3, "12345678"));
-        shotList.add(new Shot(120, "12345678"));
-        long startTimeStampThatPassedMaxCar = findMaxPassedCarsInPeriodTimeInterval(shotList);
-        System.out.println(String.format("%s עד %s פרק הזמן הכי עמוס בכביש (בו חלפו הכי הרבה מכוניות הוא מ ", startTimeStampThatPassedMaxCar, startTimeStampThatPassedMaxCar + timeInterval));
+        List<CarTime> carTimeList = new ArrayList<>();
+        carTimeList.add(new CarTime(0, "12345678"));
+        carTimeList.add(new CarTime(1, "12345678"));
+        carTimeList.add(new CarTime(3, "12345678"));
+        carTimeList.add(new CarTime(93, "12345678"));
+        carTimeList.add(new CarTime(94, "12345678"));
+        carTimeList.add(new CarTime(97, "12345678"));
+        carTimeList.add(new CarTime(123, "12345678"));
+        long startTimeStampThatPassedMaxCar = findMaxPassedCarsInPeriodTimeInterval(carTimeList);
+        System.out.println(String.format("the period time with highest moving cars is from %s until %s", startTimeStampThatPassedMaxCar, startTimeStampThatPassedMaxCar + timeInterval));
+        long startTimeStampThatPassedMaxCarOptimisticMemory = findMaxPassedCarsInPeriodTimeIntervalOptimisticMemory(carTimeList);
     }
 
-    //מחזיר את הנקודה זבה מחחיל הזמן ממנו ועד סוף הtimeinterval עברו הכי הרבה מכוניות
-    private long findMaxPassedCarsInPeriodTimeInterval(List<Shot> shotList) {
-        Collections.sort(shotList, Comparator.comparing(Shot::getTimeStamp));
+    private long findMaxPassedCarsInPeriodTimeIntervalOptimisticMemory(List<CarTime> carTimeList) {
+        //TODO impl
+        return 0;
+    }
 
-        Long timeResult;
-        Integer carCountResult;
-        Shot first = shotList.get(0);
-        Shot last = shotList.get(shotList.size() - 1);
+    //מחזיר את הנקודה שבה מחחיל הזמן ממנו ועד סוף הtimeinterval עברו הכי הרבה מכוניות
+    private long findMaxPassedCarsInPeriodTimeInterval(List<CarTime> carTimeList) {
+        Collections.sort(carTimeList, Comparator.comparing(CarTime::getTimeStamp));
+        CarTime first = carTimeList.get(0);
+        CarTime last = carTimeList.get(carTimeList.size() - 1);
         Map<Long, Integer> totalCarsToStartPeriodTimeMap = new HashMap<>(); //for each timeInterval period
         for (long i = first.getTimeStamp(); i < last.getTimeStamp(); i++) {
             totalCarsToStartPeriodTimeMap.put(i, 0);
         }
-        for (Shot shot : shotList) {
-            long currentCarTime = shot.timeStamp;
+        for (CarTime carTime : carTimeList) {
+            long currentCarTime = carTime.timeStamp;
             for (Map.Entry<Long, Integer> snapshot : totalCarsToStartPeriodTimeMap.entrySet()) {
                 //current time is between period time interval
                 if (currentCarTime >= snapshot.getKey().longValue() && currentCarTime - timeInterval <= snapshot.getKey().longValue())
-                    //                 if (timeStamp >= entry.getKey().longValue() && entry.getKey().longValue() - timeInterval <= timeStamp)
                     snapshot.setValue(snapshot.getValue() + 1);
             }
         }
@@ -96,11 +102,11 @@ public class AmdocsTest {
     }
 
 
-    public class Shot {
+    public class CarTime {
         long timeStamp;
         String carNumber;
 
-        public Shot(long timeStamp, String carNumber) {
+        public CarTime(long timeStamp, String carNumber) {
             this.timeStamp = timeStamp;
             this.carNumber = carNumber;
         }
@@ -120,6 +126,27 @@ public class AmdocsTest {
         public void setCarNumber(String carNumber) {
             this.carNumber = carNumber;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CarTime carTime = (CarTime) o;
+            return timeStamp == carTime.timeStamp && Objects.equals(carNumber, carTime.carNumber);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(timeStamp, carNumber);
+        }
+
+        @Override
+        public String toString() {
+            return "CarTime{" +
+                    "timeStamp=" + timeStamp +
+                    ", carNumber='" + carNumber + '\'' +
+                    '}';
+        }
     }
 
 
@@ -130,7 +157,7 @@ public class AmdocsTest {
     }
 
     public class Schedule {
-//        private Map<Long, List<Task>> taskToTimeMap = new HashMap<>();
+        //        private Map<Long, List<Task>> taskToTimeMap = new HashMap<>();
 //        private long elapsedTime;
         private PriorityBlockingQueue<TaskTime> queue = new PriorityBlockingQueue(2, Comparator.comparing(TaskTime::getTaskExecutionTime));
 

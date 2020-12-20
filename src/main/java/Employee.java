@@ -71,6 +71,8 @@ class Employee implements Comparable<Employee> {
 //    }
 
     // Two employees are equal if their IDs are equal
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,6 +84,7 @@ class Employee implements Comparable<Employee> {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+//        return Objects.hash(id, name, salary, joiningDate, list);
     }
 
     @Override

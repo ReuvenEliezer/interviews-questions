@@ -4,7 +4,7 @@ import org.springframework.util.StopWatch;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommIt {
+public class CommItTest {
 
     @Test
     public void fibTest() {
@@ -42,19 +42,15 @@ public class CommIt {
             return fibCalcResult.put(num, 1l);
         }
 
-        long f1;
-        if (fibCalcResult.containsKey(num - 1)) {
-            f1 = fibCalcResult.get(num - 1);
-        } else {
+        Long f1 = fibCalcResult.get(num - 1);
+        if (f1 == null) {
             f1 = calcFibonnachi(num - 1);
             fibCalcResult.put(num - 1, f1);
         }
 
 
-        long f2;
-        if (fibCalcResult.containsKey(num - 2)) {
-            f2 = fibCalcResult.get(num - 2);
-        } else {
+        Long f2 = fibCalcResult.get(num - 2);
+        if (f2 == null) {
             f2 = calcFibonnachi(num - 2);
             fibCalcResult.put(num - 2, f2);
         }

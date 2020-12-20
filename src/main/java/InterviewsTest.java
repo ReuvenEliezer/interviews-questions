@@ -10,7 +10,9 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class InterviewsTest {
+public class
+
+InterviewsTest {
 
 
     @Test
