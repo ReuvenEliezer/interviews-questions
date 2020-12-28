@@ -14,6 +14,8 @@ public class OwnBackupCodilityTest {
         int a = 2, b = 4, c = 2, d = 4;
 //        int a = -1, b = -1, c = -22, d = -3;
 
+
+
         int maxCoordinator = findMinMovedToMakeArrDistinctNum(a, b, c, d);
         System.out.println("max coordinator result is: " + maxCoordinator);
     }

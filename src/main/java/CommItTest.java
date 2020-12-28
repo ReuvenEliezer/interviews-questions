@@ -20,6 +20,8 @@ public class CommItTest {
         System.out.println(calcFibonnachiOptimizeByMap(40));
         stopWatch.stop();
         System.out.println(stopWatch.prettyPrint());
+        System.out.println("fibCalcResult.size(): "+fibCalcResult.size());
+
     }
 
     private Map<Long, Long> fibCalcResult = new HashMap<>();
