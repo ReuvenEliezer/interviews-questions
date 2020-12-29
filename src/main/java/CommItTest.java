@@ -9,15 +9,15 @@ public class CommItTest {
     @Test
     public void fibTest() {
         StopWatch stopWatch = new StopWatch();
-        stopWatch.start("calcFibonnachi");
-        System.out.println(calcFibonnachi(40));
-        System.out.println(calcFibonnachi(40));
-        System.out.println(calcFibonnachi(40));
+        stopWatch.start("calcFibonacci");
+        System.out.println(calcFibonacci(40));
+        System.out.println(calcFibonacci(40));
+        System.out.println(calcFibonacci(40));
         stopWatch.stop();
-        stopWatch.start("calcFibonnachiOptimizeByMap");
-        System.out.println(calcFibonnachiOptimizeByMap(40));
-        System.out.println(calcFibonnachiOptimizeByMap(40));
-        System.out.println(calcFibonnachiOptimizeByMap(40));
+        stopWatch.start("calcFibonacciOptimizeByMap");
+        System.out.println(calcFibonacciOptimizeByMap(40));
+        System.out.println(calcFibonacciOptimizeByMap(40));
+        System.out.println(calcFibonacciOptimizeByMap(40));
         stopWatch.stop();
         System.out.println(stopWatch.prettyPrint());
         System.out.println("fibCalcResult.size(): "+fibCalcResult.size());
@@ -26,17 +26,17 @@ public class CommItTest {
 
     private Map<Long, Long> fibCalcResult = new HashMap<>();
 
-    public long calcFibonnachi(long num) {
+    public long calcFibonacci(long num) {
         if (num < 0)
             throw new UnsupportedOperationException(String.format("number %s not valid", num));
 
         if (num <= 1)
             return 1;
 
-        return calcFibonnachi(num - 1) + calcFibonnachi(num - 2);
+        return calcFibonacci(num - 1) + calcFibonacci(num - 2);
     }
 
-    public long calcFibonnachiOptimizeByMap(long num) {
+    public long calcFibonacciOptimizeByMap(long num) {
         if (num < 0)
             throw new UnsupportedOperationException(String.format("number %s not valid", num));
 
@@ -46,14 +46,14 @@ public class CommItTest {
 
         Long f1 = fibCalcResult.get(num - 1);
         if (f1 == null) {
-            f1 = calcFibonnachi(num - 1);
+            f1 = calcFibonacci(num - 1);
             fibCalcResult.put(num - 1, f1);
         }
 
 
         Long f2 = fibCalcResult.get(num - 2);
         if (f2 == null) {
-            f2 = calcFibonnachi(num - 2);
+            f2 = calcFibonacci(num - 2);
             fibCalcResult.put(num - 2, f2);
         }
 

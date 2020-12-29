@@ -5,7 +5,6 @@ import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.*;
 
 public class MainTraining {
@@ -156,7 +155,7 @@ public class MainTraining {
     private static List<Integer> hashMap() {
         HashMap<Integer, Integer> integerIntegerHashMap = new HashMap<>();
 
-        Integer integer = integerIntegerHashMap.get(1);
+        Integer integer = integerIntegerHashMap.get(0);
         if (integer == null) return new ArrayList<>();
         ArrayList<Integer> integers = new ArrayList<>(integer);
         return integers;
