@@ -14,9 +14,7 @@ public class OwnBackupCodilityTest {
         int a = 2, b = 4, c = 2, d = 4;
 //        int a = -1, b = -1, c = -22, d = -3;
 
-
-
-        int maxCoordinator = findMinMovedToMakeArrDistinctNum(a, b, c, d);
+        int maxCoordinator = findMaxSquaredDistanceBetweenPoints(a, b, c, d);
         System.out.println("max coordinator result is: " + maxCoordinator);
     }
 
@@ -110,7 +108,7 @@ public class OwnBackupCodilityTest {
         return (int) totalMoves;
     }
 
-    private int findMinMovedToMakeArrDistinctNum(int a, int b, int c, int d) {
+    private int findMaxSquaredDistanceBetweenPoints(int a, int b, int c, int d) {
         Map<List<Integer>, Integer> possibleCoordinatorToSumPoints = new HashMap();
         List<Integer> allPointsList = Arrays.asList(a, b, c, d);
         for (int i = 0; i < allPointsList.size(); i++) {
