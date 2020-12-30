@@ -41,7 +41,7 @@ public class CommItTest {
             throw new UnsupportedOperationException(String.format("number %s not valid", num));
 
         if (num <= 1) {
-            return fibCalcResult.put(num, 1l);
+            return 1;
         }
 
         Long f1 = fibCalcResult.get(num - 1);
