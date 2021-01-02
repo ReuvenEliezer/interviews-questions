@@ -17,7 +17,7 @@ public class AmazonTest {
 
         Assert.assertEquals(2, idsOfSongs.size());
         Assert.assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
-        idsOfSongs = getIDsOfSongsOptimistic(rideDuration, songDurations);
+        idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
         Assert.assertEquals(2, idsOfSongs.size());
         Assert.assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
 
@@ -29,7 +29,7 @@ public class AmazonTest {
         Assert.assertEquals(2, idsOfSongs.size());
         Assert.assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
 
-        idsOfSongs = getIDsOfSongsOptimistic(rideDuration, songDurations);
+        idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
         Assert.assertEquals(2, idsOfSongs.size());
         Assert.assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
     }
@@ -154,7 +154,7 @@ public class AmazonTest {
         return Collections.max(maxSongToResult.entrySet(), Comparator.comparingInt(Map.Entry::getKey)).getValue();
     }
 
-    private List<Integer> getIDsOfSongsOptimistic(int rideDuration, List<Integer> songDurations) {
+    private List<Integer> getIDsOfSongsMemoryOptimistic(int rideDuration, List<Integer> songDurations) {
         int timeBeforeArrivedBusInSeconds = 30;
         int totalSongTime = rideDuration - timeBeforeArrivedBusInSeconds;
 

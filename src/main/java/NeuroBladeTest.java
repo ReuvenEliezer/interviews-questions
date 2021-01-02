@@ -30,21 +30,21 @@ public class NeuroBladeTest {
 
     }
 
-    abstract class Ship {
-        abstract int move();
+    public interface Ship {
+        int move();
     }
 
-    class SmallShip extends Ship {
+    class SmallShip implements Ship {
 
         @Override
-        int move() {
+        public int move() {
             System.out.println("SmallShip moving: 1");
             return 1;
         }
 
     }
 
-    class BigShip extends Ship {
+    class BigShip implements Ship {
         List<Ship> shipList;
 
         public BigShip(List<Ship> shipList) {
@@ -52,7 +52,7 @@ public class NeuroBladeTest {
         }
 
         @Override
-        int move() {
+        public int move() {
             int total = 1;
             for (Ship ship : shipList) {
                 total += ship.move();

@@ -29,7 +29,9 @@ public class OverlapsMainlines {
         StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(22), 10);
         StartEndShift ml2 = new StartEndShift(start.plusMinutes(9), start.plusMinutes(13), 10);
         StartEndShift ml3 = new StartEndShift(start.plusMinutes(13), end, 10);
+//        StartEndShift ml4 = new StartEndShift(start.plusMinutes(50), end.plusDays(10), 10);
 
+//        List<StartEndShift> result = calcOverlappingMl(Arrays.asList(ml1, ml2, ml3,ml4));
         List<StartEndShift> result = calcOverlappingMl(Arrays.asList(ml1, ml2, ml3));
 
         Assert.assertEquals(5, result.size());
