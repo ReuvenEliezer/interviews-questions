@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class OverlapsMainlines {
 
@@ -28,8 +29,10 @@ public class OverlapsMainlines {
         LocalDateTime end = start.plusMinutes(25);
         StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(22), 10);
         StartEndShift ml2 = new StartEndShift(start.plusMinutes(9), start.plusMinutes(13), 10);
-        StartEndShift ml3 = new StartEndShift(start.plusMinutes(13), end, 10);
+        StartEndShift ml3 = new StartEndShift(start.plusMinutes(12), end, 10);
 //        StartEndShift ml4 = new StartEndShift(start.plusMinutes(50), end.plusDays(10), 10);
+        List<StartEndShift> result1 = calcOverlapping(Arrays.asList(ml1, ml2, ml3));
+        List<StartEndShift> result2 = calcOverlapping1(Arrays.asList(ml1, ml2, ml3));
 
 //        List<StartEndShift> result = calcOverlappingMl(Arrays.asList(ml1, ml2, ml3,ml4));
         List<StartEndShift> result = calcOverlappingMl(Arrays.asList(ml1, ml2, ml3));
@@ -42,6 +45,46 @@ public class OverlapsMainlines {
         Assert.assertEquals(10, result.get(4).getCapacity());
         Assert.assertEquals(start, result.get(0).getStart());
         Assert.assertEquals(end, result.get(result.size() - 1).getEnd());
+    }
+
+    private List<StartEndShift> calcOverlapping(List<StartEndShift> startEndShifts) {
+
+        List<LocalDateTime> localDateTimeList = new ArrayList<>(startEndShifts.size() * 2);
+        localDateTimeList.addAll(startEndShifts.stream().map(startEndShift -> startEndShift.getStart()).collect(Collectors.toList()));
+        localDateTimeList.addAll(startEndShifts.stream().map(startEndShift -> startEndShift.getEnd()).collect(Collectors.toList()));
+        Collections.sort(localDateTimeList);
+
+        List<StartEndShift> rangesOutput = new ArrayList<>();
+
+        for (int i = 1; i < localDateTimeList.size(); i++) {
+            LocalDateTime start = localDateTimeList.get(i - 1); // Subtract one for silly index counting.
+            LocalDateTime stop = localDateTimeList.get(i); // Subtract one for silly index counting. Or use ( i ) instead.
+            if (!start.equals(stop)) {  // If not equal, proceed. (If equal, ignore and move on to next loop.)
+                StartEndShift range = new StartEndShift(start, stop);
+                rangesOutput.add(range);
+            }
+        }
+        return rangesOutput;
+    }
+
+    private List<StartEndShift> calcOverlapping1(List<StartEndShift> startEndShifts) {
+
+        List<LocalDateTime> localDateTimeList = new ArrayList<>(startEndShifts.size() * 2);
+        localDateTimeList.addAll(startEndShifts.stream().map(startEndShift -> startEndShift.getStart()).collect(Collectors.toList()));
+        localDateTimeList.addAll(startEndShifts.stream().map(startEndShift -> startEndShift.getEnd()).collect(Collectors.toList()));
+        Collections.sort(localDateTimeList);
+
+        List<StartEndShift> rangesOutput = new ArrayList<>();
+
+        for (int i = 1; i < localDateTimeList.size(); i++) {
+            LocalDateTime start = localDateTimeList.get(i - 1); // Subtract one for silly index counting.
+            LocalDateTime stop = localDateTimeList.get(i); // Subtract one for silly index counting. Or use ( i ) instead.
+            if (!start.equals(stop)) {  // If not equal, proceed. (If equal, ignore and move on to next loop.)
+                StartEndShift range = new StartEndShift(start, stop);
+                rangesOutput.add(range);
+            }
+        }
+        return rangesOutput;
     }
 
     private List<StartEndShift> calcOverlappingMl(List<StartEndShift> startEndShifts) {
@@ -74,19 +117,20 @@ public class OverlapsMainlines {
             if (!entry.getValue().equals(capacityValue)) {
                 capacityValue = entry.getValue();
                 StartEndShift startEndShift = new StartEndShift(entry.getKey(), null, capacityValue);
-                if (!result.isEmpty()) {
-                    StartEndShift prevEndShift = result.get(result.size() - 1);
-                    prevEndShift.setEnd(entry.getKey());
-                }
+                setEndDate(result, entry.getKey());
                 result.add(startEndShift);
             }
         }
 
-        if (!result.isEmpty()) {
-            StartEndShift lastEndShift = result.get(result.size() - 1);
-            lastEndShift.setEnd(endTime);
-        }
+        setEndDate(result, endTime);
         return result;
+    }
+
+    private void setEndDate(List<StartEndShift> result, LocalDateTime key) {
+        if (!result.isEmpty()) {
+            StartEndShift prevEndShift = result.get(result.size() - 1);
+            prevEndShift.setEnd(key);
+        }
     }
 
     class StartEndShift {
@@ -97,6 +141,11 @@ public class OverlapsMainlines {
             this.start = start;
             this.end = end;
             this.capacity = capacity;
+        }
+
+        public StartEndShift(LocalDateTime start, LocalDateTime end) {
+            this.start = start;
+            this.end = end;
         }
 
         public LocalDateTime getStart() {

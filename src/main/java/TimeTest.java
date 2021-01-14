@@ -1,11 +1,17 @@
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
 public class TimeTest {
+
+    @Test
+    public void test(){
+        Duration duration = Duration.ofHours(2);
+    }
 
     @Test
     public void getStartAndEndOfQuarterAndConvertDateToLocalDateTest(){
