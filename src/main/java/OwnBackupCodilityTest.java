@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class OwnBackupCodilityTest {
 
@@ -68,8 +69,7 @@ public class OwnBackupCodilityTest {
 
         Map<Integer, Integer> numToTotalCountInstancesMap = new HashMap<>();
         Set<Integer> duplicateNumberHashSet = new HashSet<>();
-        for (int i = 0; i < arr.length; i++) {
-            int value = arr[i];
+        for (int value : arr) {
             Integer sumOfValue = numToTotalCountInstancesMap.get(value);
             if (sumOfValue == null) {
                 numToTotalCountInstancesMap.put(value, 1);
@@ -115,8 +115,8 @@ public class OwnBackupCodilityTest {
             Integer integer1 = allPointsList.get(i);
             for (int j = i + 1; j < allPointsList.size(); j++) {
                 Integer integer2 = allPointsList.get(j);
-                List<Integer> sortedIntList = Arrays.asList(integer1, integer2).stream().sorted().collect(Collectors.toList()); // for unique a key map
-                possibleCoordinatorToSumPoints.put(sortedIntList, sortedIntList.stream().collect(Collectors.summingInt(Integer::intValue)));
+                List<Integer> sortedIntList = Stream.of(integer1, integer2).sorted().collect(Collectors.toList()); // for unique a key map
+                possibleCoordinatorToSumPoints.put(sortedIntList, sortedIntList.stream().mapToInt(Integer::intValue).sum());
             }
         }
 

@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AmazonTest {
 
@@ -51,7 +52,7 @@ public class AmazonTest {
 
         Pair pair1 = new Pair(3, 4);
         Pair pair2 = new Pair(4, 3);
-        Assert.assertTrue(pair1.equals(pair2));
+        Assert.assertEquals(pair1, pair2);
         Assert.assertEquals(6, expected.size());
         Assert.assertEquals(expected, pairValues);
     }
@@ -94,7 +95,7 @@ public class AmazonTest {
         List<List<Integer>> actualList = extracted(actual);
         List<List<Integer>> expectedList = extracted(expected);
 
-        Assert.assertFalse(actualList.equals(expectedList));
+        Assert.assertNotEquals(actualList, expectedList);
         Assert.assertTrue(actualList.containsAll(expectedList));
         Assert.assertTrue(expectedList.containsAll(actualList));
     }
@@ -159,8 +160,8 @@ public class AmazonTest {
 //            return Integer.compare(o1.size(), o2.size());
 //        }).collect(Collectors.toList());
 
-
-        Collections.sort(result,new ListComparator<>());
+        result.sort(new ListComparator<>());
+//        Collections.sort(result, new ListComparator<>());
 //        result.sort(new Comparator<ArrayList<Integer>>() {
 //            @Override
 //            public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
@@ -168,34 +169,35 @@ public class AmazonTest {
 //            }
 //        });
         return result;
-}
+    }
 
 
     /**
      * https://stackoverflow.com/questions/35761864/java-sort-list-of-lists
+     *
      * @param <T>
      */
-    class ListComparator<T extends Comparable<T>> implements Comparator<List<T>> {
+    static class ListComparator<T extends Comparable<T>> implements Comparator<List<T>> {
 
-    @Override
-    public int compare(List<T> o1, List<T> o2) {
-        for (int i = 0; i < Math.min(o1.size(), o2.size()); i++) {
-            int c = o1.get(i).compareTo(o2.get(i));
-            if (c != 0) {
-                return c;
+        @Override
+        public int compare(List<T> o1, List<T> o2) {
+            for (int i = 0; i < Math.min(o1.size(), o2.size()); i++) {
+                int c = o1.get(i).compareTo(o2.get(i));
+                if (c != 0) {
+                    return c;
+                }
             }
+            return Integer.compare(o1.size(), o2.size());
         }
-        return Integer.compare(o1.size(), o2.size());
-    }
 
-}
+    }
 
     @Test
     public void fourValuesTest() {
         Set<Four> hashSet = new HashSet<>();
         Four four = new Four(0, 1, 2, 3);
         Four four1 = new Four(0, 2, 1, 3);
-        Assert.assertTrue(four.equals(four1));
+        Assert.assertEquals(four, four1);
         hashSet.add(four);
         hashSet.add(four1);
         Assert.assertEquals(1, hashSet.size());
@@ -218,7 +220,7 @@ public class AmazonTest {
 
         Pair pair1 = new Pair(3, 4);
         Pair pair2 = new Pair(4, 3);
-        Assert.assertTrue(pair1.equals(pair2));
+        Assert.assertEquals(pair1, pair2);
         Assert.assertEquals(6, expected.size());
         Assert.assertEquals(expected, pairIndexes);
     }
@@ -238,7 +240,7 @@ public class AmazonTest {
     private HashSet<Pair> getPairValues(int[] arr) {
         HashSet<Pair> pairHashSet = new HashSet<>();
         for (int i = 0; i < arr.length - 1; i++) {
-            Integer integer = arr[i];
+            int integer = arr[i];
             for (int j = i + 1; j < arr.length; j++) {
                 pairHashSet.add(new Pair(integer, arr[j]));
             }
@@ -256,93 +258,93 @@ public class AmazonTest {
         return pairHashSet;
     }
 
-class Pair {
-    int a;
-    int b;
+    static class Pair {
+        int a;
+        int b;
 
-    public Pair(int a, int b) {
-        this.a = a;
-        this.b = b;
+        public Pair(int a, int b) {
+            this.a = a;
+            this.b = b;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Pair pair = (Pair) o;
+            return (a == pair.a && b == pair.b) || (a == pair.b && b == pair.a);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(a + b);
+        }
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "a=" + a +
+                    ", b=" + b +
+                    '}';
+        }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pair pair = (Pair) o;
-        return (a == pair.a && b == pair.b) || (a == pair.b && b == pair.a);
+    static class Four {
+        int a;
+        int b;
+        int c;
+        int d;
+
+        public Four(int[] fourNumToSort) {
+            Arrays.sort(fourNumToSort);
+            a = fourNumToSort[0];
+            b = fourNumToSort[1];
+            c = fourNumToSort[2];
+            d = fourNumToSort[3];
+        }
+
+        public Four(int a, int b, int c, int d) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Four four = (Four) o;
+            return (a == four.a && b == four.b && c == four.c && d == four.d)
+                    || (a == four.b && b == four.a && c == four.c && d == four.d)
+                    || (a == four.c && b == four.b && c == four.a && d == four.d)
+                    || (a == four.d && b == four.b && c == four.a && d == four.a)
+
+                    || (a == four.a && b == four.c && c == four.b && d == four.d)
+                    || (a == four.a && b == four.d && c == four.c && d == four.b)
+
+
+                    || (a == four.a && b == four.b && c == four.d && d == four.c)
+
+                    ;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(a + b + c + d);
+        }
+
+        @Override
+        public String toString() {
+            return "Four{" +
+                    "a=" + a +
+                    ", b=" + b +
+                    ", c=" + c +
+                    ", d=" + d +
+                    '}';
+        }
+
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(a + b);
-    }
-
-    @Override
-    public String toString() {
-        return "Pair{" +
-                "a=" + a +
-                ", b=" + b +
-                '}';
-    }
-}
-
-class Four {
-    int a;
-    int b;
-    int c;
-    int d;
-
-    public Four(int[] fourNumToSort) {
-        Arrays.sort(fourNumToSort);
-        a = fourNumToSort[0];
-        b = fourNumToSort[1];
-        c = fourNumToSort[2];
-        d = fourNumToSort[3];
-    }
-
-    public Four(int a, int b, int c, int d) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Four four = (Four) o;
-        return (a == four.a && b == four.b && c == four.c && d == four.d)
-                || (a == four.b && b == four.a && c == four.c && d == four.d)
-                || (a == four.c && b == four.b && c == four.a && d == four.d)
-                || (a == four.d && b == four.b && c == four.a && d == four.a)
-
-                || (a == four.a && b == four.c && c == four.b && d == four.d)
-                || (a == four.a && b == four.d && c == four.c && d == four.b)
-
-
-                || (a == four.a && b == four.b && c == four.d && d == four.c)
-
-                ;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(a + b + c + d);
-    }
-
-    @Override
-    public String toString() {
-        return "Four{" +
-                "a=" + a +
-                ", b=" + b +
-                ", c=" + c +
-                ", d=" + d +
-                '}';
-    }
-
-}
 
 
     private List<Integer> getIDsOfSongs(int rideDuration, List<Integer> songDurations) {
@@ -367,7 +369,7 @@ class Four {
             }
         }
         if (maxSongToResult.isEmpty())
-            return null;
+            return new ArrayList<>();
         return Collections.max(maxSongToResult.entrySet(), Comparator.comparingInt(Map.Entry::getKey)).getValue();
     }
 
@@ -378,7 +380,7 @@ class Four {
         Assert.assertEquals(1, isSumExists(arr, sumOf2Elements));
     }
 
-    public int isSumExists(int arr[], int sum) {
+    public int isSumExists(int[] arr, int sum) {
         for (int i = 0; i < arr.length - 1; i++) {
             Integer integer = arr[i];
             for (int j = i + 1; j < arr.length; j++) {
@@ -413,7 +415,7 @@ class Four {
                 }
             }
         }
-        return new ArrayList<>(Arrays.asList(firstSongIndex, secondSongIndex).stream().sorted().collect(Collectors.toList()));
+        return Stream.of(firstSongIndex, secondSongIndex).sorted().collect(Collectors.toList());
     }
 
 

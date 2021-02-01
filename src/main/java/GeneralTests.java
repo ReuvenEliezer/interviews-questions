@@ -3,12 +3,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 public class GeneralTests {
 
@@ -22,7 +19,6 @@ public class GeneralTests {
         String s2 = StringUtils.substringBeforeLast(s, ".");
         String s1 = StringUtils.substringBeforeLast(s, "/");
         String result = StringUtils.substringAfterLast(s1, "/");
-        long between = DAYS.between(LocalDate.now(ZoneOffset.UTC).minusDays(1), LocalDate.now(ZoneOffset.UTC));
     }
 
     @Test

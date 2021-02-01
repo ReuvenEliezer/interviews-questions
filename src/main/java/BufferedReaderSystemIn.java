@@ -92,7 +92,7 @@ class Solution {
         return result.toString();
     }
 
-    public int twiceCounter(String strArr[]) {
+    public int twiceCounter(String[] strArr) {
 //        https://practice.geeksforgeeks.org/problems/twice-counter4236/1/?category[]=Hash&category[]=Hash&page=1&query=category[]Hashpage1category[]Hash
         Map<String, Integer> strMap = new HashMap<>();
         for (String s : strArr) {

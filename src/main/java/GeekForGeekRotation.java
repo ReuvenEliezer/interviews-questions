@@ -1,5 +1,6 @@
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -138,7 +139,7 @@ public class GeekForGeekRotation {
 
     }
 
-    int findKRotation(int arr[], int arrSize) {
+    int findKRotation(int[] arr, int arrSize) {
         if (arr.length < 2) return 0;
         int min = Arrays.stream(arr).min().getAsInt();
 
@@ -233,7 +234,7 @@ public class GeekForGeekRotation {
             String sizeAndRotationNumStr = args[i + sizeAndRotationIndex];
 
             Integer arrSize = Integer.valueOf(sizeAndRotationNumStr.split(" ")[0]);
-            int arr[] = new int[arrSize];
+            int[] arr = new int[arrSize];
             Integer rotationNum = Integer.valueOf(sizeAndRotationNumStr.split(" ")[1]);
             String elementsStr = args[i + elementsListIndex];
             String[] elementsArr = elementsStr.split(" ");
@@ -273,6 +274,7 @@ public class GeekForGeekRotation {
     }
 
     @Test
+    @Ignore
     public void leftRotation1() {
 //        https://practice.geeksforgeeks.org/problems/rotate-array-by-n-elements/0/?track=interview-arrays&batchId=117#
 

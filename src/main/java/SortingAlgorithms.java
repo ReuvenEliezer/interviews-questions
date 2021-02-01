@@ -6,7 +6,7 @@ public class SortingAlgorithms {
     //    https://www.geeksforgeeks.org/sorting-algorithms/
     @Test
     public void bubbleSortTest() {
-        int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
         bubbleSort(arr);
         System.out.println(Arrays.toString(arr));
         bubbleSort(arr);
@@ -14,7 +14,7 @@ public class SortingAlgorithms {
 
     @Test
     public void mergeSortTest() {
-        int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
         sort(arr, 0, arr.length - 1);
         System.out.println(Arrays.toString(arr));
     }
@@ -23,7 +23,7 @@ public class SortingAlgorithms {
 
     @Test
     public void quickSortTest() {
-        int arr[] = {8, 9, 16, 15};
+        int[] arr = {8, 9, 16, 15};
         quickSort(arr, 0, arr.length - 1);
         System.out.println(Arrays.toString(arr) + " " + totalSwap);
 
@@ -57,7 +57,7 @@ public class SortingAlgorithms {
         quickSort(array, pivot + 1, end);
     }
 
-    void bubbleSort(int arr[]) {
+    void bubbleSort(int[] arr) {
         int n = arr.length;
         boolean swapped;    //Optimized
         for (int i = 0; i < n - 1; i++) {
@@ -78,7 +78,7 @@ public class SortingAlgorithms {
         }
     }
 
-    void merge(int arr[], int l, int m, int r) {
+    void merge(int[] arr, int l, int m, int r) {
         // Find sizes of two subarrays to be merged
         int n1 = m - l + 1;
         int n2 = r - m;
@@ -128,7 +128,7 @@ public class SortingAlgorithms {
 
     // Main function that sorts arr[l..r] using
     // merge()
-    void sort(int arr[], int l, int r) {
+    void sort(int[] arr, int l, int r) {
         if (l < r) {
             // Find the middle point
             int m = (l + r) / 2;

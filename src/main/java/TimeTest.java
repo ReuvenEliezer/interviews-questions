@@ -6,6 +6,9 @@ import java.time.ZoneOffset;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
+
 public class TimeTest {
 
     @Test
@@ -28,5 +31,8 @@ public class TimeTest {
         if (currentDate.isAfter(firstDayOfQuarter)&&currentDate.isBefore(lastDayOfQuarter) ){
             int i=0;
         }
+        long between = DAYS.between(LocalDate.now(ZoneOffset.UTC).minusDays(1), LocalDate.now(ZoneOffset.UTC));
+
+
     }
 }
