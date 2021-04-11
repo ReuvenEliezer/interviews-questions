@@ -27,6 +27,7 @@ public class RandomNumberGenerator implements IRandomNumberGenerator {
         Integer index = valueToIndexHashMap.get(value);
         Integer moveValue = indexToValueHashMap.get(indexToValueHashMap.size() - 1);
 
+        //update index of value removal with last value of map
         valueToIndexHashMap.put(moveValue, index);
         indexToValueHashMap.put(index, moveValue);
         indexToValueHashMap.remove(indexToValueHashMap.size() - 1);
