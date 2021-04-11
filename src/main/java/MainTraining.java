@@ -37,7 +37,6 @@ public class MainTraining {
 //            Double y = x / 0;
         }
 
-
         ObjectMapper objectMapper = new ObjectMapper();
         StraightLineEquation straightLineEquation = new StraightLineEquation(0.2, 0.8, 30, 150, 0.1);
         String formula1 = null;

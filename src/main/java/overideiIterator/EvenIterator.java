@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class EvenIterator implements Iterator<Integer> {
-    private List<Integer> list;
+    private final List<Integer> list;
     private int current = 0;
 
     public EvenIterator(List<Integer> list) {

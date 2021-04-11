@@ -87,7 +87,7 @@ public class RandomTest {
             Integer value = indexToValueMap.get(randomValue);
             System.out.println(value);
 
-            //move the last key to current randon index selected and remove the last index in the map
+            //move the last key to current random index selected and remove the last index in the map
             indexToValueMap.replace(randomValue, indexToValueMap.get(currentMapSize - 1));
             indexToValueMap.remove(currentMapSize - 1);
         }

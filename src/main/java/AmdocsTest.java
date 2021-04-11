@@ -1,8 +1,12 @@
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class AmdocsTest {
 
@@ -51,6 +55,57 @@ public class AmdocsTest {
 
     private long timeInterval = 60;
 
+    @Test
+    public void immutableStringTest() {
+        String a = "a";
+        String b = "a";
+        Assert.assertTrue(a.equals(b));
+        Assert.assertTrue(a == b);
+        String c = new String("a");
+        Assert.assertTrue(a.equals(c));
+        Assert.assertFalse(a == c);
+    }
+
+    @Test
+    public void test() {
+        List<String> stringList = Arrays.asList("a", "b");
+        AtomicInteger counter = new AtomicInteger();
+        Map<Integer, String> map = stringList
+                .stream()
+                .collect(Collectors.toMap((c) -> counter.incrementAndGet(), (c) -> c));
+        System.out.println(map);
+    }
+
+    @Test
+    public void yairTest() throws IOException {
+        Runtime.getRuntime().exec("notepad");//will open a new notepad
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= 100; i++) {
+            String s = String.valueOf(i);
+            sb.append(i + ":");
+            boolean three = false;
+            boolean fine = false;
+            boolean seven = false;
+            for (String c : s.split("")) {
+                if (!three && (c.equals("3") || i % 3 == 0)) {
+                    sb.append(" bim");
+                    three = true;
+                }
+
+                if (!fine && (c.equals("5") || i % 5 == 0)) {
+                    sb.append(" bam");
+                    fine = true;
+                }
+
+                if (!seven && (c.equals("7") || i % 7 == 0)) {
+                    sb.append(" bum");
+                    seven = true;
+                }
+            }
+            sb.append(System.lineSeparator());
+        }
+        System.out.println(sb.toString());
+    }
 
     /**
      * בכביש  בו נוסעות מכוניות -מותקנת מצלמה המזהה את המספר ומוסיפה את השעה והרכב למאגר

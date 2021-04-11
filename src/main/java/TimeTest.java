@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -20,7 +21,8 @@ public class TimeTest {
     public void getStartAndEndOfQuarterAndConvertDateToLocalDateTest(){
         LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
         Date date = Date.from(localDate.atStartOfDay(ZoneOffset.UTC).toInstant());
-
+        Timestamp timestamp = new Timestamp(date.getTime());
+        long l = timestamp.toInstant().toEpochMilli();
         LocalDate firstDayOfQuarter = localDate.with(localDate.getMonth().firstMonthOfQuarter())
                 .with(TemporalAdjusters.firstDayOfMonth());
 

@@ -206,4 +206,26 @@ public class ProximityCitiBankTest {
 
         return map.values().stream().mapToInt(Integer::intValue).sum() + smallToRemove;
     }
+
+    @Test
+    public void findMinimumIndexedCharacterTest() {
+//        https://practice.geeksforgeeks.org/problems/minimum-indexed-character0221/1/?category[]=Hash&category[]=Hash&page=1&query=category[]Hashpage1category[]Hash#
+        StringBuffer stringBuffer = printMinIndexChar("vsizcnmjilegtiugfxqtkeggknxxojrlczmgozrykxgefdmkadfmjotvdsuremfgnroeqfeddljkqvvqacejszfwszpwnue", "douhezn");
+        Assert.assertEquals("z", stringBuffer.toString());
+    }
+
+    public static StringBuffer printMinIndexChar(String str, String patt) {
+        HashSet<Integer> characterHashSet = new LinkedHashSet<>();
+        for (int c : patt.toCharArray()) {
+            characterHashSet.add(c);
+        }
+
+        for (char charInt : str.toCharArray()) {
+            if (characterHashSet.contains((int) charInt)) {
+                return new StringBuffer().append(charInt);
+            }
+        }
+        return new StringBuffer().append("$");
+    }
+
 }

@@ -11,8 +11,8 @@ public class OwnBackupCodilityTest {
 
     @Test
     public void codilityTask1() {
-//        int a = 1, b = 1, c = 2, d = 3;
-        int a = 2, b = 4, c = 2, d = 4;
+        int a = 1, b = 1, c = 2, d = 3;
+//        int a = 2, b = 4, c = 2, d = 4;
 //        int a = -1, b = -1, c = -22, d = -3;
 
         int maxCoordinator = findMaxSquaredDistanceBetweenPoints(a, b, c, d);
@@ -108,7 +108,7 @@ public class OwnBackupCodilityTest {
         return (int) totalMoves;
     }
 
-    private int findMaxSquaredDistanceBetweenPoints(int a, int b, int c, int d) {
+    private static int findMaxSquaredDistanceBetweenPoints(int a, int b, int c, int d) {
         Map<List<Integer>, Integer> possibleCoordinatorToSumPoints = new HashMap();
         List<Integer> allPointsList = Arrays.asList(a, b, c, d);
         for (int i = 0; i < allPointsList.size(); i++) {
