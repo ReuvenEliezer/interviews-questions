@@ -54,6 +54,60 @@ public class OverlappingIntervalsVisitSolution {
         return new SolutionResult(start, end, lastBestCount);
     }
 
+    public SolutionResult calculateMaxPeopleAtOnc2(List<Visit> visitList) {
+        //https://www.techiedelight.com/maximum-overlapping-intervals-problem/
+         if (visitList == null || visitList.isEmpty())
+            return new SolutionResult(null, null, 0);
+        if (visitList.size() == 1)
+            return new SolutionResult(visitList.get(0).getEntryTime(), visitList.get(0).getExitTime(), 1);
+
+        List<TimeEntry> timeArrivalList = new ArrayList<>();
+        List<TimeEntry> timeDepartureList = new ArrayList<>();
+        for (Visit visit : visitList) {
+            timeArrivalList.add(new TimeEntry(visit.getEntryTime(), true));
+            timeDepartureList.add(new TimeEntry(visit.getExitTime(), false));
+        }
+
+        timeArrivalList.sort(Comparator.comparing(TimeEntry::getTime));
+        timeDepartureList.sort(Comparator.comparing(TimeEntry::getTime));
+
+
+        long count = 0;
+        LocalDateTime start = null;
+        LocalDateTime end = null;
+        long lastBestCount = 0;
+        int i = 0, j = 0;
+        while (i < visitList.size() && j < visitList.size()) {
+            // if the next event is arrival
+            if (!timeArrivalList.get(i).getTime().isAfter(timeDepartureList.get(j).getTime())) {
+                // increment number of guests
+                count++;
+                // update the maximum count of guests if needed
+                if (lastBestCount < count) {
+                    lastBestCount = count;
+                    start = timeArrivalList.get(i).getTime();
+                    end = timeDepartureList.get(j).getTime();
+                }
+
+                // increment index of arrival array
+                i++;
+            }
+            // if the next event is a departure
+            else {
+                // decrement number of guests
+                count--;
+                // increment index of departure array
+                j++;
+            }
+        }
+
+
+        System.out.println("start :" + start + " end: " + end + " lastBestCount: " + lastBestCount);
+
+        return new SolutionResult(start, end, lastBestCount);
+    }
+
+
     private class SolutionResult {
         LocalDateTime startDate;
         LocalDateTime endDate;
@@ -103,6 +157,11 @@ public class OverlappingIntervalsVisitSolution {
         Assert.assertEquals(3, result.maxVisitors);
         Assert.assertEquals(visit2.getEntryTime(), result.startDate);
         Assert.assertEquals(visit4.getExitTime(), result.endDate);
+
+        SolutionResult result2 = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnc2(Stream.of(visit1, visit2, visit3, visit4, visit5).collect(Collectors.toList()));
+        Assert.assertEquals(3, result2.maxVisitors);
+        Assert.assertEquals(visit2.getEntryTime(), result2.startDate);
+        Assert.assertEquals(visit4.getExitTime(), result2.endDate);
     }
 
     @Test
@@ -130,6 +189,13 @@ public class OverlappingIntervalsVisitSolution {
         Assert.assertEquals(5, result.maxVisitors);
         Assert.assertEquals(visit5.getEntryTime(), result.startDate);
         Assert.assertEquals(visit7.getExitTime(), result.endDate);
+
+        SolutionResult result2 = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnc2(Stream.of(visit1, visit2, visit3, visit4
+                , visit5, visit6, visit7
+        ).collect(Collectors.toList()));
+        Assert.assertEquals(5, result2.maxVisitors);
+        Assert.assertEquals(visit5.getEntryTime(), result2.startDate);
+        Assert.assertEquals(visit7.getExitTime(), result2.endDate);
     }
 
     private class Visit {
