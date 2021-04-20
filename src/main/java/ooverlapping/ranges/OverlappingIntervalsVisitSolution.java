@@ -1,3 +1,5 @@
+package ooverlapping.ranges;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,7 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OverlappingIntervalsVisitSolution {
-
+    /**
+     * find the interval with highest visitor and return the interval and amx visitors
+     * @param visitList
+     * @return
+     */
     //https://stackoverflow.com/questions/19155454/find-the-time-period-with-the-maximum-number-of-overlapping-intervals
     public SolutionResult calculateMaxPeopleAtOnce(List<Visit> visitList) {
         if (visitList == null || visitList.isEmpty())
@@ -27,7 +33,7 @@ public class OverlappingIntervalsVisitSolution {
 
 
         long count = 0;
-        Boolean lastStart = null;
+        Boolean findNewMax = false;
         LocalDateTime start = null;
         LocalDateTime end = null;
         long lastBestCount = 0;
@@ -36,15 +42,18 @@ public class OverlappingIntervalsVisitSolution {
                 count++;
                 if (count > lastBestCount) {
                     lastBestCount = count;
-                    lastStart = true;
+                    findNewMax = true;
                     start = timeEntry.getTime();
                 }
             } else {
-                if (lastStart != null) {
+                //if find the start - set the end time
+                if (findNewMax != null) {
                     end = timeEntry.getTime();
                 }
                 count--;
-                lastStart = null;
+
+                //reset flag
+                findNewMax = null;
             }
         }
 
@@ -56,7 +65,7 @@ public class OverlappingIntervalsVisitSolution {
 
     public SolutionResult calculateMaxPeopleAtOnc2(List<Visit> visitList) {
         //https://www.techiedelight.com/maximum-overlapping-intervals-problem/
-         if (visitList == null || visitList.isEmpty())
+        if (visitList == null || visitList.isEmpty())
             return new SolutionResult(null, null, 0);
         if (visitList.size() == 1)
             return new SolutionResult(visitList.get(0).getEntryTime(), visitList.get(0).getExitTime(), 1);
