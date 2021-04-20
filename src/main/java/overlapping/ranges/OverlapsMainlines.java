@@ -1,4 +1,4 @@
-package ooverlapping.ranges;
+package overlapping.ranges;
 
 import org.junit.Assert;
 import org.junit.Test;
