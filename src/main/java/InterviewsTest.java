@@ -24,13 +24,19 @@ InterviewsTest {
     }
 
     @Test
-    public void ZoomIntoTest() {
+    public void zoomIntoTest() {
 //        נתון מערך לדוג':
 //        אם תוצאת הסכום של 2 אברים במערך קיימת במערך - יש להדפיסה.
 //                לדוג' 1+3 = 4
 //        4 קיים במערך.
         int[] arr = {1, 3, 4, 8, 2, 6, 10, 7};
         // printSumOfPairIfExistInArr(arr);
+        List<AmazonTest.Pair> result = getSumOfPairIfExistInArr(arr);
+
+    }
+
+    private List<AmazonTest.Pair> getSumOfPairIfExistInArr(int[] arr) {
+        List<AmazonTest.Pair> result = new ArrayList<>();
         Map<Integer, Boolean> integersPrinted = new HashMap<>();
         for (int k : arr)
             integersPrinted.put(k, false);
@@ -43,6 +49,7 @@ InterviewsTest {
                 if (integersPrinted.containsKey(sum)) {
                     Boolean printed = integersPrinted.get(sum);
                     if (!printed) {
+                        result.add(new AmazonTest.Pair(first,second));
                         integersPrinted.put(sum, true);
                         System.out.println(first + " " + second + " = " + sum);
                     }
@@ -52,7 +59,10 @@ InterviewsTest {
         }
 
         System.out.println(i1);
+        return result;
+
     }
+
 
     @Test
     public void binarySearchTest() {

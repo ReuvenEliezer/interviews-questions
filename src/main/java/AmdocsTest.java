@@ -29,6 +29,7 @@ public class AmdocsTest {
 
         printNodes(node);
 
+        System.out.println();
         //הדפס רק את העומק של העץ הנתון
         printNodes(node, 1, 0);
 
@@ -104,7 +105,7 @@ public class AmdocsTest {
             }
             sb.append(System.lineSeparator());
         }
-        System.out.println(sb.toString());
+        System.out.println(sb);
     }
 
     /**
