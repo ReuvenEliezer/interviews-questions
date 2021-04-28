@@ -1,15 +1,24 @@
 package bfs.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Tree<T> {
     private T value;
-    private List<Tree<T>> children;
+    private Tree<T> parent;
+    private Set<Tree<T>> children;
 
     public Tree(T value) {
         this.value = value;
-        this.children = new ArrayList<>();
+        this.children = new HashSet<>();
+    }
+
+    public Tree<T> getParent() {
+        return parent;
+    }
+
+    public void setParent(Tree<T> parent) {
+        this.parent = parent;
     }
 
     public T getValue() {
@@ -20,20 +29,13 @@ public class Tree<T> {
         this.value = value;
     }
 
-    public List<Tree<T>> getChildren() {
+    public Set<Tree<T>> getChildren() {
         return children;
-    }
-
-    public void setChildren(List<Tree<T>> children) {
-        this.children = children;
-    }
-
-    public static <T> Tree<T> of(T value) {
-        return new Tree<>(value);
     }
 
     public Tree<T> addChild(T value) {
         Tree<T> newChild = new Tree<>(value);
+        newChild.setParent(this);
         this.children.add(newChild);
         return newChild;
     }

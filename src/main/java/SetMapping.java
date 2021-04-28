@@ -8,6 +8,38 @@ import java.util.stream.Stream;
 
 public class SetMapping {
 
+    /**
+     * Set Mapping
+     * You need to implement an algorithm that handles input lines of the form:
+     * A:5
+     * B:7
+     * G:2
+     * A:6
+     * D:2
+     * And synonyms of the form:
+     * A:G
+     * D:B
+     * G:A
+     * You need to implement the following method:
+     *     public Map<String, Set<Integer>> getSets(List<String> lines, List<String> synonyms) {
+     *  TODO impl
+     * }
+     * The method should return a map between letters and their respective aggregated sets of digits.
+     * The &quot;synonyms&quot; define which pairs should be treated the same, but only if both directions
+     * appear in the map. In the example above, A and G are synonyms, but D and B are not.
+     * Synonyms are transitive, so if A and G are synonyms and G and F are synonyms, then A and F
+     * are also synonyms.
+     * The output of the example above is a map with the following mappings:
+     * A → {5, 6, 2}
+     * B → {7}
+     * G → {5, 6, 2}
+     * D → {2}
+     * You can assume that:
+     *  The list can only contain strings in the format above: <letter>:<digit>
+     *  The list can only contain strings in the format above: <letter>:<letter>
+     *  There are no nulls in  inputs.
+     */
+
     @Test
     public void test() {
         List<String> lines = Arrays.asList("A:5", "B:7", "G:2", "A:6", "D:2");

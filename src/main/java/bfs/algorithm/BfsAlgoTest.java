@@ -46,12 +46,10 @@ public class BfsAlgoTest {
         logger.info("printDfs");
         printDfs(root);
         logger.info("remove C1");
-        Tree<String> c1 = removeElement("C1", root);
+        removeElement("C1", root);
         logger.info("printDfs after remove C1");
         printDfs(root);
 
-//        Optional<Tree<String>> c1 = search("C1", root);
-//        Assert.assertFalse(c1.isPresent());
     }
 
     @Test
@@ -60,8 +58,6 @@ public class BfsAlgoTest {
         printDfs(root);
         logger.info("");
         removeElement("C1,", root);
-//        Optional<Tree<String>> c1 = search("C1", root);
-//        Assert.assertFalse(c1.isPresent());
     }
 
     private Tree<String> createTree() {
@@ -80,7 +76,7 @@ public class BfsAlgoTest {
         return root;
     }
 
-    public static <T> Optional<Tree<T>> search(T value, Tree<T> root) {
+    public static <T> Tree<T> search(T value, Tree<T> root) {
         Queue<Tree<T>> queue = new ArrayDeque<>();
         queue.add(root);
 
@@ -91,19 +87,36 @@ public class BfsAlgoTest {
             logger.debug("Visited node with value: {}", currentNode.getValue());
 
             if (currentNode.getValue().equals(value)) {
-                return Optional.of(currentNode);
+                return currentNode;
             } else {
                 queue.addAll(currentNode.getChildren());
             }
         }
 
-        return Optional.empty();
+        return null;
     }
 
-    public static <T> Tree<T> removeElement(T value, Tree<T> root) {
-        throw new UnsupportedOperationException("Not impl");
-    }
+    public static <T> void removeElement(T value, Tree<T> root) {
+        Stack<Tree<T>> stack = new Stack<>();
+        stack.push(root);
+        Tree<T> current;
+        while (!stack.isEmpty()) {
+            current = stack.pop();
+            logger.debug("Visited node with value: {}", current.getValue());
 
+            if (current.getValue().equals(value)) {
+                for (Tree<T> child: current.getChildren()) {
+                    child.setParent(current.getParent());
+                    stack.add(child);
+                    current.getParent().getChildren().remove(current);
+                    current.getParent().getChildren().add(child);
+                }
+                current.getChildren().clear();
+            } else {
+                stack.addAll(current.getChildren());
+            }
+        }
+    }
 
     public static <T> void printDfs(Tree<T> root) {
         Stack<Tree<T>> stack = new Stack<>();
