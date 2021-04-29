@@ -7,6 +7,9 @@ import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class HItCounterTest {
+    /**
+     * return the request size in the last 5 min from now
+     */
 
     private Queue<LocalDateTime> queue = new PriorityBlockingQueue<>();
     private Duration saveReqTime = Duration.ofMinutes(5);
