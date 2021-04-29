@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class RandomTest {
@@ -24,11 +26,11 @@ public class RandomTest {
 
         for (int i = 0; i < iteration; i++) {
             int randomValue = random.nextInt(size);
-            System.out.println("randomValue: "+randomValue);
+            System.out.println("randomValue: " + randomValue);
             if (!selectedSet.contains(randomValue))
                 selectedSet.add(randomValue);
-            else selectedSet.add(randomValue+1);
-            System.out.println("randomValue+1: "+(randomValue+1));
+            else selectedSet.add(randomValue + 1);
+            System.out.println("randomValue+1: " + (randomValue + 1));
         }
         selectedSet.stream().forEach(System.out::println);
     }
@@ -67,6 +69,36 @@ public class RandomTest {
 //            System.out.println(list.get(r));
             list.remove(r); //remove index
         }
+    }
+
+    @Test
+    public void timeRandomSortTime_Test() {
+        int numOfElements = 6000000;
+        HashMap<Integer, Integer> indexToValueMap = new HashMap<>();
+        List<Integer> integerList = new ArrayList<>();
+        for (int i = 0; i < numOfElements; i++) {
+            indexToValueMap.put(i, i);
+        }
+        Random random = new Random();
+
+        int mapSizeInitialized = indexToValueMap.size();
+        for (int i = 0; i < mapSizeInitialized; i++) {
+            int currentMapSize = indexToValueMap.size();
+            int randomValue = random.nextInt(currentMapSize);
+            Integer value = indexToValueMap.get(randomValue);
+            integerList.add(value);
+
+            //move the last key to current random index selected and remove the last index in the map
+            indexToValueMap.replace(randomValue, indexToValueMap.get(currentMapSize - 1));
+            indexToValueMap.remove(currentMapSize - 1);
+        }
+
+        LocalDateTime start = LocalDateTime.now();
+        System.out.println("start at: " + start);
+        Collections.sort(integerList);
+        LocalDateTime end = LocalDateTime.now();
+        System.out.println("end at: " + end);
+        System.out.println("total time: " + Duration.between(start, end));
     }
 
     @Test

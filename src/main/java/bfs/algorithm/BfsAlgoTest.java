@@ -2,9 +2,12 @@ package bfs.algorithm;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BfsAlgoTest {
 
@@ -25,7 +28,7 @@ public class BfsAlgoTest {
 //        Tree<Integer> integerTree = search.get();
     }
 
-    private static <T> void printBfs(Tree<T> root) {
+    private <T extends Comparable> void printBfs(Tree<T> root) {
         Queue<Tree<T>> queue = new ArrayDeque<>();
         queue.add(root);
 
@@ -40,7 +43,20 @@ public class BfsAlgoTest {
 
     @Test
     public void bfsAlgoTreeRemoveElementTest() {
-        Tree<String> root = createTree();
+//        Tree<String> root = createTree();
+        Tree<String> root = new Tree("A1");
+
+        Tree<String> b1Child = root.addChild("B1");
+        Tree<String> b2Child = root.addChild("B2");
+        Tree<String> b3Child = root.addChild("B3");
+
+        Tree<String> c1Child = b1Child.addChild("C1");
+        Tree<String> c2Child = b3Child.addChild("C2");
+
+        Tree<String> d1Child = c1Child.addChild("D1");
+        Tree<String> d2Child = c1Child.addChild("D2");
+        Tree<String> d3Child = c2Child.addChild("D3");
+
         logger.info("printBfs");
         printBfs(root);
         logger.info("printDfs");
@@ -49,15 +65,17 @@ public class BfsAlgoTest {
         removeElement("C1", root);
         logger.info("printDfs after remove C1");
         printDfs(root);
+        List<Tree<String>> children = root.getChildren().stream().collect(Collectors.toList());
+        Assert.assertTrue(children.containsAll(Stream.of(b1Child, b2Child, b3Child).collect(Collectors.toSet())));
+        Assert.assertEquals(3, children.size());
+        Collections.sort(children, Comparator.comparing(Tree<String>::getValue));
 
-    }
-
-    @Test
-    public void dfsAlgoTreeRemoveElementTest() {
-        Tree<String> root = createTree();
-        printDfs(root);
-        logger.info("");
-        removeElement("C1,", root);
+        Tree<String> b1 = children.get(0);
+        Tree<String> b2 = children.get(1);
+        Tree<String> b3 = children.get(2);
+        Assert.assertTrue(b1.getChildren().containsAll(Stream.of(d1Child, d2Child).collect(Collectors.toSet())));
+        Assert.assertTrue(b2.getChildren().containsAll(Collections.EMPTY_LIST));
+        Assert.assertTrue(b3.getChildren().containsAll(Collections.singleton(c2Child)));
     }
 
     private Tree<String> createTree() {
@@ -76,7 +94,7 @@ public class BfsAlgoTest {
         return root;
     }
 
-    public static <T> Tree<T> search(T value, Tree<T> root) {
+    public static <T extends Comparable> Tree<T> search(T value, Tree<T> root) {
         Queue<Tree<T>> queue = new ArrayDeque<>();
         queue.add(root);
 
@@ -96,7 +114,13 @@ public class BfsAlgoTest {
         return null;
     }
 
-    public static <T> void removeElement(T value, Tree<T> root) {
+    public static <T extends Comparable> void removeElement(T value, Tree<T> root) {
+        /**
+         * https://stackoverflow.com/questions/67297901/how-to-de-link-an-element-from-a-tree/67298783#67298783
+         */
+        if (root.getValue().equals(value)) {
+            throw new IllegalArgumentException("unable to delete root value of tree");
+        }
         Stack<Tree<T>> stack = new Stack<>();
         stack.push(root);
         Tree<T> current;
@@ -105,20 +129,26 @@ public class BfsAlgoTest {
             logger.debug("Visited node with value: {}", current.getValue());
 
             if (current.getValue().equals(value)) {
-                for (Tree<T> child: current.getChildren()) {
+                for (Tree<T> child : current.getChildren()) {
                     child.setParent(current.getParent());
                     stack.add(child);
+
+                    //remove current node form the parent node children list
                     current.getParent().getChildren().remove(current);
+
+                    //add child of current note to the parent of current node as a child
                     current.getParent().getChildren().add(child);
                 }
-                current.getChildren().clear();
+
+                //remove all children from current note
+//                current.getChildren().clear();
             } else {
                 stack.addAll(current.getChildren());
             }
         }
     }
 
-    public static <T> void printDfs(Tree<T> root) {
+    public static <T extends Comparable> void printDfs(Tree<T> root) {
         Stack<Tree<T>> stack = new Stack<>();
         Tree<T> current;
         stack.push(root);
