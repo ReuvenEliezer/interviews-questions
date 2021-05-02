@@ -23,52 +23,6 @@ public class OverlapsMainlines {
      * |--10---|20|30|---20---|-10|
      */
 
-
-    private class Triplets {
-        LocalDateTime time;
-        List<Integer> value = new ArrayList<>();
-        boolean isEndTime;
-
-        public Triplets(LocalDateTime time, int value, boolean isEndTime) {
-            this.time = time;
-            this.value.add(value);
-            this.isEndTime = isEndTime;
-        }
-
-        public LocalDateTime getTime() {
-            return time;
-        }
-
-        public void setTime(LocalDateTime time) {
-            this.time = time;
-        }
-
-        public List<Integer> getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value.add(value);
-        }
-
-        public boolean isEndTime() {
-            return isEndTime;
-        }
-
-        public void setEndTime(boolean endTime) {
-            isEndTime = endTime;
-        }
-
-        @Override
-        public String toString() {
-            return "Triplets{" +
-                    "time=" + time +
-                    ", value=" + value +
-                    ", isEndTime=" + isEndTime +
-                    '}';
-        }
-    }
-
     //Split overlapping and add missing intervals --- https://stackoverflow.com/questions/44811291/split-overlapping-and-add-missing-intervals
     @Test
     public void intersectingOverlappingIntervals2() {
@@ -206,23 +160,23 @@ public class OverlapsMainlines {
         /**
          *  https://softwareengineering.stackexchange.com/questions/363091/split-overlapping-ranges-into-all-unique-ranges?newreg=942197cefec54b70857c0715cb29f4f1#comment829992_363096
          */
-        List<Triplets> triplets = new ArrayList<>();
+        List<EdgeTimeValue> edgeTimeValues = new ArrayList<>();
         for (StartEndShift shift : list) {
             LocalDateTime start = shift.getStart();
             LocalDateTime end = shift.getEnd();
             int capacity = shift.getCapacity();
-            Triplets startTriplets = new Triplets(start, capacity, false);
-            triplets.add(startTriplets);
-            Triplets endTriplets = new Triplets(end, capacity, true);
-            triplets.add(endTriplets);
+            EdgeTimeValue startEdgeTimeValue = new EdgeTimeValue(start, capacity, false);
+            edgeTimeValues.add(startEdgeTimeValue);
+            EdgeTimeValue endEdgeTimeValue = new EdgeTimeValue(end, capacity, true);
+            edgeTimeValues.add(endEdgeTimeValue);
         }
-        Collections.sort(triplets, Comparator.comparing(Triplets::getTime).thenComparing(Triplets::isEndTime));
-        System.out.println(triplets);
-        List<TripletsResult> resultList = new ArrayList<>();
+        Collections.sort(edgeTimeValues, Comparator.comparing(EdgeTimeValue::getTime).thenComparing(EdgeTimeValue::isEndTime));
+        System.out.println(edgeTimeValues);
+        List<PeriodTimeResult> resultList = new ArrayList<>();
         List<StartEndShift> shiftResultList = new ArrayList<>();
         List<Integer> currentS = new ArrayList<>();
-        for (int i = 0; i < triplets.size(); i++) {
-            Triplets triplet = triplets.get(i);
+        for (int i = 0; i < edgeTimeValues.size(); i++) {
+            EdgeTimeValue triplet = edgeTimeValues.get(i);
 
             LocalDateTime timeTagN;
 //            if (triplet.isEndTime()) {
@@ -242,8 +196,8 @@ public class OverlapsMainlines {
 
             LocalDateTime timeTagM;
 
-            if (i + 1 < triplets.size()) {
-                Triplets nextTriplet = triplets.get(i + 1);
+            if (i + 1 < edgeTimeValues.size()) {
+                EdgeTimeValue nextTriplet = edgeTimeValues.get(i + 1);
 //                if (nextTriplet.isEndTime()) {
 //                    timeTagM = nextTriplet.getTime();
 //                } else {
@@ -258,8 +212,8 @@ public class OverlapsMainlines {
              *
              This answer doesn't take account of gaps (gaps should not appear in output), so I refined it: * If e=false, add a to S. If e=true, take away a from S. * Define n'=n if e=false or n'=n+1 if e=true * Define m'=m-1 if f=false or m'=m if f=true * If n' <= m' and (e and not f) = false, output (n',m',S), otherwise output nothing. – silentman.it
              */
-            if (!timeTagN.isAfter(timeTagM) && i + 1 < triplets.size() && ((triplet.isEndTime && !triplets.get(i + 1).isEndTime) == false)) {
-                TripletsResult tripletsResult = new TripletsResult(timeTagN, timeTagM, currentS);
+            if (!timeTagN.isAfter(timeTagM) && i + 1 < edgeTimeValues.size() && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
+                PeriodTimeResult tripletsResult = new PeriodTimeResult(timeTagN, timeTagM, currentS);
 //                System.out.println(tripletsResult);
                 StartEndShift result = new StartEndShift(timeTagN, timeTagM, currentS.stream().mapToInt(Integer::intValue).sum());
                 System.out.println(result);
@@ -268,26 +222,6 @@ public class OverlapsMainlines {
             }
         }
         return shiftResultList;
-    }
-
-    private class TripletsResult {
-        LocalDateTime start, end;
-        List<Integer> values;
-
-        public TripletsResult(LocalDateTime start, LocalDateTime end, List<Integer> values) {
-            this.start = start;
-            this.end = end;
-            this.values = values;
-        }
-
-        @Override
-        public String toString() {
-            return "TripletsResult{" +
-                    "start=" + start +
-                    ", end=" + end +
-                    ", values=" + values +
-                    '}';
-        }
     }
 
     private List<StartEndShift> mergeOverlapping(List<StartEndShift> shifts) {
@@ -404,7 +338,7 @@ public class OverlapsMainlines {
         }
     }
 
-    class StartEndShift {
+    private class StartEndShift {
         LocalDateTime start, end;
         int capacity;
 

@@ -42,8 +42,12 @@ public class BfsAlgoTest {
     }
 
     @Test
-    public void bfsAlgoTreeRemoveElementTest() {
+    public void dfsAlgoTreeRemoveElementTest() {
 //        Tree<String> root = createTree();
+        /**
+         * https://stackoverflow.com/questions/67297901/how-to-de-link-an-element-from-a-tree/67298783#67298783
+         * @param <T>
+         */
         Tree<String> root = new Tree("A1");
 
         Tree<String> b1Child = root.addChild("B1");
@@ -62,7 +66,7 @@ public class BfsAlgoTest {
         logger.info("printDfs");
         printDfs(root);
         logger.info("remove C1");
-        removeElement("C1", root);
+        deLinkElement("C1", root);
         logger.info("printDfs after remove C1");
         printDfs(root);
         List<Tree<String>> children = root.getChildren().stream().collect(Collectors.toList());
@@ -114,7 +118,7 @@ public class BfsAlgoTest {
         return null;
     }
 
-    public static <T extends Comparable> void removeElement(T value, Tree<T> root) {
+    public static <T extends Comparable> void deLinkElement(T value, Tree<T> root) {
         /**
          * https://stackoverflow.com/questions/67297901/how-to-de-link-an-element-from-a-tree/67298783#67298783
          */

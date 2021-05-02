@@ -1,7 +1,10 @@
 import org.junit.Assert;
 import org.junit.Test;
+import overlapping.ranges.EdgeTimeValue;
+import overlapping.ranges.PeriodTimeResult;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -55,6 +58,7 @@ public class AmdocsTest {
 
 
     private long timeInterval = 60;
+    private Duration timeInterval1 = Duration.ofMinutes(1);
 
     @Test
     public void immutableStringTest() {
@@ -115,7 +119,7 @@ public class AmdocsTest {
      * (אפשר לבנות מפה לכל מקטע ולהחזיק
      * הכל בזיכרון)
      * אך זה תופס הרבה זיכרון.
-     * צריך לשמור בכל פעם רק את הperiod ואז לבדוק את הפריוד הבא - רק אם המקס' רכבים בו גדול יותר - לדרוס את המפה. וכן הלאה.
+     * צריך לשמור בכל פעם רק את ה period ואז לבדוק את הפריוד הבא - רק אם המקס' רכבים בו גדול יותר - לדרוס את המפה. וכן הלאה.
      */
     @Test
     public void carTest() {
@@ -129,12 +133,75 @@ public class AmdocsTest {
         carTimeList.add(new CarTime(123, "12345678"));
         long startTimeStampThatPassedMaxCar = findMaxPassedCarsInPeriodTimeInterval(carTimeList);
         System.out.println(String.format("the period time with highest moving cars is from %s until %s", startTimeStampThatPassedMaxCar, startTimeStampThatPassedMaxCar + timeInterval));
+    }
+
+    @Test
+    public void carOptimisticMemoryTest() {
+        List<CarTime1> carTimeList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        carTimeList.add(new CarTime1(now, "12345678"));
+        carTimeList.add(new CarTime1(now.plusSeconds(1), "12345678"));
+        carTimeList.add(new CarTime1(now.plusSeconds(3), "12345678"));
+        carTimeList.add(new CarTime1(now.plusSeconds(93), "12345678"));
+        carTimeList.add(new CarTime1(now.plusSeconds(94), "12345678"));
+        carTimeList.add(new CarTime1(now.plusSeconds(97), "12345678"));
+        carTimeList.add(new CarTime1(now.plusSeconds(123), "12345678"));
         long startTimeStampThatPassedMaxCarOptimisticMemory = findMaxPassedCarsInPeriodTimeIntervalOptimisticMemory(carTimeList);
     }
 
-    private long findMaxPassedCarsInPeriodTimeIntervalOptimisticMemory(List<CarTime> carTimeList) {
-        //TODO impl
-        return 0;
+    private long findMaxPassedCarsInPeriodTimeIntervalOptimisticMemory(List<CarTime1> carTimeList) {
+        Collections.sort(carTimeList, Comparator.comparing(CarTime1::getMovingTime));
+        System.out.println(carTimeList);
+        List<EdgeTimeValue> triplets = new ArrayList<>();
+        for (CarTime1 carTime1 : carTimeList) {
+            LocalDateTime start = carTime1.getMovingTime();
+            LocalDateTime end = start.plus(timeInterval1);
+            EdgeTimeValue startEdgeTimeValue = new EdgeTimeValue(start, 1, false);
+            triplets.add(startEdgeTimeValue);
+            EdgeTimeValue endEdgeTimeValue = new EdgeTimeValue(end, 1, true);
+            triplets.add(endEdgeTimeValue);
+        }
+        Collections.sort(triplets, Comparator.comparing(EdgeTimeValue::getTime).thenComparing(EdgeTimeValue::isEndTime));
+        System.out.println(triplets);
+        long max = 0;
+        PeriodTimeResult periodTimeResult = null;
+        List<Integer> currentS = new ArrayList<>();
+        for (int i = 0; i < triplets.size(); i++) {
+            EdgeTimeValue triplet = triplets.get(i);
+
+            LocalDateTime timeTagN;
+
+            if (triplet.isEndTime()) {
+                currentS.remove(triplet.getValue().get(0));
+            } else {
+                currentS.add(triplet.getValue().get(0));
+            }
+            timeTagN = triplet.getTime();
+
+            LocalDateTime timeTagM;
+
+            if (i + 1 < triplets.size()) {
+                EdgeTimeValue nextTriplet = triplets.get(i + 1);
+                timeTagM = nextTriplet.getTime();
+            } else {
+                timeTagM = triplet.getTime();
+            }
+
+            /**
+             *
+             This answer doesn't take account of gaps (gaps should not appear in output), so I refined it: * If e=false, add a to S. If e=true, take away a from S. * Define n'=n if e=false or n'=n+1 if e=true * Define m'=m-1 if f=false or m'=m if f=true * If n' <= m' and (e and not f) = false, output (n',m',S), otherwise output nothing. – silentman.it
+             */
+            if (!timeTagN.isAfter(timeTagM) && i + 1 < triplets.size() && ((triplet.isEndTime() && !triplets.get(i + 1).isEndTime()) == false)) {
+                periodTimeResult = new PeriodTimeResult(timeTagN, timeTagM, currentS);
+                System.out.println(periodTimeResult);
+                if (currentS.stream().mapToInt(Integer::intValue).sum() > max) {
+                    max = currentS.stream().mapToInt(Integer::intValue).sum();
+                }
+            }
+        }
+        if (periodTimeResult != null)
+            System.out.println(String.format("the period time with highest moving cars (%s) is from %s until %s", max, periodTimeResult.getStart(), periodTimeResult.getEnd()));
+        return max;
     }
 
     //מחזיר את הנקודה שבה מחחיל הזמן ממנו ועד סוף הtimeinterval עברו הכי הרבה מכוניות
@@ -157,6 +224,19 @@ public class AmdocsTest {
         return Collections.max(totalCarsToStartPeriodTimeMap.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
     }
 
+    public class CarTime1 {
+        LocalDateTime movingTime;
+        String carNumber;
+
+        public CarTime1(LocalDateTime movingTime, String carNumber) {
+            this.movingTime = movingTime;
+            this.carNumber = carNumber;
+        }
+
+        public LocalDateTime getMovingTime() {
+            return movingTime;
+        }
+    }
 
     public class CarTime {
         long timeStamp;

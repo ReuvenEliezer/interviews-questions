@@ -24,6 +24,7 @@ public class MprestTest {
          */
         for (int i = 0; i < 10; i++) {
             Assert.assertTrue(connectRequest(1, "URL"));
+            Thread.sleep(Duration.ofMillis(5).toMillis());
         }
         Assert.assertFalse(connectRequest(1, "URL"));
         Assert.assertFalse(connectRequest(1, "URL"));
@@ -72,12 +73,13 @@ public class MprestTest {
     private boolean connectRequest(int userId, String url) {
         LocalDateTime now = LocalDateTime.now();
         Queue<LocalDateTime> lastReqTimeQueue = userReqTimeMap.get(userId);
-        boolean isValid;
         if (lastReqTimeQueue == null) {
             lastReqTimeQueue = new PriorityBlockingQueue<>();
             userReqTimeMap.put(userId, lastReqTimeQueue);
-            isValid = true;
-        } else if (lastReqTimeQueue.size() >= totalAllowReqInIntervalTime
+            return true;
+        }
+        boolean isValid;
+        if (lastReqTimeQueue.size() >= totalAllowReqInIntervalTime
                 && Duration.between(lastReqTimeQueue.remove(), now).minus(timeInterval).isNegative()) {
             isValid = false;
         } else {
@@ -86,7 +88,7 @@ public class MprestTest {
 
         lastReqTimeQueue.add(now);
 
-        //for multi threaded         //TODO add lock obj for each userID
+        //for multi threaded         //TODO add lock obj for each userID - after it, remove while statement
         while (lastReqTimeQueue.size() > totalAllowReqInIntervalTime) {
             System.out.println("remove: " + lastReqTimeQueue.remove());
         }
