@@ -8,13 +8,109 @@ import java.util.stream.Stream;
 public class AmazonTest {
 
     @Test
-    public void AmazonReal1() {
+    public void amazonGeneralizedGCDTest() {
+        /**
+         * the greatest common divisor (GTC), also called highest common factor (HCF) of N numbers is the largest positive integer that divides all numbers without giving a remainder.
+         * https://www.geeksforgeeks.org/gcd-two-array-numbers/
+         */
+        Assert.assertEquals(2, generalizedGCD(new int[]{2, 4, 6, 8, 10}));
+        Assert.assertEquals(2, generalizedGCD(new int[]{10, 8, 6, 4, 2}));
+        Assert.assertEquals(1, generalizedGCD(new int[]{2, 3, 4, 5, 6}));
+
+    }
+
+    private int generalizedGCD(int[] arr) {
+        int result = arr[0];
+        for (int i = 1; i < arr.length; i++)
+            result = gcd(arr[i], result);
+
+        return result;
+    }
+
+    static int gcd(int a, int b) {
+        if (a == 0)
+            return b;
+        return gcd(b % a, a);
+    }
+
+
+    @Test
+    public void amazonCellCompareTest() {
+        /**
+         * Eight houses, represented as cells are arranged in a straight line.
+         * Each day every cell competes with its adjacent cells (neighbors).
+         * An integer value of 1 represents an active cell and a value of 0 represents an inactive cell.
+         * If the neighbors on both the sides of a cell are either active or inactive, the cell becomes inactive on the next day; otherwise the cell becomes active.
+         * The two cells on each end have a single adjacent cell, so assume that the unoccupied space on the opposite side in an inactive cell.
+         * Even after updating the cell state, consider its previous state when updating the state of other cells.
+         * The state information of all cells should be updated simultaneously.
+         *
+         * write an algorithm to output the state of the cells after the given number of days.
+         * input:
+         * the input to the function/method consists of two arguments:
+         * states, a list of integers representing the current state of cells;
+         * days, an integer representing the number of days.
+         * output:
+         * return a list of integers representing the state og the cells after the given number of days.
+         * note:
+         * the elements of the list states contains 0s and 1s only
+         */
+        Assert.assertArrayEquals(new int[]{0, 1, 0, 0, 1, 0, 1, 0}, cellCompare(new int[]{1, 0, 0, 0, 0, 1, 0, 0}, 1));
+        Assert.assertArrayEquals(new int[]{1, 0, 1, 1, 0, 0, 0, 1}, cellCompare(new int[]{0, 1, 0, 0, 1, 0, 1, 0}, 1));
+        Assert.assertArrayEquals(new int[]{1, 0, 1, 1, 0, 0, 0, 1}, cellCompare(new int[]{1, 0, 0, 0, 0, 1, 0, 0}, 2));
+        Assert.assertArrayEquals(new int[]{0, 0, 0, 0, 0, 1, 1, 0}, cellCompare(new int[]{1, 1, 1, 0, 1, 1, 1, 1}, 2));
+    }
+
+    private int[] cellCompare(int[] cells, int days) {
+        /**
+         * use clone(), if no - the reference will be copy !!
+         * https://stackoverflow.com/questions/5785745/make-copy-of-an-array
+         */
+        int result[] = cells.clone();
+        for (int i = 0; i < days; i++) {
+            for (int j = 0; j < cells.length; j++) {
+                int leftNeighbor;
+                int rightNeighbor;
+                if (j == 0) {
+                    leftNeighbor = 0;
+                } else {
+                    leftNeighbor = cells[j - 1];
+                }
+                if (j == cells.length - 1) {
+                    rightNeighbor = 0;
+                } else {
+                    rightNeighbor = cells[j + 1];
+                }
+
+                if ((leftNeighbor == 0 && rightNeighbor == 0) || (leftNeighbor == 1 && rightNeighbor == 1)) {
+                    result[j] = 0;
+                } else {
+                    result[j] = 1;
+                }
+            }
+            /**
+             * use clone(), if no - the reference will be copy !!
+             * https://stackoverflow.com/questions/5785745/make-copy-of-an-array
+             */
+            if (i < days - 1) { //only for optimization: I do clone only if the current iteration is not last
+                cells = result.clone();
+            }
+        }
+        return result;
+    }
+
+    @Test
+    public void amazonIdsOfSongs() {
+        /**
+         * Amazon Music is worldng on a new feature to pair songs together to play while on the bus The goal of this feature is to select two songs from a list that will end exactly 30 seconds before the listener reaches their stop You are tasked with witing the method that selects the songs from a list. Each song is assigned a unique ID, numbered from 0 to N-1 Assumptions 1. You will pick exactly 2 songs 2. You cannot pick the same song twice 3.1f you have multiple pairs with the same total time, select the pair with the longest song. Input The input to the functionmethod consits of two arguments- rideDuration an integer representing the duration of the ride in seconds songDurations, a list of integers roprestoo the duration of the songs. Output Return a list of integers repr finish exactly 30 seconds beteh sorigs whose combined runtime will dos Example Input rideDuration=90 o s = suoneingbuos anding 12.31 During the ride duration of 90 seconds, the nider listens to the thirdID-2) and fourthiD-3) song which end exactly 30 sconds before the bus arrives at their stop. uoneuejdg
+         */
         int rideDuration = 250;
         List<Integer> songDurations = new ArrayList<>(Arrays.asList(100, 180, 40, 120, 10));
         //https://stackoverflow.com/questions/2965747/why-do-i-get-an-unsupportedoperationexception-when-trying-to-remove-an-element-f
 //        songDurations.clear();
 
-        List<Integer> idsOfSongs = getIDsOfSongs(rideDuration, songDurations);
+//        List<Integer> idsOfSongs = getIDsOfSongs(rideDuration, songDurations);
+        List<Integer> idsOfSongs = getIDsOfSongsMemoryFinalOptimistic(rideDuration, songDurations);
 
         Assert.assertEquals(2, idsOfSongs.size());
         Assert.assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
@@ -34,6 +130,41 @@ public class AmazonTest {
         idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
         Assert.assertEquals(2, idsOfSongs.size());
         Assert.assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+    }
+
+    private List<Integer> getIDsOfSongsMemoryFinalOptimistic(int rideDurationInSec, List<Integer> songDurations) {
+        /**
+         * https://www.geeksforgeeks.org/given-an-array-a-and-a-number-x-check-for-pair-in-a-with-sum-as-x/
+         */
+        int timeBeforeArrivedBusInSeconds = 30;
+        int totalSongTime = rideDurationInSec - timeBeforeArrivedBusInSeconds;
+
+        Integer firstSongIndex = null;
+        Integer secondSongIndex = null;
+        Integer firstSongDuration = null;
+        Integer secondSongDuration = null;
+        Map<Integer, Integer> songDurationToIndexMap = new HashMap<>();
+        for (int i = 0; i < songDurations.size(); i++) {
+            songDurationToIndexMap.put(songDurations.get(i), i);
+        }
+
+        Set<Integer> songDurationSet = new HashSet<>();
+        for (int index = 0; index < songDurations.size(); index++) {
+            int temp = totalSongTime - songDurations.get(index);
+            if (songDurationSet.contains(temp)) {
+                //if (currentMax>prevMax replace result)
+                if (firstSongIndex == null || secondSongIndex == null || Math.max(songDurations.get(index), temp) > Math.max(firstSongDuration, secondSongDuration)) {
+                    firstSongIndex = songDurationToIndexMap.get(temp);
+                    secondSongIndex = index;
+                    firstSongDuration = songDurations.get(index);
+                    secondSongDuration = temp;
+                }
+            }
+            songDurationSet.add(songDurations.get(index));
+        }
+        if (firstSongIndex == null || secondSongIndex == null)
+            return new ArrayList<>();
+        return Arrays.asList(firstSongIndex, secondSongIndex);
     }
 
     @Test
@@ -444,46 +575,31 @@ public class AmazonTest {
         return Stream.of(firstSongIndex, secondSongIndex).sorted().collect(Collectors.toList());
     }
 
-
     @Test
-    public void AmazonReal2() {
+    public void amazonMinimumCostToRepair() {
+        /**
+         *In the country of Techlandia, there are N cities connected by bidirectional roads.
+         * Each city in Techlandia is connected to every other city, either directly or through other cities. This year's winter was unusually harsh, causing some of the roads to be damaged and unusable. This has presenteda number of distribution challenges since many of Amazon's customers live in Techlandia To overcome these distribution challenges, Amazon is collaborating with a construction company to repair the roads such that one can travel (and deliver packages) from one city to any other city again. A recent estimate from the construction company indicates that the cost to repair one road can be different from the cost to repair another road. You have been tasked with assisting the construction companin their planning of repairs. Your task is to help identify a set of roads such that the cost involved in repairing the roads is minimized and all the cities are connected to each other either directly or via some other cities.
+         * Using sets of roads, broken roads, and repair costs, write an algorithm to calculate the minimum total.cost to repair some of the roads so that all the cities are once again accessible from each other.
+         * Input:
+         * the input to the function/method consists of five arguments numTotalAvailableCities, an integerrepresenting the total number of cities (N) (eg. if N 3 the cities are represented as,23 num TotalAvalableRoads, an integer representing the total number of roads roadsAvailable, a list of integers where each element of the list consists of a pair representing the cities directly connected by a road numRoadsToBeRepaired an integer representing the total number of roads that are CostRoadsToBeRepaired a list of integers where each element of the list consists of a triplet representing the pair of cities between which a road is currently unusable and the cost of repairing that road, respectively feg. 1.3, 10] means to repair a road between cities1 and 3, the cost would be 10).
+         * Problem costRoadsToBeRepaired a list of Integers where each element of the list consists of a triplet representing the pair of cities between whicha road is currently unusable and the cost of repairing that road, respectively (eg. L3, 10) means to repair a road between cities ) and 3, the cost would be 10). andano Return an integer representing the minimum total cost to repair some roads so that all the cities are accessible from each other. Constraints Os numTotalAvailableCities s 50 Os costRoadsToBeRepairedi(2] s 1000 Osie numRoadsToBeRepaired Example anduj numTotalAvailableCities 5 numTotalAvailableRoads=5 roadsAvailable = [[1. 2). [2. 3). [3. 4). [4. 5). (1, S1] numRoadsToBeRepaired = 3 costRoadsToBeRepaired = [[L. 2. 12]. [3, 4, 30]. [1. 5. 8]] andino  : There are three networks due to the unusable roads [1]. [2. 31 and [4, 5]. We can connect these networks inlo a single network by repairing the road between cities 1 and 2. and cities l and 5 at a minimum.cost of 12 + 8 So, the output is 20.
+         */
         int numOfTotalAvailableCities = 5;
         int numOfTotalAvailableRoads = 5;
-        List<Integer> roadsAvailableList = new ArrayList<>();
-        roadsAvailableList.add(1);
-        roadsAvailableList.add(2);
-
-        roadsAvailableList.add(2);
-        roadsAvailableList.add(3);
-
-        roadsAvailableList.add(3);
-        roadsAvailableList.add(4);
-
-        roadsAvailableList.add(4);
-        roadsAvailableList.add(5);
-
-        roadsAvailableList.add(1);
-        roadsAvailableList.add(5);
         List<List<Integer>> roadsAvailable = new ArrayList<>();
-        roadsAvailable.add(roadsAvailableList);
+        roadsAvailable.add(Arrays.asList(1, 2));
+        roadsAvailable.add(Arrays.asList(2, 3));
+        roadsAvailable.add(Arrays.asList(3, 4));
+        roadsAvailable.add(Arrays.asList(4, 5));
+        roadsAvailable.add(Arrays.asList(1, 5));
 
         int numRoadsToBeRepaired = 3;
 
-        List<Integer> costRoadsToBeRepairList = new ArrayList<>();
-        costRoadsToBeRepairList.add(1);
-        costRoadsToBeRepairList.add(2);
-        costRoadsToBeRepairList.add(12);
-
-        costRoadsToBeRepairList.add(3);
-        costRoadsToBeRepairList.add(4);
-        costRoadsToBeRepairList.add(30);
-
-        costRoadsToBeRepairList.add(1);
-        costRoadsToBeRepairList.add(5);
-        costRoadsToBeRepairList.add(8);
-
-        List<List<Integer>> costRoadsToBeRepair = new ArrayList<>();
-        costRoadsToBeRepair.add(costRoadsToBeRepairList);
+        List<List<Integer>> costRoadsToBeRepaired = new ArrayList<>();
+        costRoadsToBeRepaired.add(Arrays.asList(1, 2, 12));
+        costRoadsToBeRepaired.add(Arrays.asList(3, 4, 30));
+        costRoadsToBeRepaired.add(Arrays.asList(1, 5, 8));
 
 
         int minimumCostToRepair = getMinimumCostToRepair(
@@ -491,8 +607,9 @@ public class AmazonTest {
                 numOfTotalAvailableRoads,
                 roadsAvailable,
                 numRoadsToBeRepaired,
-                costRoadsToBeRepair);
-        System.out.println("result: " + minimumCostToRepair);
+                costRoadsToBeRepaired);
+
+        Assert.assertEquals(20, minimumCostToRepair);
     }
 
     private int getMinimumCostToRepair(int numOfTotalAvailableCities,

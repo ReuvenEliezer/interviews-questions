@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProximityCitiBankTest {
 
@@ -33,6 +34,11 @@ public class ProximityCitiBankTest {
             }
             map.put(aLong, ++count);
         }
+
+        Map<Long, Long> map1 = Arrays.stream(arr1)
+                .boxed()
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
+        Assert.assertEquals(map1, map);
 
         for (Long aLong : arr2) {
             Long count = map.get(aLong);

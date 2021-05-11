@@ -165,16 +165,16 @@ public class AmdocsTest {
         System.out.println(triplets);
         long max = 0;
         PeriodTimeResult periodTimeResult = null;
-        List<Integer> currentS = new ArrayList<>();
+        List<Integer> currentAccumulationS = new ArrayList<>();
         for (int i = 0; i < triplets.size(); i++) {
             EdgeTimeValue triplet = triplets.get(i);
 
             LocalDateTime timeTagN;
 
             if (triplet.isEndTime()) {
-                currentS.remove(triplet.getValue().get(0));
+                currentAccumulationS.remove(triplet.getValue().get(0));
             } else {
-                currentS.add(triplet.getValue().get(0));
+                currentAccumulationS.add(triplet.getValue().get(0));
             }
             timeTagN = triplet.getTime();
 
@@ -192,10 +192,10 @@ public class AmdocsTest {
              This answer doesn't take account of gaps (gaps should not appear in output), so I refined it: * If e=false, add a to S. If e=true, take away a from S. * Define n'=n if e=false or n'=n+1 if e=true * Define m'=m-1 if f=false or m'=m if f=true * If n' <= m' and (e and not f) = false, output (n',m',S), otherwise output nothing. – silentman.it
              */
             if (!timeTagN.isAfter(timeTagM) && i + 1 < triplets.size() && ((triplet.isEndTime() && !triplets.get(i + 1).isEndTime()) == false)) {
-                periodTimeResult = new PeriodTimeResult(timeTagN, timeTagM, currentS);
+                periodTimeResult = new PeriodTimeResult(timeTagN, timeTagM, currentAccumulationS);
                 System.out.println(periodTimeResult);
-                if (currentS.stream().mapToInt(Integer::intValue).sum() > max) {
-                    max = currentS.stream().mapToInt(Integer::intValue).sum();
+                if (currentAccumulationS.stream().mapToInt(Integer::intValue).sum() > max) {
+                    max = currentAccumulationS.stream().mapToInt(Integer::intValue).sum();
                 }
             }
         }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ImprevaTest {
+public class ImpervaTest {
 
     @Test
     public void imprevaTest() {
