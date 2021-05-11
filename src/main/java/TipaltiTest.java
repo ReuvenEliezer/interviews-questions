@@ -17,7 +17,7 @@ public class TipaltiTest {
     }
 
     @Test
-    public void dfsPracticeTest() {
+    public void findMinRelationLevelTest() {
         Person graceHopper = new Person(new Name("Grace", "Hopper"), new Address("New York"));
         Person alanTuring1 = new Person(new Name("Alan", "Turing"), new Address("Bletchley Park"));
         Person joanClarke1 = new Person(new Name("Joan", "Clarke"), new Address("Bletchley Park"));
