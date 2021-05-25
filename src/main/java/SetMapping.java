@@ -21,8 +21,8 @@ public class SetMapping {
      * D:B
      * G:A
      * You need to implement the following method:
-     *     public Map<String, Set<Integer>> getSets(List<String> lines, List<String> synonyms) {
-     *  TODO impl
+     * public Map<String, Set<Integer>> getSets(List<String> lines, List<String> synonyms) {
+     * TODO impl
      * }
      * The method should return a map between letters and their respective aggregated sets of digits.
      * The &quot;synonyms&quot; define which pairs should be treated the same, but only if both directions
@@ -52,16 +52,29 @@ public class SetMapping {
         Assert.assertEquals(sets.get("D"), Collections.singleton(2));
     }
 
+    @Test
+    public void test1() {
+        List<String> lines = Arrays.asList("A:5", "B:7", "G:2", "A:6", "D:2");
+        List<String> synonyms = Arrays.asList("A:B", "A:D", "D:A", "B:A");
+        Map<String, Set<Integer>> sets = getSets(lines, synonyms);
+        Assert.assertEquals(4, sets.size());
+        Assert.assertEquals(sets.get("A"), Stream.of(5, 7, 6, 2).collect(Collectors.toSet()));
+        Assert.assertEquals(sets.get("B"), Stream.of(5, 7, 6, 2).collect(Collectors.toSet()));
+        Assert.assertEquals(sets.get("D"), Stream.of(5, 7, 6, 2).collect(Collectors.toSet()));
+        Assert.assertEquals(sets.get("G"), Collections.singleton(2));
+    }
+
     public Map<String, Set<Integer>> getSets(List<String> lines, List<String> synonyms) {
         Map<String, Set<Integer>> result = new HashMap<>();
         for (String s : lines) {
             String[] split = s.split(":");
-            Set<Integer> integers = result.get(split[0]);
-            if (integers == null) {
-                integers = new HashSet<>();
-                result.put(split[0], integers);
-            }
-            integers.add(Integer.valueOf(split[1]));
+//            Set<Integer> integers = result.get(split[0]);
+//            if (integers == null) {
+//                integers = new HashSet<>();
+//                result.put(split[0], integers);
+//            }
+//            integers.add(Integer.valueOf(split[1]));
+            result.computeIfAbsent(split[0], v -> new HashSet<>()).add(Integer.valueOf(split[1]));
         }
 
         Map<String, String> bothDirectionMap = getBothDirectionMapUsingIterator(synonyms);
@@ -70,6 +83,7 @@ public class SetMapping {
         //add bothDirectionMap
         for (Map.Entry<String, String> entry : bothDirectionMap.entrySet()) {
             result.get(entry.getValue()).addAll(result.get(entry.getKey()));
+            result.get(entry.getKey()).addAll(result.get(entry.getValue()));
         }
 
         return result;

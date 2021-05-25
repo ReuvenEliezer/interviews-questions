@@ -48,27 +48,6 @@ public class TipaltiTest {
         });
     }
 
-
-    @Test
-    public void test() {
-        List<Integer> list = Arrays.asList(3, 2, 5);
-        boolean result = isSplited(list);
-        System.out.print("result: " + result);
-    }
-
-    public boolean isSplited(List<Integer> integers) {
-        int leftSum = 0;
-        int rightSum = integers.stream().reduce(0, Integer::sum);
-
-        for (int i = 0; i < integers.size(); i++) {
-            leftSum += integers.get(i);
-            rightSum -= integers.get(i);
-            if (leftSum == rightSum)
-                return true;
-        }
-        return false;
-    }
-
     public int findMinRelationLevel(Person personA, Person personB, int result) {
         if (personA.equals(personB))
             return -1;

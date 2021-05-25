@@ -171,5 +171,15 @@ public class RandomTest {
         System.out.println("the song random order result is: " + Arrays.toString(result));
     }
 
+    @Test
+    public void randomSpecificRange(){
+        int randomInt = getRandomInt(5, 6);
+    }
+
+   static Random random = new Random();
+    public static int getRandomInt(int fromInclusive, int toExclusive) {
+        int result = random.nextInt(toExclusive - fromInclusive) + fromInclusive;
+        return result;
+    }
 
 }

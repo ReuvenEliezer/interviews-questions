@@ -10,10 +10,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class
-
-InterviewsTest {
-
+public class InterviewsTest {
 
     @Test
     public void test() {
@@ -49,7 +46,7 @@ InterviewsTest {
                 if (integersPrinted.containsKey(sum)) {
                     Boolean printed = integersPrinted.get(sum);
                     if (!printed) {
-                        result.add(new AmazonTest.Pair(first,second));
+                        result.add(new AmazonTest.Pair(first, second));
                         integersPrinted.put(sum, true);
                         System.out.println(first + " " + second + " = " + sum);
                     }
@@ -679,7 +676,7 @@ InterviewsTest {
                 iterationNum = add(iterationNum, -1);
                 breakNum = add(iterationNum, value);
             }
-            return add(iterationNum,breakNum);
+            return add(iterationNum, breakNum);
         }
         return value;
     }
@@ -706,14 +703,14 @@ InterviewsTest {
 
         List<Integer> prefixSun = new ArrayList<>();
         prefixSun.add(values.get(0));
-        for (int i = 1; i < values.size()/2; i++) {
+        for (int i = 1; i < values.size() / 2; i++) {
             Integer sum = values.get(i - 1);
             prefixSun.add(values.get(i) + sum);
         }
 
         List<Integer> suffixSun = new ArrayList<>();
         suffixSun.add(values.get(values.size() - 1));
-        for (int i = values.size() - 2; i >= values.size()/2; i--) {
+        for (int i = values.size() - 2; i >= values.size() / 2; i--) {
             Integer sum = values.get(i + 1);
             suffixSun.add(values.get(i) + sum);
         }
@@ -723,12 +720,84 @@ InterviewsTest {
             Integer prefixSunValue = prefixSun.get(i);
             Integer suffixSunValue = suffixSun.get(i);
             if (prefixSunValue.equals(suffixSunValue)) {
-                return (i+1)*2;
+                return (i + 1) * 2;
             }
 
         }
 
         return -1;
+    }
+
+    @Test
+    public void splitAnArrayIntoTwoEqualSumSubArrays() {
+        /**
+         *        https://www.geeksforgeeks.org/split-array-two-equal-sum-subarrays/
+         */
+        List<Integer> list = Arrays.asList(3, 2, 5);
+        boolean result = splitAnArrayIntoTwoEqualSumSubArrays(list);
+        System.out.print("result: " + result);
+    }
+
+    public static boolean splitAnArrayIntoTwoEqualSumSubArrays(List<Integer> integers) {
+        int leftSum = 0;
+        int rightSum = integers.stream().reduce(0, Integer::sum);
+
+        for (Integer integer : integers) {
+            leftSum += integer;
+            rightSum -= integer;
+            if (leftSum == rightSum)
+                return true;
+        }
+        return false;
+    }
+
+    @Test
+    public void findIfArrayCanBeDividedIntoTwoSubarraysOfEqualSum() {
+        /**
+         *       https://www.geeksforgeeks.org/find-if-array-can-be-divided-into-two-subarrays-of-equal-sum/
+         */
+        Assert.assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, 2, 3, 2, 1}));
+        Assert.assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, 1, 3, 2, 5}));
+        Assert.assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, -2, -3, 2, 3}));
+        Assert.assertFalse(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, -2, 3, 2, 3}));
+    }
+
+    private boolean findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(int[] arr) {
+
+        int leftSum = 0;
+        int rightSum = Arrays.stream(arr).boxed().reduce(0, Integer::sum);
+
+        for (int i = 0; i < arr.length; i++) {
+            if (i > 0) {
+                leftSum += arr[i - 1];
+            }
+            rightSum -= arr[i];
+            if (leftSum == rightSum)
+                return true;
+        }
+        return false;
+    }
+
+
+    @Test
+    public void numberOfElementsInIntersection() {
+        /**
+         *  https://practice.geeksforgeeks.org/problems/intersection-of-two-arrays2404/1
+         */
+        Assert.assertEquals(1, numberOfElementsInIntersection(new int[]{89, 2, 4},new int[]{89, 24, 75, 11, 23}));
+        Assert.assertEquals(4, numberOfElementsInIntersection(new int[]{1, 2, 3, 4, 5, 6},new int[]{3, 4, 5, 6, 7}));
+    }
+
+    private int numberOfElementsInIntersection(int[] arr1, int[] arr2) {
+        Set<Integer> set = new HashSet<>();
+        set.addAll(Arrays.stream(arr1).boxed().collect(Collectors.toSet()));
+
+        int result=0;
+        for (Integer integer : arr2){
+            if (set.contains(integer))
+                result++;
+        }
+        return result;
     }
 
 

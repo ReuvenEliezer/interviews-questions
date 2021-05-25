@@ -1,6 +1,9 @@
+import com.google.common.net.InternetDomainName;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -9,12 +12,12 @@ import java.util.Set;
 public class StringTest {
 
     @Test
-    public void setContainAll(){
-        List<Integer> integerList = Arrays.asList(1,2,3);
+    public void setContainAll() {
+        List<Integer> integerList = Arrays.asList(1, 2, 3);
         Set<Integer> integerSet = new HashSet<>(integerList);
         boolean b = integerSet.containsAll(integerList);
-        boolean b1 = integerSet.containsAll(Arrays.asList(1,2));
-        boolean b2 = integerSet.containsAll(Arrays.asList(1,2,3,4));
+        boolean b1 = integerSet.containsAll(Arrays.asList(1, 2));
+        boolean b2 = integerSet.containsAll(Arrays.asList(1, 2, 3, 4));
     }
 
     @Test
@@ -23,6 +26,20 @@ public class StringTest {
         String strToSearch = "ABCD";
         String result = getLongestStr(strings, strToSearch);
         Assert.assertEquals("ABCDABDCA", result);
+    }
+
+    @Test
+    public void test1() throws MalformedURLException {
+                String s1 =" s sd ";
+        String trim = s1.trim();
+//        String[] split = s.split("\\.");
+//        String s1 = split[0];
+
+        URL url = new URL("https://www.google.co.il/ss");
+        URL url1 = new URL("https://www.google.com/dd");
+        String host = url.getHost();
+        String host1 = url1.getHost();
+        String s = InternetDomainName.from(host).topPrivateDomain().toString();
     }
 
     private String getLongestStr(String[] arr, String strToSearch) {

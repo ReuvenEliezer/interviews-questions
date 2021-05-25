@@ -31,7 +31,52 @@ public class TimeTest {
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(timeTest);
         Date date1 = Date.from(offsetDateTime.toInstant());
         System.out.println(date1);
+
+        ZonedDateTime zonedDateTime = date.toInstant().atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("America/Chicago"));
+        System.out.println(zonedDateTime);
+        System.out.println(inFormatter.format(zonedDateTime));
+        String dateStr = zonedDateTime.format(inFormatter);
+
+        Date date2 = simpleDateFormat.parse(dateStr);
+        System.out.println(date2);
+        System.out.println(date);
+        ZonedDateTime zonedDateTimeFromStr = ZonedDateTime.ofInstant(date.toInstant(), ZoneOffset.UTC);
+        System.out.println(zonedDateTimeFromStr);
+
+        System.out.println(dateStr);
     }
+
+    @Test
+    public void convertZoneDateTime() {
+        /**
+         * https://www.baeldung.com/java-zone-offset
+         * https://stackoverflow.com/questions/49853999/convert-zoneddatetime-to-localdatetime-at-time-zone
+         */
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now);
+        LocalDateTime time = convertZoneDateTime(now, ZoneId.systemDefault(), ZoneOffset.UTC);
+        System.out.println(time);
+
+        Date input = new Date();
+        Instant instant = input.toInstant();
+        Date date = Date.from(instant);
+        System.out.println(date);
+        ZonedDateTime zonedDateTime = convertZoneDateTime(date, ZoneId.of("UTC"));
+        System.out.println(zonedDateTime);
+//        Date from = Date.from(zonedDateTime.withZoneSameLocal(ZoneId.of("Asia/Jerusalem")).toInstant());
+        Date from1 = Date.from(zonedDateTime.withZoneSameLocal(ZoneId.of("UTC")).toInstant());
+//        System.out.println(from);
+        System.out.println(from1);
+    }
+
+    public static LocalDateTime convertZoneDateTime(LocalDateTime localDateTime, ZoneId fromZoneId, ZoneId toZoneId) {
+        return localDateTime.atZone(fromZoneId).withZoneSameInstant(toZoneId).toLocalDateTime();
+    }
+
+    public static ZonedDateTime convertZoneDateTime(Date date, ZoneId toZoneId) {
+        return ZonedDateTime.ofInstant(date.toInstant(), toZoneId);
+    }
+
 
     @Test
     public void getStartAndEndOfQuarterAndConvertDateToLocalDateTest() {
