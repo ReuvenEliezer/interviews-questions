@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class HashInterviews {
@@ -61,8 +62,8 @@ public class HashInterviews {
         Assert.assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq(new int[]{5, 5, 4, 6, 4}));
         Assert.assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq(new int[]{9, 9, 9, 2, 5}));
 
-//        Assert.assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq1(new int[]{5, 5, 4, 6, 4}));
-//        Assert.assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq1(new int[]{9, 9, 9, 2, 5}));
+        Assert.assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq1(new int[]{5, 5, 4, 6, 4}));
+        Assert.assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq1(new int[]{9, 9, 9, 2, 5}));
     }
 
     private List<Integer> sortByFreq(int arr[]) {
@@ -96,35 +97,71 @@ public class HashInterviews {
     private ArrayList<Integer> sortByFreq1(int arr[]) {
         ArrayList<Integer> result = new ArrayList<>();
 //        Map<Integer, AtomicInteger> map = new HashMap<>();
-        Comparator<Map.Entry<Integer, Integer>> comparing1 = Comparator.comparing(Map.Entry<Integer, Integer>::getValue).reversed();
-        Comparator<Map.Entry<Integer, Integer>> comparing2 = Comparator.comparing(Map.Entry<Integer, Integer>::getKey);
-
-        SortedMap<Integer, Integer> map = new TreeMap(comparing2);
-//        -> {
-//            Integer integer1 =(Integer) o1;
-//            Integer integer2 =(Integer) o2;
-//            return integer2-integer1;
-//        });
+        Map<Integer, Integer> map = new HashMap<>();
         for (Integer integer : arr) {
-//            map.computeIfAbsent(integer, v -> new AtomicInteger()).incrementAndGet();
             map.put(integer, map.get(integer) == null ? 1 : map.get(integer) + 1);
+//            map.computeIfAbsent(integer, v -> new AtomicInteger()).incrementAndGet();
         }
-
-
+//        ValueComparator bvc = new ValueComparator(map);
+//        TreeMap<Integer, Integer> sorted_map = new TreeMap<>(bvc);
+//        sorted_map.putAll(map);
+        List<Map.Entry<Integer, Integer>> entries = new ArrayList(map.entrySet());
+        Comparator<Map.Entry<Integer, Integer>> comparing1  = Comparator.comparing(Map.Entry<Integer, Integer>::getValue).reversed();
+        Comparator<Map.Entry<Integer, Integer>> comparing2 = Comparator.comparing(Map.Entry<Integer, Integer>::getKey);
+//        Collections.sort(entries, comparing1.thenComparing(comparing2));
+        entries.sort(comparing1.thenComparing(comparing2));
 
 //        List<Integer> list = map.entrySet()
 //                .stream().sorted(comparing1.thenComparing(comparing2))
 //                .map(Map.Entry::getKey)
 //                .collect(Collectors.toList());
 
-//        for (Integer key : list) {
-//            Integer totalInstances = map.get(key);
-//            for (int i = 0; i < totalInstances; i++) {
-//                result.add(key);
-//            }
-//        }
+        for (Map.Entry<Integer, Integer> entry : entries) {
+            Integer key = entry.getKey();
+            Integer totalInstances = entry.getValue();
+            for (int i = 0; i < totalInstances; i++) {
+                result.add(key);
+            }
+        }
         return result;
     }
+
+    class ValueComparator implements Comparator<Integer> {
+        Map<Integer, Integer> base;
+
+        public ValueComparator(Map<Integer, Integer> base) {
+            this.base = base;
+        }
+
+        // Note: this comparator imposes orderings that are inconsistent with
+        // equals.
+        public int compare(Integer a, Integer b) {
+            if (base.get(a) >= base.get(b)) {
+                return -1;
+            } else {
+                return 1;
+            } // returning 0 would merge keys
+        }
+    }
+
+    class ValueComparator1 implements Comparator<Integer> {
+        Map<Integer, AtomicInteger> base;
+
+        public ValueComparator1(Map<Integer, AtomicInteger> base) {
+            this.base = base;
+        }
+
+        // Note: this comparator imposes orderings that are inconsistent with
+        // equals.
+        public int compare(Integer a, Integer b) {
+            if (base.get(a).get() >= base.get(b).get()) {
+                return -1;
+            } else {
+                return 1;
+            } // returning 0 would merge keys
+        }
+    }
+
     @Test
     public void findMatchedWords() {
         /**
