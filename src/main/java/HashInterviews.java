@@ -15,10 +15,10 @@ public class HashInterviews {
         Assert.assertEquals(50, largButMinFreq(new int[]{2, 2, 5, 50, 1}));
     }
 
-    public int largButMinFreq(int arr[]) {
+    public int largButMinFreq(int[] arr) {
         Map<Integer, Integer> map = new HashMap<>();
         for (Integer i : arr) {
-            map.put(i, map.get(i) == null ? 1 : map.get(i) + 1);
+            map.merge(i, 1, Integer::sum);
         }
         return Collections.max(map.entrySet(), Comparator.comparingInt(Map.Entry::getKey)).getKey();
     }
@@ -55,6 +55,75 @@ public class HashInterviews {
     }
 
     @Test
+    public void findSubArraySum() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/subarrays-with-sum-k/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1category[]Hash
+         */
+        Assert.assertEquals(3, findSubArraySum(new int[]{10, 2, -2, -20, 10}, -10));
+        Assert.assertEquals(2, findSubArraySum(new int[]{9, 4, 20, 3, 10, 5}, 33));
+
+        Assert.assertEquals(3, findSubArraySum1(new int[]{10, 2, -2, -20, 10}, -10));
+        Assert.assertEquals(2, findSubArraySum1(new int[]{9, 4, 20, 3, 10, 5}, 33));
+    }
+
+    private int findSubArraySum1(int[] arr, int k) {
+        int result = 0;
+        List<Pair> pairList = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+
+            int sum = 0;
+            for (int j = i; j < arr.length; j++) {
+
+                // calculate required sum
+                sum += arr[j];
+
+                // check if sum is equal to
+                // required sum
+                if (sum == k) {
+                    result++;
+                    pairList.add(new Pair(i, j));
+                }
+            }
+        }
+        return result;
+    }
+
+    private int findSubArraySum(int[] arr, int sum) {
+        HashMap<Integer, Integer> prevSum = new HashMap<>();
+
+        int res = 0;
+
+        // Sum of elements so far.
+        int currsum = 0;
+
+        for (int j : arr) {
+
+            // Add current element to sum so far.
+            currsum += j;
+
+            // If currsum is equal to desired sum,
+            // then a new subarray is found. So
+            // increase count of subarrays.
+            if (currsum == sum)
+                res++;
+
+            // currsum exceeds given sum by currsum
+            //  - sum. Find number of subarrays having
+            // this sum and exclude those subarrays
+            // from currsum by increasing count by
+            // same amount.
+            if (prevSum.containsKey(currsum - sum))
+                res += prevSum.get(currsum - sum);
+
+            // Add currsum value to count of
+            // different values of sum.
+            prevSum.merge(currsum, 1, Integer::sum);
+        }
+
+        return res;
+    }
+
+    @Test
     public void sortByFreq() {
         /**
          * https://practice.geeksforgeeks.org/problems/sorting-elements-of-an-array-by-frequency-1587115621/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1category[]Hash
@@ -66,14 +135,14 @@ public class HashInterviews {
         Assert.assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq1(new int[]{9, 9, 9, 2, 5}));
     }
 
-    private List<Integer> sortByFreq(int arr[]) {
+    private List<Integer> sortByFreq(int[] arr) {
         List<Integer> result = new ArrayList<>();
 //        Map<Integer, AtomicInteger> map = new HashMap<>();
         Map<Integer, Integer> map = new HashMap<>();
 
         for (Integer integer : arr) {
 //            map.computeIfAbsent(integer, v -> new AtomicInteger()).incrementAndGet();
-            map.put(integer, map.get(integer) == null ? 1 : map.get(integer) + 1);
+            map.merge(integer, 1, Integer::sum);
 
         }
 
@@ -94,19 +163,19 @@ public class HashInterviews {
         return result;
     }
 
-    private ArrayList<Integer> sortByFreq1(int arr[]) {
+    private ArrayList<Integer> sortByFreq1(int[] arr) {
         ArrayList<Integer> result = new ArrayList<>();
 //        Map<Integer, AtomicInteger> map = new HashMap<>();
         Map<Integer, Integer> map = new HashMap<>();
         for (Integer integer : arr) {
-            map.put(integer, map.get(integer) == null ? 1 : map.get(integer) + 1);
+            map.merge(integer, 1, Integer::sum);
 //            map.computeIfAbsent(integer, v -> new AtomicInteger()).incrementAndGet();
         }
 //        ValueComparator bvc = new ValueComparator(map);
 //        TreeMap<Integer, Integer> sorted_map = new TreeMap<>(bvc);
 //        sorted_map.putAll(map);
         List<Map.Entry<Integer, Integer>> entries = new ArrayList(map.entrySet());
-        Comparator<Map.Entry<Integer, Integer>> comparing1  = Comparator.comparing(Map.Entry<Integer, Integer>::getValue).reversed();
+        Comparator<Map.Entry<Integer, Integer>> comparing1 = Comparator.comparing(Map.Entry<Integer, Integer>::getValue).reversed();
         Comparator<Map.Entry<Integer, Integer>> comparing2 = Comparator.comparing(Map.Entry<Integer, Integer>::getKey);
 //        Collections.sort(entries, comparing1.thenComparing(comparing2));
         entries.sort(comparing1.thenComparing(comparing2));
@@ -175,7 +244,7 @@ public class HashInterviews {
 
         Map<Integer, Integer> patternMap = new HashMap<>();
         for (int i : pattern.toCharArray()) {
-            patternMap.put(i, patternMap.get(i) == null ? 1 : patternMap.get(i) + 1);
+            patternMap.merge(i, 1, Integer::sum);
         }
 
         for (String s : dict) {
@@ -183,7 +252,7 @@ public class HashInterviews {
                 continue;
             Map<Integer, Integer> map = new HashMap<>();
             for (int i : s.toCharArray()) {
-                map.put(i, map.get(i) == null ? 1 : map.get(i) + 1);
+                map.merge(i, 1, Integer::sum);
             }
             if (map.size() == patternMap.size())
                 result.add(s);
@@ -226,11 +295,11 @@ public class HashInterviews {
     private int maxDistanceLessMemory(int[] arr) {
         Map<Integer, Pair<Integer, Integer>> instanceToIndexesMap = new HashMap<>();
         for (int i = 0; i < arr.length; i++) {
-            Pair<Integer, Integer> integerIntegerPair = instanceToIndexesMap.get(arr[i]);
-            if (integerIntegerPair == null) {
+            Pair<Integer, Integer> integerPair = instanceToIndexesMap.get(arr[i]);
+            if (integerPair == null) {
                 instanceToIndexesMap.put(arr[i], new Pair<>(i, null));
             } else {
-                Integer minIndex = integerIntegerPair.getKey();
+                Integer minIndex = integerPair.getKey();
                 instanceToIndexesMap.put(arr[i], new Pair<>(minIndex, i));
             }
         }
