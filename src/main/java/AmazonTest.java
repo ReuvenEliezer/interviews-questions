@@ -334,32 +334,7 @@ public class AmazonTest {
         Assert.assertEquals(1, hashSet.size());
     }
 
-    @Test
-    public void returnIndexOfSumOf2Elements() {
-        /**
-         *https://www.geeksforgeeks.org/given-an-array-a-and-a-number-x-check-for-pair-in-a-with-sum-as-x/
-         */
-        int[] array = {1, 3, 5, 7};
-        int[] ints = returnIndexOfSumOf2Elements(array, 6);
-        Assert.assertEquals(new int[]{0, 1}, ints);
-    }
 
-    private int[] returnIndexOfSumOf2Elements(int[] arr, int sum) {
-        Set<Integer> s = new HashSet<>();
-        for (int i = 0; i < arr.length; ++i) {
-            int temp = sum - arr[i];
-
-            // checking for condition
-            if (s.contains(temp)) {
-                System.out.println(
-                        "Pair with given sum "
-                                + sum + " is (" + arr[i]
-                                + ", " + temp + ")");
-            }
-            s.add(arr[i]);
-        }
-        return null;
-    }
 
     @Test
     public void pairIndexesTest() {

@@ -25,11 +25,18 @@ public class TipaltiTest {
         Person joanClarke2 = new Person(new Name("Joan", "Clarke"), new Address("London"));
 
         init(Arrays.asList(graceHopper, alanTuring1, joanClarke1, alanTuring2, joanClarke2));
-        Assert.assertEquals(-1, findMinRelationLevel(graceHopper, alanTuring1, 0));
-        Assert.assertEquals(-1, findMinRelationLevel(alanTuring1, alanTuring1, 0));
-        Assert.assertEquals(1, findMinRelationLevel(alanTuring1, alanTuring2, 0));
-        Assert.assertEquals(2, findMinRelationLevel(alanTuring1, joanClarke2, 0));
-        Assert.assertEquals(2, findMinRelationLevel(joanClarke2, alanTuring1, 0));
+        Assert.assertEquals(-1, findMinRelationLevel(graceHopper, alanTuring1));
+        Assert.assertEquals(-1, findMinRelationLevel(alanTuring1, alanTuring1));
+        Assert.assertEquals(1, findMinRelationLevel(alanTuring1, alanTuring2));
+        Assert.assertEquals(2, findMinRelationLevel(alanTuring1, joanClarke2));
+        Assert.assertEquals(2, findMinRelationLevel(joanClarke2, alanTuring1));
+
+
+        Assert.assertEquals(-1, findMinRelationLevelByQueue(graceHopper, alanTuring1));
+        Assert.assertEquals(-1, findMinRelationLevelByQueue(alanTuring1, alanTuring1));
+        Assert.assertEquals(1, findMinRelationLevelByQueue(alanTuring1, alanTuring2));
+        Assert.assertEquals(2, findMinRelationLevelByQueue(alanTuring1, joanClarke2));
+        Assert.assertEquals(2, findMinRelationLevelByQueue(joanClarke2, alanTuring1));
     }
 
     Map<Person, Set<Person>> personToPersonsMap = new HashMap<>();
@@ -48,21 +55,45 @@ public class TipaltiTest {
         });
     }
 
-    public int findMinRelationLevel(Person personA, Person personB, int result) {
+    public int findMinRelationLevel(Person personA, Person personB) {
+        if (personA == personB)
+            return -1;
+        Set<Person> people = personToPersonsMap.get(personA);
+        if (people.isEmpty())
+            return -1;
+        return findMinRelationLevel(personB, people, 0);
+    }
+
+    private int findMinRelationLevel(Person personB, Set<Person> people, int level) {
+        Stream<Person> personStream = people.stream().filter(person -> person.equals(personB));
+        if (personStream.count() == 1) {
+            return ++level;
+        }
+        //do recursive for each neighbors
+        for (Person person : people) {
+            return findMinRelationLevel(person, people, ++level);
+        }
+        return -1;
+    }
+
+    public int findMinRelationLevelByQueue(Person personA, Person personB) {
         if (personA.equals(personB))
             return -1;
         Set<Person> people = personToPersonsMap.get(personA);
-        if (!people.isEmpty()) {
-            Stream<Person> personStream = people.stream().filter(person -> person.equals(personB));
-            if (personStream.count() == 1) {
-                return result + 1;
-            }
-            //do recursive for each neighbors
-            for (Person person : people) {
-                return findMinRelationLevel(personA, person, result + 1);
-            }
-        }
+        if (people.isEmpty()) return -1;
 
+        int level = 0;
+        Queue<Person> queue = new ArrayDeque<>();
+        queue.add(personB);
+        while (!queue.isEmpty()) {
+            Person person = queue.poll();
+            Stream<Person> personStream = people.stream().filter(person1 -> person1.equals(person));
+            if (personStream.count() == 1) {
+                return ++level;
+            }
+            queue.addAll(people);
+            level++;
+        }
         return -1;
     }
 

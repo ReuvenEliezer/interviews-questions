@@ -124,6 +124,138 @@ public class HashInterviews {
     }
 
     @Test
+    public void findMissing() {
+        /**
+         *  https://practice.geeksforgeeks.org/problems/in-first-but-second5423/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&sortBy=accuracy&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1sortByaccuracycategory[]Hash
+         */
+        Assert.assertEquals(Arrays.asList(4, 10), findMissing(new long[]{1, 2, 3, 4, 5, 10}, new long[]{2, 3, 1, 0, 5}));
+        Assert.assertEquals(Arrays.asList(5), findMissing(new long[]{4, 3, 5, 9, 11}, new long[]{4, 9, 3, 11, 10}));
+    }
+
+    private List<Long> findMissing(long[] a, long[] b) {
+        Map<Long, Integer> map = new HashMap<>();
+
+        for (long l : b) {
+            map.merge(l, 1, Integer::sum);
+        }
+
+        List<Long> list = new ArrayList<>();
+        for (long l : a) {
+            Integer integer = map.get(l);
+            if (integer == null) {
+                list.add(l);
+            }
+        }
+        return list;
+    }
+
+    @Test
+    public void minInsAndDel() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/minimum-insertions-to-make-two-arrays-equal/1/?category[]=Hash&category[]=Hash&problemType=functional&difficulty[]=2&page=1&query=category[]HashproblemTypefunctionaldifficulty[]2page1category[]Hash
+         */
+        Assert.assertEquals(4, minInsAndDel(new int[]{1, 2, 5, 3, 1}, new int[]{1, 3, 5}));
+        Assert.assertEquals(0, minInsAndDel(new int[]{1, 4}, new int[]{1, 4}));
+        Assert.assertEquals(3, minInsAndDel(new int[]{1, 4, 2, 5}, new int[]{1, 2, 4}));
+    }
+
+    private int minInsAndDel(int[] a, int[] b) {
+        //b is sorted.
+        Map<Integer, Integer> valueToIndexMap = new HashMap<>();
+//        for (int i = 0; i < a.length; i++) {
+//            valueToIndexMap.
+//        }
+
+        int result = b.length - a.length;
+        for (int i = 0; i < b.length; i++) {
+            if (a.length - 1 < i || b[i] != a[i]) {
+                result += 2;
+            }
+        }
+
+        return result;
+    }
+
+    @Test
+    public void returnIndexOfSumOf2Elements() {
+        /**
+         *https://www.geeksforgeeks.org/given-an-array-a-and-a-number-x-check-for-pair-in-a-with-sum-as-x/
+         */
+        int[] array = {1, 3, 5, 7};
+        List<Pair> pairList = returnIndexOfSumOf2Elements(array, 6);
+        Assert.assertEquals(1, pairList.size());
+        Assert.assertEquals(Arrays.asList(0, 2), Arrays.asList(pairList.get(0).getKey(), pairList.get(0).getValue()));
+    }
+
+    private List<Pair> returnIndexOfSumOf2Elements(int[] arr, int sum) {
+        List<Pair> pairList = new ArrayList<>();
+        Map<Integer, Integer> valueToIndexMap = new HashMap<>();
+        for (int i = 0; i < arr.length; ++i) {
+            int temp = sum - arr[i];
+
+            // checking for condition
+            if (valueToIndexMap.containsKey(temp)) {
+                System.out.println(
+                        "Pair with given sum "
+                                + sum + " is (" + arr[i]
+                                + ", " + temp + ")");
+                pairList.add(new Pair(valueToIndexMap.get(temp), i));
+            }
+            valueToIndexMap.put(arr[i], i);
+        }
+        return pairList;
+    }
+
+    private int[] returnIndexOfSumOf2Elements1(int[] arr, int sum) {
+        Set<Integer> s = new HashSet<>();
+        for (int i = 0; i < arr.length; ++i) {
+            int temp = sum - arr[i];
+
+            // checking for condition
+            if (s.contains(temp)) {
+                System.out.println(
+                        "Pair with given sum "
+                                + sum + " is (" + arr[i]
+                                + ", " + temp + ")");
+            }
+            s.add(arr[i]);
+        }
+        return null;
+    }
+
+    @Test
+    public void findDuplicate() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/smallest-number-repeating-k-times3239/1/?problemStatus=unsolved&problemType=functional&sortBy=accuracy&category[]=Hash&page=1&query=problemStatusunsolvedproblemTypefunctionalsortByaccuracycategory[]Hashpage1
+         */
+        Assert.assertEquals(1, findDuplicate(new int[]{2, 2, 1, 3, 1}, 2));
+        Assert.assertEquals(2, findDuplicate(new int[]{3, 5, 3, 2}, 1));
+    }
+
+    private int findDuplicate(int[] arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : arr) {
+            map.merge(i, 1, Integer::sum);
+        }
+        Integer keyResult = null;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Integer instances = entry.getValue();
+            if (instances.equals(k)) {
+                if (keyResult == null || entry.getKey() < keyResult) {
+                    keyResult = entry.getKey();
+                }
+            }
+        }
+//        return keyResult;
+        return map.entrySet()
+                .stream()
+                .filter(e -> e.getValue().equals(k))
+                .map(Map.Entry::getKey)
+                .min(Comparator.comparing(Integer::intValue))
+                .get();
+    }
+
+    @Test
     public void sortByFreq() {
         /**
          * https://practice.geeksforgeeks.org/problems/sorting-elements-of-an-array-by-frequency-1587115621/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1category[]Hash
@@ -204,6 +336,7 @@ public class HashInterviews {
 
         // Note: this comparator imposes orderings that are inconsistent with
         // equals.
+        @Override
         public int compare(Integer a, Integer b) {
             if (base.get(a) >= base.get(b)) {
                 return -1;
@@ -316,7 +449,7 @@ public class HashInterviews {
         return maxDistance;
     }
 
-    private class Pair<A, B> {
+    private static class Pair<A, B> {
 
         A key;
         B value;

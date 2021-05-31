@@ -1,3 +1,4 @@
+import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
@@ -28,12 +29,12 @@ public class InterviewsTest {
 //        4 קיים במערך.
         int[] arr = {1, 3, 4, 8, 2, 6, 10, 7};
         // printSumOfPairIfExistInArr(arr);
-        List<AmazonTest.Pair> result = getSumOfPairIfExistInArr(arr);
-
+        List<Pair> result = getSumOfPairIfExistInArr(arr);
+        Assert.assertEquals(6, result.size());
     }
 
-    private List<AmazonTest.Pair> getSumOfPairIfExistInArr(int[] arr) {
-        List<AmazonTest.Pair> result = new ArrayList<>();
+    private List<Pair> getSumOfPairIfExistInArr(int[] arr) {
+        List<Pair> result = new ArrayList<>();
         Map<Integer, Boolean> integersPrinted = new HashMap<>();
         for (int k : arr)
             integersPrinted.put(k, false);
@@ -46,7 +47,7 @@ public class InterviewsTest {
                 if (integersPrinted.containsKey(sum)) {
                     Boolean printed = integersPrinted.get(sum);
                     if (!printed) {
-                        result.add(new AmazonTest.Pair(first, second));
+                        result.add(new Pair(first, second));
                         integersPrinted.put(sum, true);
                         System.out.println(first + " " + second + " = " + sum);
                     }
@@ -784,16 +785,16 @@ public class InterviewsTest {
         /**
          *  https://practice.geeksforgeeks.org/problems/intersection-of-two-arrays2404/1
          */
-        Assert.assertEquals(1, numberOfElementsInIntersection(new int[]{89, 2, 4},new int[]{89, 24, 75, 11, 23}));
-        Assert.assertEquals(4, numberOfElementsInIntersection(new int[]{1, 2, 3, 4, 5, 6},new int[]{3, 4, 5, 6, 7}));
+        Assert.assertEquals(1, numberOfElementsInIntersection(new int[]{89, 2, 4}, new int[]{89, 24, 75, 11, 23}));
+        Assert.assertEquals(4, numberOfElementsInIntersection(new int[]{1, 2, 3, 4, 5, 6}, new int[]{3, 4, 5, 6, 7}));
     }
 
     private int numberOfElementsInIntersection(int[] arr1, int[] arr2) {
         Set<Integer> set = new HashSet<>();
         set.addAll(Arrays.stream(arr1).boxed().collect(Collectors.toSet()));
 
-        int result=0;
-        for (Integer integer : arr2){
+        int result = 0;
+        for (Integer integer : arr2) {
             if (set.contains(integer))
                 result++;
         }

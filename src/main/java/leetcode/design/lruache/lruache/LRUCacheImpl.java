@@ -8,7 +8,8 @@ public class LRUCacheImpl implements LRUCache {
 
     public LRUCacheImpl(int capacity) {
         this.map = new LinkedHashMap<Integer, Integer>() {
-            protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+            @Override
+            public boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
                 return size() > capacity;
             }
         };
@@ -21,7 +22,7 @@ public class LRUCacheImpl implements LRUCache {
 
         int val = map.get(key);
         //When put updates, it does not update the index, so remove and add back
-        put(key, val);
+        this.put(key, val);
         return val;
     }
 

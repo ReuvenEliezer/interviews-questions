@@ -18,6 +18,106 @@ public class QueueInterviews {
 
         Assert.assertEquals(29, minCost(new long[]{4, 3, 2, 6}));
         Assert.assertEquals(62, minCost(new long[]{4, 2, 7, 6, 9}));
+
+    }
+
+    @Test
+    public void ImplementQueueUsingArray() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/implement-queue-using-array/1/?category[]=Queue&category[]=Queue&problemType=functional&page=1&query=category[]QueueproblemTypefunctionalpage1category[]Queue
+         */
+        MyQueue myQueue = new MyQueue();
+        myQueue.push(2);
+        myQueue.push(3);
+
+        Assert.assertEquals(2, myQueue.pop());
+        myQueue.push(4);
+        Assert.assertEquals(3, myQueue.pop());
+
+    }
+
+    @Test
+    public void ImplementQueueUsingLinkedList() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/implement-queue-using-linked-list/1/?category[]=Queue&category[]=Queue&problemType=functional&page=1&query=category[]QueueproblemTypefunctionalpage1category[]Queue
+         */
+        MyQueue1 myQueue = new MyQueue1();
+        myQueue.push(2);
+        myQueue.push(3);
+
+        Assert.assertEquals(2, myQueue.pop());
+        myQueue.push(4);
+        Assert.assertEquals(3, myQueue.pop());
+
+
+        MyQueue1 myQueue2 = new MyQueue1();
+        myQueue2.push(78);
+        Assert.assertEquals(78, myQueue2.pop());
+        Assert.assertEquals(-1, myQueue2.pop());
+        Assert.assertEquals(-1, myQueue2.pop());
+    }
+
+    class QueueNode {
+        int data;
+        QueueNode next;
+
+        QueueNode(int a) {
+            data = a;
+            next = null;
+        }
+    }
+
+    class MyQueue1 {
+        QueueNode front, rear;
+
+        //Function to push an element x in a queue.
+        void push(int x) {
+            QueueNode queueNode = new QueueNode(x);
+            if (rear == null) {
+                front = queueNode;
+            } else {
+                rear.next = queueNode;
+            }
+            rear = queueNode;
+        }
+
+        //Function to pop an element from queue and return that element.
+        int pop() {
+            if (front == null) {
+                this.rear = null;
+                return -1;
+            }
+
+            QueueNode front = this.front;
+            this.front = this.front.next;
+            if (this.front == null) {
+                rear = null;
+            }
+            return front.data;
+        }
+    }
+
+    class MyQueue {
+
+        int front, rear;
+        int arr[] = new int[100005];
+
+        //Function to push an element x in a queue.
+        void push(int x) {
+            arr[rear] = x;
+
+            rear++;
+            // Your code here
+        }
+
+        //Function to pop an element from queue and return that element.
+        int pop() {
+            if (rear == 0 || front == rear) return -1;
+            int result = arr[front];
+            front++;
+            return result;
+            // Your code here
+        }
     }
 
     @Test
