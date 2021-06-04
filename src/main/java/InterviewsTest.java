@@ -801,5 +801,12 @@ public class InterviewsTest {
         return result;
     }
 
+    @Test
+    public void removeObjFromListTest() {
+        List<Integer> integerList = Arrays.asList(1, 3, 5, 7).stream().collect(Collectors.toList());
+        integerList.remove(1);
+        integerList.remove(new Integer(7));
+        System.out.println(integerList);
+    }
 
 }

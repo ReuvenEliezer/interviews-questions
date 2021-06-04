@@ -99,20 +99,20 @@ public class ProximityCitiBankTest {
         Map<Map<Integer, Integer>, List<String>> mainMap = new HashMap<>();
         for (String s : stringList) {
             Map<Integer, Integer> map = getCharsCounts(s);
-            List<String> strings = mainMap.getOrDefault(map, new ArrayList<>());
-            strings.add(s);
-            mainMap.put(map, strings);
+            mainMap.computeIfAbsent(map, v-> new ArrayList<>()).add(s);
         }
 
-        List<List<String>> result = new ArrayList<>();
-        for (Map.Entry<Map<Integer, Integer>, List<String>> mapListEntry : mainMap.entrySet()) {
+        return mainMap.entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toList());
+
+//        List<List<String>> result = new ArrayList<>();
+//        for (Map.Entry<Map<Integer, Integer>, List<String>> mapListEntry : mainMap.entrySet()) {
             // if (mapListEntry.getValue().size() > 1) { //add only if duplicated
-            List<String> inner = new ArrayList<>();
-            inner.addAll(mapListEntry.getValue());
-            result.add(inner);
+//            List<String> inner = new ArrayList<>();
+//            inner.addAll(mapListEntry.getValue());
+//            result.add(inner);
             // }
-        }
-        return result;
+//        }
+//        return result;
     }
 
     private boolean isAnagram(String str1, String str2) {
