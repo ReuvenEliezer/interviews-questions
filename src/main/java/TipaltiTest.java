@@ -69,9 +69,7 @@ public class TipaltiTest {
         if (relatedPeople.isEmpty())
             return -1;
 
-        Set<Person> visited = new HashSet<>();
-
-        return findMinRelationLevel(relatedPeople, personB, visited, 0);
+        return findMinRelationLevel(relatedPeople, personB, new HashSet<>(), 0);
     }
 
     private int findMinRelationLevel(List<Person> relatedPeople, Person personB, Set<Person> visited, int level) {

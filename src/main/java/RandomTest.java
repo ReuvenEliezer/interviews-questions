@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -127,7 +128,7 @@ public class RandomTest {
 
     @Test
     public void RandomOnMap_Test1() {
-        int mapSize = 10;
+        int mapSize = 1000000;
 
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < mapSize; i++) {
@@ -135,14 +136,51 @@ public class RandomTest {
         }
         Random random = new Random();
 
+        Map<Integer, Integer> mapTest = new HashMap<>();
         int size = map.size();
+
         for (int i = 0; i < size; i++) {
             int currentMapSize = map.size();
-            System.out.println("map.size:" + currentMapSize);
+//            System.out.println("map.size:" + currentMapSize);
             int r = random.nextInt(currentMapSize - i);
             Integer value = map.get(r);
-            System.out.println(value);
+//            System.out.println(value);
+//            mapTest.computeIfAbsent(value, integer -> new AtomicInteger(0)).incrementAndGet();
+            mapTest.merge(value, 1, Integer::sum);
             map.replace(r, map.get(currentMapSize - (i + 1)));
+        }
+
+        Assert.assertEquals(mapSize, mapTest.size());
+        for (int i = 0; i < mapSize; i++) {
+            Assert.assertEquals(1, mapTest.get(i).intValue());
+        }
+
+    }
+
+    @Test
+    public void RandomOnArr() {
+        int X = 100;
+        int[] array = new int[X];
+        for (int i = 0; i < X; i++) {
+            array[i] = i;
+        }
+        shuffleArray(array);
+
+        for (int i = 0; i < X; i++) {
+
+            System.out.print(array[i] + "\n");
+        }
+
+    }
+
+    static void shuffleArray(int[] ar) {
+        Random rnd = new Random();
+        for (int i = ar.length - 1; i > 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            int a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
         }
     }
 
@@ -172,11 +210,12 @@ public class RandomTest {
     }
 
     @Test
-    public void randomSpecificRange(){
+    public void randomSpecificRange() {
         int randomInt = getRandomInt(5, 6);
     }
 
-   static Random random = new Random();
+    static Random random = new Random();
+
     public static int getRandomInt(int fromInclusive, int toExclusive) {
         int result = random.nextInt(toExclusive - fromInclusive) + fromInclusive;
         return result;

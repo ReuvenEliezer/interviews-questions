@@ -7,34 +7,26 @@ public class Datos {
 
     static class Singleton {
         private Singleton INSTANCE;
-        private Object lockObject = new Object();
 
         private Singleton() {
             //TODO
         }
 
         public Singleton getInstance() {
-            if (INSTANCE != null) return INSTANCE;
-            synchronized (lockObject) {
-                if (INSTANCE == null)
-                    INSTANCE = new Singleton();
-                return INSTANCE;
+            if (INSTANCE == null) {
+                synchronized (Singleton.class) {
+                    if (INSTANCE == null)
+                        INSTANCE = new Singleton();
+                }
             }
+            return INSTANCE;
         }
     }
 
     @Test
-    public void singletonTest() {
-//        Singleton instance = Singleton.getInstance();
-        int x = 0;
-        int y = 0;
-        replace(x, y);
-    }
-
-    @Test
-    public void test() {
-        int x = 0;
-        int y = 0;
+    public void replace2NumberWithoutAdditionalVariable() {
+        int x = 2;
+        int y = 4;
         replace(x, y);
     }
 
@@ -67,7 +59,6 @@ public class Datos {
         x = y + x;
         y = x - y;
         x = y - x;
-
     }
 
     class Node {
