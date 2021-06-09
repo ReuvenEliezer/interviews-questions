@@ -1,3 +1,4 @@
+import com.google.common.collect.Sets;
 import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
@@ -807,6 +808,40 @@ public class InterviewsTest {
         integerList.remove(1);
         integerList.remove(new Integer(7));
         System.out.println(integerList);
+    }
+
+    @Test
+    public void findCommonElementsInMultipleLists() {
+        /**
+         * https://stackoverflow.com/questions/15183982/is-there-a-way-to-find-common-elements-in-multiple-lists
+         */
+//        List<List<Integer>> lists = new ArrayList<>();
+//        lists.add(Arrays.asList(1, 3, 5));
+//        lists.add(Arrays.asList(1, 6, 7, 9, 3));
+//        lists.add(Arrays.asList(1, 3, 10, 11));
+
+        Set<Integer> intersection = intersection(Arrays.asList(1, 3, 5), Arrays.asList(1, 6, 7, 9, 3), Arrays.asList(1, 3, 10, 11));
+        Assert.assertEquals(Sets.newHashSet(1, 3), intersection);
+
+        Set<Integer> set = retainAll(Sets.newHashSet(1, 3, 5), Sets.newHashSet(1, 6, 7, 9, 3), Sets.newHashSet(1, 3, 10, 11));
+        Assert.assertEquals(Sets.newHashSet(1, 3), set);
+    }
+
+    public <T> Set<T> intersection(List<T>... list) {
+        Set<T> result = Sets.newHashSet(list[0]);
+        for (List<T> numbers : list) {
+            result = Sets.intersection(result, Sets.newHashSet(numbers));
+        }
+        return result;
+    }
+
+
+    public <T> Set<T> retainAll(Set<T>... sets) {
+        Set<T> result = sets[0];
+        for (Set<T> set : sets) {
+            result.retainAll(set);
+        }
+        return result;
     }
 
 }

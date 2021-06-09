@@ -162,9 +162,9 @@ public class AmazonTest {
             }
             songDurationSet.add(songDurations.get(index));
         }
-        if (firstSongIndex == null || secondSongIndex == null)
-            return new ArrayList<>();
-        return Arrays.asList(firstSongIndex, secondSongIndex);
+        if (firstSongIndex != null && secondSongIndex != null)
+            return Arrays.asList(firstSongIndex, secondSongIndex);
+        return new ArrayList<>();
     }
 
     @Test
@@ -335,7 +335,6 @@ public class AmazonTest {
     }
 
 
-
     @Test
     public void pairIndexesTest() {
 //        https://stackoverflow.com/questions/45928822/pair-object-overriding-equals-so-that-reverse-pairs-are-also-the-same
@@ -479,6 +478,7 @@ public class AmazonTest {
     }
 
 
+    @Deprecated
     private List<Integer> getIDsOfSongs(int rideDuration, List<Integer> songDurations) {
         int timeBeforeArrivedBusInSeconds = 30;
         int totalSongTime = rideDuration - timeBeforeArrivedBusInSeconds;
@@ -523,6 +523,7 @@ public class AmazonTest {
         return 0;
     }
 
+    @Deprecated
     private List<Integer> getIDsOfSongsMemoryOptimistic(int rideDuration, List<Integer> songDurations) {
         int timeBeforeArrivedBusInSeconds = 30;
         int totalSongTime = rideDuration - timeBeforeArrivedBusInSeconds;
