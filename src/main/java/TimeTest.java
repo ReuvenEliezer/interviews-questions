@@ -1,6 +1,12 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import lombok.Data;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +35,38 @@ public class TimeTest {
         Timestamp timestamp1 = new Timestamp(date1.getTime());
         long l1 = timestamp1.toInstant().toEpochMilli();
 
+    }
+
+    @Test
+    public void customObjectMapper() throws JsonProcessingException {
+        //https://stackoverflow.com/questions/4024544/how-to-parse-dates-in-multiple-formats-using-simpledateformat
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+//        objectMapper.registerModule(new JavaTimeModule());
+
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Timestamp.class, new CustomTimestampSerializer());
+        module.addDeserializer(Timestamp.class, new CustomTimestampDeserializer());
+        module.addSerializer(Date.class, new CustomDateSerializer());
+        module.addDeserializer(Date.class, new CustomDateDeserializer());
+        objectMapper.registerModule(module);
+
+        TimeStampDateEntity timeStampDateEntity = objectMapper.readValue("{\"timestamp1\":\"May 27, 2021 4:21:03 PM\",\"timestamp2\":\"May 15, 2019 4:10:03AM\",\"date\":\"May 27, 2021\"}", TimeStampDateEntity.class);
+        String s = objectMapper.writeValueAsString(timeStampDateEntity);
+        TimeStampDateEntity timeStampDateEntity1 = objectMapper.readValue(s, TimeStampDateEntity.class);
+
+    }
+
+    @Data
+    private static class TimeStampDateEntity implements Serializable {
+        private Timestamp timestamp1;
+        private Timestamp timestamp2;
+        private Date date;
+
+
+        //for Serializable
+        public TimeStampDateEntity() {
+        }
     }
 
     @Test
@@ -132,4 +170,6 @@ public class TimeTest {
         Duration duration = Duration.ofDays(5);
         int i = between.compareTo(duration);
     }
+
+
 }
