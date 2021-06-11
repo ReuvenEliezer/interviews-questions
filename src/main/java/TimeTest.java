@@ -8,11 +8,27 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.Locale;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
 
 public class TimeTest {
+
+    @Test
+    public void dateTimeFormatter1() throws ParseException {
+        DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy H:mm:ss", Locale.ENGLISH);
+        LocalDateTime out = LocalDateTime.parse("May 27, 2021 4:21:03", inFormatter);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy H:mm:ss aaa", Locale.ENGLISH);
+        Date date = simpleDateFormat.parse("May 27, 2021 4:21:03 PM");
+        Timestamp timestamp = new Timestamp(date.getTime());
+        long l = timestamp.toInstant().toEpochMilli();
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        Date date1 = simpleDateFormat1.parse("May 27, 2021");
+        Timestamp timestamp1 = new Timestamp(date1.getTime());
+        long l1 = timestamp1.toInstant().toEpochMilli();
+
+    }
 
     @Test
     public void dateTimeFormatter() throws ParseException {
