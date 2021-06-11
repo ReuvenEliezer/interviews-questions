@@ -19,6 +19,7 @@ public class TimeTest {
     public void dateTimeFormatter1() throws ParseException {
         DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy H:mm:ss", Locale.ENGLISH);
         LocalDateTime out = LocalDateTime.parse("May 27, 2021 4:21:03", inFormatter);
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy H:mm:ss aaa", Locale.ENGLISH);
         Date date = simpleDateFormat.parse("May 27, 2021 4:21:03 PM");
         Timestamp timestamp = new Timestamp(date.getTime());
