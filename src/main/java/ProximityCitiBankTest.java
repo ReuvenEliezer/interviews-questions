@@ -75,6 +75,9 @@ public class ProximityCitiBankTest {
         Assert.assertEquals(stringList3, result.get(2));
 
 
+        List<List<String>> result1 = anagrams(Arrays.asList("bfj", "tro" ,"ffa", "rph"));
+
+
         stringList1 = Arrays.asList("act", "cat", "tac");
         stringList2 = Arrays.asList("god", "dog");
         allStr.clear();
@@ -106,11 +109,9 @@ public class ProximityCitiBankTest {
 
 //        List<List<String>> result = new ArrayList<>();
 //        for (Map.Entry<Map<Integer, Integer>, List<String>> mapListEntry : mainMap.entrySet()) {
-            // if (mapListEntry.getValue().size() > 1) { //add only if duplicated
 //            List<String> inner = new ArrayList<>();
 //            inner.addAll(mapListEntry.getValue());
 //            result.add(inner);
-            // }
 //        }
 //        return result;
     }
@@ -162,12 +163,7 @@ public class ProximityCitiBankTest {
         Map<Integer, Integer> charCodeToCountMap = new HashMap<>();
 
         for (int charValue : str.toCharArray()) {
-            Integer instanceCount = charCodeToCountMap.get(charValue);
-            if (instanceCount == null) {
-                charCodeToCountMap.put(charValue, 1);
-            } else {
-                charCodeToCountMap.put(charValue, instanceCount + 1);
-            }
+            charCodeToCountMap.merge(charValue, 1, Integer::sum);
         }
         return charCodeToCountMap;
     }

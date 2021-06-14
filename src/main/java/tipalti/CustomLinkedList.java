@@ -1,6 +1,8 @@
 package tipalti;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomLinkedList<E> {
     private Node head;
@@ -28,18 +30,24 @@ public class CustomLinkedList<E> {
             String s = aClass.toString();
             Field[] aClassFields = aClass.getDeclaredFields();
             sb.append(aClass.getSimpleName() + " [ ");
-            for(Field f : aClassFields){
-                String fName = f.getName();
-                Class<?> type = f.getType();
-                sb.append("(" + f.getType() + ") " + fName + " = " + f.get(aClass) + ", ");
+            for (String s1 : getFieldNames(aClassFields)) {
+                int i=0;
+//                String fName = s1.getName();
+//                sb.append("(" + s1.getType() + ") " + fName + " = " + f.get(aClass) + ", ");
+//                Class<?> type = s1.getType();
             }
             sb.append("]");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         }
 
+    }
+
+    private static List<String> getFieldNames(Field[] fields) {
+        List<String> fieldNames = new ArrayList<>();
+        for (Field field : fields)
+            fieldNames.add(field.getName());
+        return fieldNames;
     }
 
     public static Object getInstanceField(Object instance, String fieldName) {
