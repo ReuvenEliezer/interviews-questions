@@ -1,5 +1,6 @@
 package threads;
 
+import lombok.Data;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -7,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RefaelTest {
+public class RafaelTest {
 
     @Test
     public void taxTest() {
         init();
         double salary = 7000;
         double totalTax = calcTax(salary);
-        Assert.assertEquals(600d, totalTax,0.3);
+        Assert.assertEquals(600d, totalTax, 0.3);
 
     }
 
@@ -30,13 +31,17 @@ public class RefaelTest {
         salaryTaxRanks.add(new SalaryTaxRank(3001d, 5000, 10));
         salaryTaxRanks.add(new SalaryTaxRank(5001d, 8000, 20));
         salaryTaxRanks.add(new SalaryTaxRank(8001d, 10000, 30));
-        salaryTaxRanks.add(new SalaryTaxRank(10001d, Integer.MAX_VALUE, 40));
+        salaryTaxRanks.add(new SalaryTaxRank(10001d, Double.MAX_VALUE, 40));
 
         Collections.sort(salaryTaxRanks);
+
+        // if SalaryTaxRank don't implements Comparable<SalaryTaxRank> - use :
+//        Collections.sort(salaryTaxRanks, Comparator.comparing(SalaryTaxRank::getMinSalary));
     }
 
     List<SalaryTaxRank> salaryTaxRanks = new ArrayList<>();
 
+    @Data
     class SalaryTaxRank implements Comparable<SalaryTaxRank> {
         Double minSalary;
         double maxSalary;

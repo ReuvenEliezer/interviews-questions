@@ -133,8 +133,7 @@ public class ProximityCitiBankTest {
         return true;
     }
 
-    //memory optimization
-    // TODO use one map: reduce map count from map1 and if map1 is empty= return true else - return false.
+    //memory optimization: using one map: reduce map count from map1 and if map1 is empty= return true else - return false.
     private boolean isAnagramUsingOneMap(String s1, String s2) {
         if (s1.length() != s2.length())
             return false;

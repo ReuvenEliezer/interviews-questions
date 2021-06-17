@@ -26,7 +26,7 @@ public class Datos {
     @Test
     public void replace2NumberWithoutAdditionalVariable() {
         int x = 2;
-        int y = 4;
+        int y = 5;
         replace(x, y);
     }
 
@@ -56,9 +56,11 @@ public class Datos {
     }
 
     private void replace(int x, int y) {
-        x = y + x;
+        System.out.println(String.format("before changes: x=%s, y=%s", x, y));
+        x = x + y;
         y = x - y;
-        x = y - x;
+        x = x - y;
+        System.out.println(String.format("after changes: x=%s, y=%s", x, y));
     }
 
     class Node {
