@@ -246,29 +246,67 @@ public class AmazonTest {
     public ArrayList<ArrayList<Integer>> findAllFourSumNumbers(int[] arr, int k) {
         int fourNum = 4;
         if (arr.length < fourNum) return null;
-        Set<Four> fourIntegerHashSet = new HashSet<>();
+
+        HashMap<Integer, Pair> sumPairToIndexesMap = new HashMap<>();
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = i + 1; j < arr.length; j++)
+                sumPairToIndexesMap.put(arr[i] + arr[j], new Pair(i, j));
+        }
+
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-        for (int a = 0; a < arr.length - (fourNum - 1); a++) {
-            for (int b = a + 1; b < arr.length - (fourNum - 2); b++) {
-                for (int c = b + 1; c < arr.length - (fourNum - 3); c++) {
-                    for (int d = c + 1; d < arr.length; d++) {
-                        int[] fourArr = new int[]{arr[a], arr[b], arr[c], arr[d]};
-                        if (Arrays.stream(fourArr).sum() == k) {
-                            Four four = new Four(fourArr);
-                            if (!fourIntegerHashSet.contains(four)) {
-                                fourIntegerHashSet.add(four);
-                                ArrayList<Integer> inner = new ArrayList<>();
-                                inner.add(four.a);
-                                inner.add(four.b);
-                                inner.add(four.c);
-                                inner.add(four.d);
-                                result.add(inner);
-                            }
+        Set<Four> fourIntegerHashSet = new HashSet<>();
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                int sum = arr[i] + arr[j];
+
+                Pair pair = sumPairToIndexesMap.get(k - sum);
+                // If X - sum is present in hash table,
+                if (pair != null) {
+                    Set<Integer> fourArrTemp = new HashSet<>();
+                    fourArrTemp.addAll(Arrays.asList(i, j, pair.a, pair.b));
+                    if (fourArrTemp.size() == 4) {
+                        int[] fourArr = new int[]{arr[i], arr[j], arr[pair.a], arr[pair.b]};
+//                    if (Arrays.stream(fourArr).sum() == k) {
+                        Four four = new Four(fourArr);
+                        if (!fourIntegerHashSet.contains(four)) {
+                            fourIntegerHashSet.add(four);
+                            ArrayList<Integer> inner = new ArrayList<>();
+                            inner.add(four.a);
+                            inner.add(four.b);
+                            inner.add(four.c);
+                            inner.add(four.d);
+                            result.add(inner);
                         }
                     }
                 }
             }
         }
+
+//        Map<Integer, Integer> temp = new HashMap();
+//        AtomicInteger counter = new AtomicInteger();
+//        temp.putAll(Arrays.stream(arr).boxed().collect(Collectors.toMap((c) -> counter.incrementAndGet(), (c) -> c)));
+//
+//        for (int a = 0; a < arr.length - (fourNum - 1); a++) {
+//            for (int b = a + 1; b < arr.length - (fourNum - 2); b++) {
+//                for (int c = b + 1; c < arr.length - (fourNum - 3); c++) {
+////                    for (int d = c + 1; d < arr.length; d++) {
+//                    int[] fourArr = new int[]{arr[a], arr[b], arr[c], temp.get(c)};
+//                    if (Arrays.stream(fourArr).sum() == k) {
+//                        Four four = new Four(fourArr);
+//                        if (!fourIntegerHashSet.contains(four)) {
+//                            fourIntegerHashSet.add(four);
+//                            ArrayList<Integer> inner = new ArrayList<>();
+//                            inner.add(four.a);
+//                            inner.add(four.b);
+//                            inner.add(four.c);
+//                            inner.add(four.d);
+//                            result.add(inner);
+//                        }
+////                        }
+//                    }
+//                }
+//            }
+//        }
 
 //        List<Four> collect = fourIntegerHashMap.entrySet().stream().filter(e -> e.getValue() == k).map(e -> e.getKey()).collect(Collectors.toList());
 
@@ -586,6 +624,72 @@ public class AmazonTest {
                 costRoadsToBeRepaired);
 
         Assert.assertEquals(20, minimumCostToRepair);
+    }
+
+    @Test
+    public void findAllSubArray() {
+        //https://practice.geeksforgeeks.org/problems/sub-array-sum-divisible-by-k2617/1
+        long[] arr = new long[]{4, 5, 0, -2, -3, 1};
+        Assert.assertEquals(7, subArraySumDivisibleByK(arr, 5));
+        Assert.assertEquals(7, subArraySumDivisibleByK1(arr, 5));
+    }
+
+    private int subArraySumDivisibleByK(long[] arr, int divide) {
+        int result = 0;
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i; j < arr.length; j++) {
+                int total = 0;
+                for (int k = i; k <= j; k++) {
+                    total += arr[k];
+                }
+                if (total % divide == 0) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
+    public int subArraySumDivisibleByK1(long arr[], int k) {
+        Map<Long, Integer> map = new HashMap<>();
+        map.put(0l, 1);
+        int count = 0;
+        long sum = 0;
+        for (long a : arr) {
+            sum = (sum + a) % k;
+            if (sum < 0)
+                sum += k;  // Because -1 % 5 = -1, but we need the positive mod 4
+            count += map.getOrDefault(sum, 0);
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+        return count;
+
+//        Map<Integer, Integer> modulusCountMap = new HashMap<>();
+//        int[] consecSum = new int[arr.length];
+//        consecSum[0] = arr[0];
+//
+//        for (int i = 1; i < arr.length; i++) {
+//            consecSum[i] = consecSum[i - 1] + arr[i];
+//        }
+//
+//        for (int i = 0; i < arr.length; i++) {
+//            consecSum[i] = consecSum[i] % k;
+//
+//            if (consecSum[i] == 0 && modulusCountMap.get(consecSum[i]) == null) {
+//                modulusCountMap.put(consecSum[i], 2);
+//            } else {
+//                modulusCountMap.put(consecSum[i], modulusCountMap.get(consecSum[i]) == null ? 1 : modulusCountMap.get(consecSum[i]) + 1);
+//            }
+//
+//        }
+//
+//        int count = 0;
+//
+//        for (Integer val : modulusCountMap.values()) {
+//            count = count + (val * (val - 1)) / 2;
+//        }
+//
+//        return count;
     }
 
     private int getMinimumCostToRepair(int numOfTotalAvailableCities,

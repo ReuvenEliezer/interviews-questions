@@ -8,7 +8,7 @@ public class CallBackTest {
     public void test(){
         Rule rule = new Rule();
 
-        rule.setCallback((alarmRule, metadata) -> {
+        rule.setCallback((rule1, metadata) -> {
             System.out.println("do something");
         });
 

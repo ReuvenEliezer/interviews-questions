@@ -158,6 +158,21 @@ public class ProximityCitiBankTest {
 //                .count() == 0;
     }
 
+    @Test
+    public void sortChars() {
+        String s = "zxcvbnmlkjhgffffdaserwqtyufffiop";
+        Map<Integer, Integer> charsCounts = getCharsCounts(s);
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Integer, Integer> entry : charsCounts.entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                Integer key = entry.getKey();
+                char c = (char) key.intValue();
+                sb.append(c);
+            }
+        }
+        Assert.assertEquals("abcdefffffffghijklmnopqrstuvwxyz",sb.toString());
+    }
+
     private Map<Integer, Integer> getCharsCounts(String str) {
         Map<Integer, Integer> charCodeToCountMap = new HashMap<>();
 
