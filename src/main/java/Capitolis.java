@@ -1,26 +1,27 @@
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Capitolis {
-    //    class File {
-//        Prop prop;
-//        byte[] content;
-//    }
-//
-//    class Directory {
-//        Prop prop;
-//        List<Directory> childrenDirectories;
-//        List<File> files;
-//    }
 
     @Test
-    public void test() {
+    public void createFileDirectoryArchitecture() {
         //create file directory architecture
-        Directory mainDirectory = new Directory(null, new Prop("mainDirectory", null, LocalDateTime.now()));
-        File file = new File("content".getBytes(), new Prop("file1", mainDirectory, LocalDateTime.now()));
-//        mainDirectory.contents.add()
+        Directory mainDirectory = new Directory(new Prop("mainDirectory", null));
+        File file = new File("content1".getBytes(), new Prop("file1", mainDirectory));
+        file.addContent("addContent".getBytes());
+        Assert.assertEquals("content1addContent", new String(file.content, StandardCharsets.UTF_8));
+        File file2 = new File("content2".getBytes(), new Prop("file2", mainDirectory));
+        List<Content> contents = mainDirectory.contents;
+        Assert.assertEquals(2, contents.size());
+        Directory subDirectory = new Directory(new Prop("subDirectory", mainDirectory));
+        Assert.assertEquals(3, contents.size());
     }
 
     class Prop {
@@ -29,35 +30,52 @@ public class Capitolis {
         LocalDateTime createDateTime;
         LocalDateTime updatedDateTime;
 
-        public Prop(String name, Directory parentDir, LocalDateTime createDateTime) {
+        public Prop(String name, Directory parentDir) {
             this.name = name;
             this.parentDir = parentDir;
-            this.createDateTime = createDateTime;
-            this.updatedDateTime = createDateTime;
+            this.createDateTime = LocalDateTime.now();
+            this.updatedDateTime = this.createDateTime;
         }
     }
 
     abstract class Content {
-
+        Prop prop;
     }
 
     class File extends Content {
         byte[] content;
-        Prop prop;
 
         public File(byte[] content, Prop prop) {
             this.content = content;
             this.prop = prop;
+            this.prop.parentDir.contents.add(this);
+        }
+
+        public void addContent(byte[] bytes) {
+            try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                output.write(this.content);
+                output.write(bytes);
+                this.content = output.toByteArray();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            this.prop.updatedDateTime = LocalDateTime.now();
+        }
+
+        public void replaceContent(byte[] bytes) {
+            this.content = bytes;
+            this.prop.updatedDateTime = LocalDateTime.now();
         }
     }
 
     class Directory extends Content {
-        Prop prop;
-        List<Content> contents;
+        List<Content> contents = new ArrayList<>();
 
-        public Directory(List<Content> Contents, Prop prop) {
-            this.contents = Contents;
+        public Directory(Prop prop) {
             this.prop = prop;
+            if (this.prop.parentDir != null) {
+                this.prop.parentDir.contents.add(this);
+            }
         }
     }
 
