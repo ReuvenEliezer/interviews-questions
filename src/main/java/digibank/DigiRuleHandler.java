@@ -1,7 +1,6 @@
 package digibank;
 
 @FunctionalInterface
-public
-interface DigiRuleHandler {
-    boolean checkRule(String input, int index, DigiRule digiRule);
+public interface DigiRuleHandler<T> {
+    boolean checkRule(String input, int index, T digiRule);
 }

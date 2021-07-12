@@ -1,12 +1,11 @@
 package digibank;
 
-class EndWordRuleHandler implements DigiRuleHandler {
+class EndWordRuleHandler implements DigiRuleHandler<EndWordRule> {
 
     @Override
-    public boolean checkRule(String input, int index, DigiRule digiRule) {
+    public boolean checkRule(String input, int index, EndWordRule digiRule) {
         if (index == input.length() - 1) {
-            EndWordRule endWordRule = (EndWordRule) digiRule;
-            if (!endWordRule.isAllowedAtEndWord()) {
+            if (!digiRule.isAllowedAtEndWord()) {
                 return false;
             }
         }
