@@ -25,7 +25,7 @@ public class DigiBank {
         Assert.assertFalse(isValid("bfb"));
     }
 
-    private static Map<Class<? extends DigiRule>, DigiRuleHandler> alarmConditionHandlerMap = new HashMap<>();
+    private Map<Class<? extends DigiRule>, DigiRuleHandler> alarmConditionHandlerMap = new HashMap<>();
     private Map<Character, List<DigiRule>> characterToRulesMap = new HashMap<>();
 
     private void init() {
