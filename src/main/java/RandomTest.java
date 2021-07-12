@@ -38,7 +38,7 @@ public class RandomTest {
 
     @Test
     public void RandomOnLinkedList_Test() {
-        int linkedListSize = 1000000;
+        int linkedListSize = 100000;
 
         LinkedList<Integer> linkedList = new LinkedList<>();
         for (int i = 0; i < linkedListSize; i++) {
@@ -49,7 +49,9 @@ public class RandomTest {
         for (int i = 0; i < linkedListSize; i++) {
             int r = random.nextInt(linkedList.size());
 //            System.out.println("linkedList.size():" + linkedList.size());
-//            System.out.println(linkedList.get(r));
+            System.out.println(linkedList.get(r));
+
+            //remove index
             linkedList.remove(r);
         }
     }
@@ -160,28 +162,59 @@ public class RandomTest {
     @Test
     public void RandomOnArr() {
         int X = 100;
+
+        List<Integer> integerList = new ArrayList<>();
         int[] array = new int[X];
         for (int i = 0; i < X; i++) {
             array[i] = i;
         }
-        shuffleArray(array);
-
-        for (int i = 0; i < X; i++) {
-
-            System.out.print(array[i] + "\n");
+        Random rnd = new Random();
+        for (int i = array.length - 1; i >= 0; i--) {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            int randomValue = array[index];
+            integerList.add(randomValue);
+            array[index] = array[i];
+            array[i] = randomValue;
         }
+
+        Assert.assertEquals(X, integerList.size());
+        for (int i = 0; i < X; i++) {
+            Assert.assertTrue(integerList.contains(i));
+        }
+
+//        for (int i = 0; i < X; i++) {
+//            System.out.print(array[i] + "\n");
+//        }
 
     }
 
-    static void shuffleArray(int[] ar) {
-        Random rnd = new Random();
-        for (int i = ar.length - 1; i > 0; i--) {
-            int index = rnd.nextInt(i + 1);
-            // Simple swap
-            int a = ar[index];
-            ar[index] = ar[i];
-            ar[i] = a;
+    @Test
+    public void test() {
+        int num = 17;
+        List<Integer> integerList = fillRandom(num);
+        Assert.assertEquals(num, integerList.size());
+        for (int i = 0; i < num; i++) {
+            Assert.assertTrue(integerList.contains(i));
         }
+    }
+
+    public List<Integer> fillRandom(Integer value) {
+        List<Integer> randomList = new ArrayList<>();
+        Map<Integer, Integer> indexToValueMap = new HashMap<>();
+        for (int i = 0; i < value; i++)
+            indexToValueMap.put(i, i);
+
+        Random random = new Random();
+        for (int i = 0; i < value; i++) {
+            int randomIndex = random.nextInt(indexToValueMap.size());
+            Integer randomValue = indexToValueMap.get(randomIndex);
+            System.out.println("random value: " + randomValue);
+            randomList.add(randomValue);
+            indexToValueMap.replace(randomIndex, indexToValueMap.get(indexToValueMap.size() - 1));
+            indexToValueMap.remove(indexToValueMap.size() - 1);
+        }
+        return randomList;
     }
 
     @Test

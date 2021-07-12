@@ -4,9 +4,14 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Capitolis {
 
@@ -139,6 +144,93 @@ public class Capitolis {
             sb.append(i).append(" ");
         }
         sb.append(System.lineSeparator());
+    }
+
+    private long threshold = 1000000;
+
+    Map<Transaction, AtomicLong> transactionsAggMap = new ConcurrentHashMap<>();
+
+    @Test
+    public void test() {
+        Transaction transaction1 = new Transaction(1l, "1", "1", LocalDate.now(), 100);
+        Transaction transaction2 = new Transaction(2l, "1", "1", LocalDate.now(), 900);
+        Transaction transaction3 = new Transaction(3l, "1", "1", LocalDate.now(), 200);
+        Transaction transaction4 = new Transaction(4l, "2", "1", LocalDate.now(), 100);
+
+        addToMap(transaction1);
+        addToMap(transaction2);
+        addToMap(transaction3);
+        addToMap(transaction4);
+
+        /**
+         * init()  - load all aggeregation that isHandled==false -> add to sender queue;
+         *            load all transaction that isAggregate==false -> add to aggregation handler;
+         * - received transaction - > get transactionId.equels(id) if exist-> return, else set receivedDateTime to now();
+         * - save to db - transaction table(set save isAggregate  = false)
+         * -       put to queue
+         *          response entity
+         *          set isHandled=true (in memory)
+         * -  aggregation handler - generate aggregation if not exist
+         *  -save to db aggeration table-> set isAggeregate = done;
+         *  - check aggregation value is over the threashold, if true - > put to sender queue.
+         *  - tackScheduler every X millis while queue is not empty peek()>
+         *      send aggregation.
+         *      on response - > update the isHandled aggeregation flag to true
+         *      remove aggregation from queue and set isHandled =true;
+         *
+         */
+
+
+    }
+
+    private void addToMap(Transaction transaction) {
+        long aggregatedValue = transactionsAggMap.computeIfAbsent(transaction, v -> new AtomicLong(0))
+                .accumulateAndGet(transaction.quantity, (a, b) -> a + b);
+        if (aggregatedValue >= threshold) {
+            //TODO SEND and remove from map
+            int i=0;
+        }
+    }
+
+    class Aggregation {
+        Long id;
+        String buyerId;
+        String sellerId;
+        LocalDate settlementDate;
+        boolean isHandled;
+
+    }
+
+    class Transaction {
+        Long id;
+        String buyerId;
+        String sellerId;
+        LocalDate settlementDate;
+        Integer quantity;
+        LocalDateTime receivedDateTime;
+        boolean isHandled;
+
+        public Transaction(Long id, String buyerId, String sellerId, LocalDate settlementDate, Integer quantity) {
+            this.id = id;
+            this.buyerId = buyerId;
+            this.sellerId = sellerId;
+            this.settlementDate = settlementDate;
+            this.quantity = quantity;
+            this.receivedDateTime = LocalDateTime.now();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Transaction that = (Transaction) o;
+            return Objects.equals(buyerId, that.buyerId) && Objects.equals(sellerId, that.sellerId) && Objects.equals(settlementDate, that.settlementDate);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(buyerId, sellerId, settlementDate);
+        }
     }
 
     public void printAllCombinations(int balls, int cells, int[] arr, StringBuilder sb) {
