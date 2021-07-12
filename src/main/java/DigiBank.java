@@ -8,10 +8,10 @@ import java.util.stream.Stream;
 public class DigiBank {
 
     /**
-     * Char 	Allowed followers	Can the char be at the end of the word?
-     * a	a,b,d	true
-     * b	a,f	False
-     * c	b	true
+     * Char |   Allowed followers  |  Can the char be at the end of the word?
+     * a	|   a,b,d             |  true
+     * b	|   a,f               |  False
+     * c	|   b	              |  true
      */
 
     @Test
