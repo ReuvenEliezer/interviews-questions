@@ -1,7 +1,8 @@
 package digibank;
 
 public abstract class DigiRule {
-    Character character;
+    protected Character character;
 
-    abstract Class getRuleCondition();
+    protected abstract Class<? extends DigiRule> getRuleCondition();
+
 }
