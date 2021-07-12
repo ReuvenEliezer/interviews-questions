@@ -19,16 +19,4 @@ public class AllowedFollowersRule extends DigiRule {
         return AllowedFollowersRule.class;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        AllowedFollowersRule that = (AllowedFollowersRule) o;
-//        return Objects.equals(character, that.character);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(character);
-//    }
 }
