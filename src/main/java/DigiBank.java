@@ -7,33 +7,6 @@ import java.util.stream.Stream;
 
 public class DigiBank {
 
-//    enum v {
-//        h(AllowedFollowersRuleHandler.class);
-//
-//        private Class<? extends DigiRuleHandler> aClass;
-//        private DigiRuleHandler digiRuleHandler;
-//
-//        v(Class<? extends DigiRuleHandler> aClass) {
-//            this.aClass = aClass;
-//            this.digiRuleHandler = digiRuleHandler;
-//        }
-//
-//        public Class<? extends DigiRuleHandler> getaClass() {
-//            return aClass;
-//        }
-//
-//        public DigiRuleHandler getDigiRuleHandler() {
-//            return digiRuleHandler;
-//        }
-//    }
-
-    private Map<Character, List<DigiRule>> characterToRulesMap = new HashMap<>();
-    private static Map<Class<? extends DigiRule>, DigiRuleHandler> alarmConditionHandlerMap = new HashMap<>();
-//            Arrays.stream(v.values()).map(v::getaClass,v::getDigiRuleHandler).{
-//                    {AllowedFollowersRuleHandler.class, new AllowedFollowersRuleHandler()},
-//            }).collect(Collectors.toMap(kv -> kv[0], kv -> kv[1]));
-
-
     /**
      * Char 	Allowed followers	Can the char be at the end of the word?
      * a	a,b,d	true
@@ -51,6 +24,9 @@ public class DigiBank {
         Assert.assertTrue(isValid("bfd"));
         Assert.assertFalse(isValid("bfb"));
     }
+
+    private static Map<Class<? extends DigiRule>, DigiRuleHandler> alarmConditionHandlerMap = new HashMap<>();
+    private Map<Character, List<DigiRule>> characterToRulesMap = new HashMap<>();
 
     private void init() {
 
@@ -102,7 +78,6 @@ public class DigiBank {
         Class getRuleCondition() {
             return AllowedFollowersRule.class;
         }
-
     }
 
 
@@ -119,12 +94,6 @@ public class DigiBank {
             }
             return true;
         }
-
-//        @Override
-//        public Class getRuleCondition() {
-//            return AllowedFollowersRuleHandler.class;
-//        }
-
     }
 
     class EndWordRuleHandler implements DigiRuleHandler {
@@ -139,12 +108,6 @@ public class DigiBank {
             }
             return true;
         }
-
-//        @Override
-//        public Class getRuleCondition() {
-//            return AllowedFollowersRuleHandler.class;
-//        }
-
     }
 
 
