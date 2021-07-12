@@ -33,14 +33,13 @@ public class DigiBank {
         alarmConditionHandlerMap.put(AllowedFollowersRule.class, new AllowedFollowersRuleHandler());
         alarmConditionHandlerMap.put(EndWordRule.class, new EndWordRuleHandler());
 
-        AllowedFollowersRule allowedFollowersRuleA = new AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
         EndWordRule endWordRuleA = new EndWordRule('a', true);
-
         EndWordRule endWordRuleB = new EndWordRule('b', false);
         EndWordRule endWordRuleC = new EndWordRule('c', true);
 
-        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('a', Stream.of('a', 'f').collect(Collectors.toSet()));
-        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('a', Collections.singleton('b'));
+        AllowedFollowersRule allowedFollowersRuleA = new AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
 
         characterToRulesMap.put('a', Stream.of(allowedFollowersRuleA, endWordRuleA).collect(Collectors.toList()));
         characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).collect(Collectors.toList()));

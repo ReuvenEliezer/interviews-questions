@@ -17,8 +17,8 @@ public class DigiBankService {
         EndWordRule endWordRuleC = new EndWordRule('c', true);
 
         AllowedFollowersRule allowedFollowersRuleA = new AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
-        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('a', Stream.of('a', 'f').collect(Collectors.toSet()));
-        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('a', Collections.singleton('b'));
+        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
 
         characterToRulesMap.put('a', Stream.of(allowedFollowersRuleA, endWordRuleA).collect(Collectors.toSet()));
         characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).collect(Collectors.toSet()));
