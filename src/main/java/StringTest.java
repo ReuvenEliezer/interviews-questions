@@ -4,12 +4,23 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class StringTest {
+
+    @Test
+    public void test2() {
+        String message = "message";
+        byte[] bytes = message.getBytes();
+        String s = Arrays.toString(bytes);
+        System.out.println(Arrays.toString(bytes));
+        System.out.println(new String(bytes, StandardCharsets.UTF_8));
+
+    }
 
     @Test
     public void setContainAll() {

@@ -34,11 +34,10 @@ public class DigiBankService {
                 continue;
             for (DigiRule digiRule : ruleList) {
                 Class<? extends DigiRuleHandler> digiRuleHandler = RuleEnum.getDigiRuleHandler(digiRule.getRuleCondition());
-
                 if (digiRuleHandler == null)
-                    throw new IllegalStateException();
+                    throw new UnsupportedOperationException(digiRule.getRuleCondition()+ " not supported. missing handler for this");
                 DigiRuleHandler handler = digiRuleHandler.newInstance();
-                if (!handler.checkRule(input, i, digiRule))
+                if (!handler.isValid(input, i, digiRule))
                     return false;
             }
         }
