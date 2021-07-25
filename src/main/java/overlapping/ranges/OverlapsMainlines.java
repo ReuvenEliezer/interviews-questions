@@ -102,13 +102,64 @@ public class OverlapsMainlines {
          * https://softwareengineering.stackexchange.com/questions/363091/split-overlapping-ranges-into-all-unique-ranges?newreg=942197cefec54b70857c0715cb29f4f1#comment829992_363096
          */
         LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        LocalDateTime end = start.plusMinutes(15);
 //        StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(5), 1);
         StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(10), 1);
         StartEndShift ml2 = new StartEndShift(start.plusMinutes(7), start.plusMinutes(12), 2);
-        StartEndShift ml3 = new StartEndShift(start.plusMinutes(9), end, 3);
+        StartEndShift ml3 = new StartEndShift(start.plusMinutes(9), start.plusMinutes(15), 3);
+
         List<StartEndShift> result = splitOverlappingRangesIntoAllUniqueRanges(Arrays.asList(ml1, ml2, ml3));
+
+        Assert.assertEquals(5, result.size());
+
+        Assert.assertEquals(new StartEndShift(start, start.plusMinutes(7), 1), result.get(0));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(7), start.plusMinutes(9), 3), result.get(1));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(9), start.plusMinutes(10), 6), result.get(2));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(10), start.plusMinutes(12), 5), result.get(3));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(12), start.plusMinutes(15), 3), result.get(4));
     }
+
+    @Test
+    public void splitOverlappingRangesIntoAllUniqueRanges1() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(15), 3);
+        StartEndShift ml2 = new StartEndShift(start, start.plusMinutes(1), 3);
+
+        List<StartEndShift> result = splitOverlappingRangesIntoAllUniqueRanges(Arrays.asList(ml1, ml2));
+        Assert.assertEquals(2, result.size());
+
+        Assert.assertEquals(new StartEndShift(start, start.plusMinutes(1), 6), result.get(0));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(1), start.plusMinutes(15), 3), result.get(1));
+
+    }
+
+    @Test
+    public void splitOverlappingRangesIntoAllUniqueRanges2() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(15), 3);
+        StartEndShift ml2 = new StartEndShift(start, start.plusMinutes(15), 3);
+
+        List<StartEndShift> result = splitOverlappingRangesIntoAllUniqueRanges(Arrays.asList(ml1, ml2));
+        Assert.assertEquals(1, result.size());
+
+        Assert.assertEquals(new StartEndShift(start, start.plusMinutes(15), 6), result.get(0));
+
+    }
+
+    @Test
+    public void splitOverlappingRangesIntoAllUniqueRanges3() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(5), 3);
+        StartEndShift ml2 = new StartEndShift(start.plusMinutes(1), start.plusMinutes(6), 3);
+
+        List<StartEndShift> result = splitOverlappingRangesIntoAllUniqueRanges(Arrays.asList(ml1, ml2));
+        Assert.assertEquals(3, result.size());
+
+        Assert.assertEquals(new StartEndShift(start, start.plusMinutes(1), 3), result.get(0));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(1), start.plusMinutes(5), 6), result.get(1));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(5), start.plusMinutes(6), 3), result.get(2));
+
+    }
+
 
     @Test
     public void mergeOverlapping() {
@@ -123,8 +174,9 @@ public class OverlapsMainlines {
         StartEndShift ml3 = new StartEndShift(start.plusMinutes(9), end, 3);
         StartEndShift ml4 = new StartEndShift(end.plusMinutes(9), end.plusHours(1), 3);
 
-        List<StartEndShift> result = mergeOverlapping(Arrays.asList(ml1, ml2, ml3,ml4));
+        List<StartEndShift> result = mergeOverlapping(Arrays.asList(ml1, ml2, ml3, ml4));
     }
+
     @Test
     public void removeAll() {
         List<Integer> integerList = new ArrayList<>();
@@ -132,6 +184,7 @@ public class OverlapsMainlines {
         integerList.add(1);
         integerList.remove(1);
     }
+
     @Test
     public void intersectingOverlappingIntervals() {
         LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
@@ -166,9 +219,8 @@ public class OverlapsMainlines {
             LocalDateTime end = shift.getEnd();
             int capacity = shift.getCapacity();
             EdgeTimeValue startEdgeTimeValue = new EdgeTimeValue(start, capacity, false);
-            edgeTimeValues.add(startEdgeTimeValue);
             EdgeTimeValue endEdgeTimeValue = new EdgeTimeValue(end, capacity, true);
-            edgeTimeValues.add(endEdgeTimeValue);
+            edgeTimeValues.addAll(Arrays.asList(startEdgeTimeValue, endEdgeTimeValue));
         }
         Collections.sort(edgeTimeValues, Comparator.comparing(EdgeTimeValue::getTime).thenComparing(EdgeTimeValue::isEndTime));
         System.out.println(edgeTimeValues);
@@ -197,13 +249,13 @@ public class OverlapsMainlines {
             LocalDateTime timeTagM;
 
             if (i + 1 < edgeTimeValues.size()) {
-                EdgeTimeValue nextTriplet = edgeTimeValues.get(i + 1);
+                EdgeTimeValue next = edgeTimeValues.get(i + 1);
 //                if (nextTriplet.isEndTime()) {
 //                    timeTagM = nextTriplet.getTime();
 //                } else {
 //                    timeTagM = nextTriplet.getTime();//.minusNanos(1);
 //                }
-                timeTagM = nextTriplet.getTime();
+                timeTagM = next.getTime();
             } else {
                 timeTagM = triplet.getTime();
             }
@@ -212,7 +264,9 @@ public class OverlapsMainlines {
              *
              This answer doesn't take account of gaps (gaps should not appear in output), so I refined it: * If e=false, add a to S. If e=true, take away a from S. * Define n'=n if e=false or n'=n+1 if e=true * Define m'=m-1 if f=false or m'=m if f=true * If n' <= m' and (e and not f) = false, output (n',m',S), otherwise output nothing. – silentman.it
              */
-            if (!timeTagN.isAfter(timeTagM) && i + 1 < edgeTimeValues.size() && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
+//            if (!timeTagN.isAfter(timeTagM) && i + 1 < edgeTimeValues.size() && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
+            if (!timeTagN.isEqual(timeTagM) && !timeTagN.isAfter(timeTagM) && i + 1 < edgeTimeValues.size() && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
+
                 PeriodTimeResult tripletsResult = new PeriodTimeResult(timeTagN, timeTagM, currentS);
 //                System.out.println(tripletsResult);
                 StartEndShift result = new StartEndShift(timeTagN, timeTagM, currentS.stream().mapToInt(Integer::intValue).sum());
@@ -232,20 +286,20 @@ public class OverlapsMainlines {
         Collections.sort(shifts, Comparator.comparing(StartEndShift::getStart).thenComparing(StartEndShift::getEnd));
 
         StartEndShift first = shifts.get(0);
-        LocalDateTime start = first.start;
-        LocalDateTime end = first.end;
+        LocalDateTime start = first.getStart();
+        LocalDateTime end = first.getEnd();
 
         ArrayList<StartEndShift> result = new ArrayList<>();
 
         for (int i = 1; i < shifts.size(); i++) {
             StartEndShift current = shifts.get(i);
-            if (!current.start.isAfter(end)) {
-                long endMillis = Math.max(current.end.toInstant(ZoneOffset.UTC).toEpochMilli(), end.toInstant(ZoneOffset.UTC).toEpochMilli());
+            if (!current.getStart().isAfter(end)) {
+                long endMillis = Math.max(current.getEnd().toInstant(ZoneOffset.UTC).toEpochMilli(), end.toInstant(ZoneOffset.UTC).toEpochMilli());
                 end = LocalDateTime.ofInstant(Instant.ofEpochMilli(endMillis), ZoneOffset.UTC);
             } else {
                 result.add(new StartEndShift(start, end));
-                start = current.start;
-                end = current.end;
+                start = current.getStart();
+                end = current.getEnd();
             }
         }
         result.add(new StartEndShift(start, end));
@@ -335,47 +389,6 @@ public class OverlapsMainlines {
         if (!result.isEmpty()) {
             StartEndShift prevEndShift = result.get(result.size() - 1);
             prevEndShift.setEnd(key);
-        }
-    }
-
-    private class StartEndShift {
-        LocalDateTime start, end;
-        int capacity;
-
-        public StartEndShift(LocalDateTime start, LocalDateTime end, int capacity) {
-            this.start = start;
-            this.end = end;
-            this.capacity = capacity;
-        }
-
-        public StartEndShift(LocalDateTime start, LocalDateTime end) {
-            this.start = start;
-            this.end = end;
-        }
-
-        public LocalDateTime getStart() {
-            return start;
-        }
-
-        public LocalDateTime getEnd() {
-            return end;
-        }
-
-        public void setEnd(LocalDateTime end) {
-            this.end = end;
-        }
-
-        public int getCapacity() {
-            return capacity;
-        }
-
-        @Override
-        public String toString() {
-            return "StartEndShift{" +
-                    "start=" + start +
-                    ", end=" + end +
-                    ", capacity=" + capacity +
-                    '}';
         }
     }
 
