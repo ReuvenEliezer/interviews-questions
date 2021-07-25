@@ -142,7 +142,6 @@ public class OverlapsMainlines {
         Assert.assertEquals(1, result.size());
 
         Assert.assertEquals(new StartEndShift(start, start.plusMinutes(15), 6), result.get(0));
-
     }
 
     @Test
@@ -159,6 +158,33 @@ public class OverlapsMainlines {
         Assert.assertEquals(new StartEndShift(start.plusMinutes(5), start.plusMinutes(6), 3), result.get(2));
 
     }
+
+    @Test
+    public void splitOverlappingRangesIntoAllUniqueRanges4() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(5), 3);
+        StartEndShift ml2 = new StartEndShift(start.plusMinutes(5), start.plusMinutes(6), 3);
+
+        List<StartEndShift> result = splitOverlappingRangesIntoAllUniqueRanges(Arrays.asList(ml1, ml2));
+        Assert.assertEquals(2, result.size());
+
+        Assert.assertEquals(new StartEndShift(start, start.plusMinutes(5), 3), result.get(0));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(5), start.plusMinutes(6), 3), result.get(1));
+    }
+
+    @Test
+    public void splitOverlappingRangesIntoAllUniqueRanges5() {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        StartEndShift ml1 = new StartEndShift(start, start.plusMinutes(5), 3);
+        StartEndShift ml2 = new StartEndShift(start.plusMinutes(6), start.plusMinutes(7), 3);
+
+        List<StartEndShift> result = splitOverlappingRangesIntoAllUniqueRanges(Arrays.asList(ml1, ml2));
+        Assert.assertEquals(2, result.size());
+
+        Assert.assertEquals(new StartEndShift(start, start.plusMinutes(5), 3), result.get(0));
+        Assert.assertEquals(new StartEndShift(start.plusMinutes(6), start.plusMinutes(7), 3), result.get(1));
+    }
+
 
 
     @Test
