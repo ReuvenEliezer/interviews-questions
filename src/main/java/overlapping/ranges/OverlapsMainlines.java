@@ -291,7 +291,10 @@ public class OverlapsMainlines {
              This answer doesn't take account of gaps (gaps should not appear in output), so I refined it: * If e=false, add a to S. If e=true, take away a from S. * Define n'=n if e=false or n'=n+1 if e=true * Define m'=m-1 if f=false or m'=m if f=true * If n' <= m' and (e and not f) = false, output (n',m',S), otherwise output nothing. – silentman.it
              */
 //            if (!timeTagN.isAfter(timeTagM) && i + 1 < edgeTimeValues.size() && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
-            if (!timeTagN.isEqual(timeTagM) && !timeTagN.isAfter(timeTagM) && i + 1 < edgeTimeValues.size() && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
+            if (!timeTagN.isEqual(timeTagM)
+                    && !timeTagN.isAfter(timeTagM)
+                    && i + 1 < edgeTimeValues.size()
+                    && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
 
                 PeriodTimeResult tripletsResult = new PeriodTimeResult(timeTagN, timeTagM, currentS);
 //                System.out.println(tripletsResult);

@@ -134,7 +134,7 @@ public class ComparatorTest {
 
     @Test
     public void medianTest() {
-        PriorityQueue<Integer> employeePriorityQueue = new PriorityQueue<>(Comparator.comparingInt(Integer::intValue));
+        Queue<Integer> employeePriorityQueue = new PriorityQueue<>(Comparator.comparingInt(Integer::intValue));
         employeePriorityQueue.add(100);
         employeePriorityQueue.add(10);
         employeePriorityQueue.add(1500);

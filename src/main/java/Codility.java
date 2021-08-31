@@ -10,6 +10,7 @@ public class Codility {
         //https://www.programmersought.com/article/11471762147/
         Assert.assertEquals(0, maxDistanceBike(new int[]{5, 5}));
         Assert.assertEquals(5, maxDistanceBike(new int[]{-15, -5}));
+        Assert.assertEquals(5, maxDistanceBike(new int[]{15, 5}));
         Assert.assertEquals(2, maxDistanceBike(new int[]{10, 0, 8, 2, -1, 12, 11, 3}));
 
     }

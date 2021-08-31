@@ -85,6 +85,10 @@ public class Capitolis {
     }
 
 
+    /**
+     * https://www.geeksforgeeks.org/print-all-possible-combinations-of-r-elements-in-a-given-array-of-size-n/
+     */
+
     @Test
     public void printAllCombinationsForPlacing20IdenticalBallsIn10Cells() {
         /**
@@ -163,19 +167,19 @@ public class Capitolis {
         addToMap(transaction4);
 
         /**
-         * init()  - load all aggeregation that isHandled==false -> add to sender queue;
+         * init()  - load all aggregation that isHandled==false -> add to sender queue;
          *            load all transaction that isAggregate==false -> add to aggregation handler;
-         * - received transaction - > get transactionId.equels(id) if exist-> return, else set receivedDateTime to now();
+         * - received transaction - > get transactionId.equals(id) if exist-> return, else set receivedDateTime to now();
          * - save to db - transaction table(set save isAggregate  = false)
          * -       put to queue
          *          response entity
          *          set isHandled=true (in memory)
          * -  aggregation handler - generate aggregation if not exist
-         *  -save to db aggeration table-> set isAggeregate = done;
-         *  - check aggregation value is over the threashold, if true - > put to sender queue.
+         *  -save to db aggregation table-> set isAggregation = done;
+         *  - check aggregation value is over the threshold, if true - > put to sender queue.
          *  - tackScheduler every X millis while queue is not empty peek()>
          *      send aggregation.
-         *      on response - > update the isHandled aggeregation flag to true
+         *      on response - > update the isHandled aggregation flag to true
          *      remove aggregation from queue and set isHandled =true;
          *
          */

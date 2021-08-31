@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -57,6 +58,20 @@ public class TimeTest {
         String s = objectMapper.writeValueAsString(timeStampDateEntity);
         TimeStampDateEntity timeStampDateEntity1 = objectMapper.readValue(s, TimeStampDateEntity.class);
 
+    }
+
+    @Test
+    public void customObjectMapper1() throws JsonProcessingException {
+        //https://www.javaguides.net/2019/04/jackson-list-set-and-map-serialization-and-deseialization-in-java-example.html
+
+        // Create ObjectMapper object.
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        String json = "[ \"C\", \"C++\", \"Java\", \"Java EE\", \"Python\", \"Scala\", \"JavaScript\" ]";
+
+        Set<String> progLangs = mapper.readValue(json, Set.class);
+        System.out.println(progLangs.toString());
     }
 
     @Data
@@ -162,6 +177,9 @@ public class TimeTest {
         long l = now.toInstant(ZoneOffset.UTC).toEpochMilli();
         LocalDateTime date1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.UTC);
         Assert.assertEquals(now, date1);
+
+
+        LocalDateTime.of(1986, Month.APRIL, 8, 12, 30);
     }
 
     @Test

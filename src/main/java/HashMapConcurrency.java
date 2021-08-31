@@ -14,8 +14,9 @@ public class HashMapConcurrency {
     public void printArrayTest() {
         Employee employee = new Employee(1, "d", 10, LocalDateTime.now());
         employee.setList(Arrays.asList("a", "b"));
-       System.out.println(employee.toString());
+        System.out.println(employee);
     }
+
     @Test
     public void hashMapConcurrency_Test() throws InterruptedException {
         Map<String, Integer> cricketTeamScore = new HashMap<>();
@@ -105,8 +106,8 @@ public class HashMapConcurrency {
     }
 
     @Test
-    public void concurrentHashMap(){
-        ConcurrentHashMap<Integer,String> concurrentHashMap=new ConcurrentHashMap();
+    public void concurrentHashMap() {
+        ConcurrentHashMap<Integer, String> concurrentHashMap = new ConcurrentHashMap();
         String s = concurrentHashMap.putIfAbsent(1, "1");
         String s1 = concurrentHashMap.putIfAbsent(1, "1");
     }
@@ -125,7 +126,6 @@ public class HashMapConcurrency {
         IntStream.range(0, 2000).parallel().forEach(i -> list.add(i));
         System.out.println(list.size());
     }
-
 
 
 }

@@ -7,14 +7,6 @@ import java.util.*;
 
 public class RandomTest {
 
-    @Test
-    public void Test() {
-        LinkedList<String> linkedList = new LinkedList<>();
-        if (!linkedList.isEmpty()) {
-            String last = linkedList.getLast();
-            System.out.println("last is: " + last);
-        }
-    }
 
     @Test
     public void _Test() {
