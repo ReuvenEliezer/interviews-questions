@@ -3,17 +3,18 @@ package leetcode.design.lruache.lruache;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class LRUCacheImpl2 implements LRUCache {
     private HashMap<Integer, RecentlyValueUsed> map;
     private final int maxSize;
-    private PriorityBlockingQueue<RecentlyValueUsed> queue;
+    private PriorityQueue<RecentlyValueUsed> queue;
 
     public LRUCacheImpl2(int capacity) {
         map = new HashMap<>(capacity);
         maxSize = capacity;
-        queue = new PriorityBlockingQueue(capacity, Comparator.comparing(RecentlyValueUsed::getLocalDateTime));
+        queue = new PriorityQueue(capacity, Comparator.comparing(RecentlyValueUsed::getLocalDateTime));
     }
 
     @Override

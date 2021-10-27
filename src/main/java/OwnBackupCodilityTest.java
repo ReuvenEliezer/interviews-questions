@@ -122,4 +122,43 @@ public class OwnBackupCodilityTest {
 
         return possibleCoordinatorToSumPoints.values().stream().max(Comparator.comparing(Integer::intValue)).get();
     }
+
+
+    /**
+     * Write a function:
+     * <p>
+     * class Solution { public int solution(int[] A); }
+     * <p>
+     * that, given an array A of N integers, returns the smallest positive integer (greater than 0) that does not occur in A.
+     * <p>
+     * For example, given A = [1, 3, 6, 4, 1, 2], the function should return 5.
+     * <p>
+     * Given A = [1, 2, 3], the function should return 4.
+     * <p>
+     * Given A = [−1, −3], the function should return 1.
+     * <p>
+     * Write an efficient algorithm for the following assumptions:
+     * <p>
+     * N is an integer within the range [1..100,000];
+     * each element of array A is an integer within the range [−1,000,000..1,000,000].
+     */
+
+    @Test
+    public void findSmallestPositive() {
+        Assert.assertEquals(5, solution(new int[]{1, 3, 6, 4, 1, 2}));
+        Assert.assertEquals(4, solution(new int[]{1, 2, 3}));
+        Assert.assertEquals(1, solution(new int[]{-1, -3}));
+    }
+
+    public int solution(int[] a) {
+        Set<Integer> collect = Arrays.stream(a).boxed().collect(Collectors.toSet());
+
+        for (int i = 1; i < a.length; i++) {
+            if (!collect.contains(i)) {
+                return i;
+            }
+        }
+
+        return a.length + 1;
+    }
 }

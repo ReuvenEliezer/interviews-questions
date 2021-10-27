@@ -23,6 +23,58 @@ public class AmdocsTest {
         }
     }
 
+
+    class EvolvenNode {
+        int value;
+        List<EvolvenNode> childs;
+
+        public EvolvenNode(int value) {
+            this.value = value;
+        }
+    }
+
+    private void replace(EvolvenNode node) {
+        if (node == null)
+            return;
+        //replace childs
+        for (int i = 0; i < node.childs.size() / 2 && node.childs.size() > 1; i++) {
+            EvolvenNode evolvenNode = node.childs.get(i);
+            EvolvenNode last = node.childs.get(node.childs.size() - i);
+            node.childs.set(i, last);
+            node.childs.set(node.childs.size() - i, evolvenNode);
+        }
+
+        for (EvolvenNode child : node.childs) {
+            replace(child);
+        }
+
+    }
+
+    @Test
+    public void evolvenChildTest() {
+
+    }
+
+    @Test
+    public void evolvenReplaceNodeTest() {
+        Node node = new Node(2);
+        node.left = new Node(1);
+        node.right = new Node(3);
+        node.right.left = new Node(5);
+        node.right.right = new Node(4);
+        replace(node);
+    }
+
+    private void replace(Node node) {
+        if (node == null)
+            return;
+        Node rightTemp = node.right;
+        node.right = node.left;
+        node.left = rightTemp;
+        replace(node.left);
+        replace(node.right);
+    }
+
     @Test
     public void nodeTest() {
         Node node = new Node(1);
