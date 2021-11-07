@@ -33,46 +33,61 @@ public class AmdocsTest {
         }
     }
 
-    private void replace(EvolvenNode node) {
-        if (node == null)
+    private void mirror(EvolvenNode node) {
+        if (node == null || node.childs == null)
             return;
         //replace childs
-        for (int i = 0; i < node.childs.size() / 2 && node.childs.size() > 1; i++) {
+        for (int i = 0; i < node.childs.size() / 2; i++) {
             EvolvenNode evolvenNode = node.childs.get(i);
-            EvolvenNode last = node.childs.get(node.childs.size() - i);
+            EvolvenNode last = node.childs.get(node.childs.size() - (i + 1));
             node.childs.set(i, last);
-            node.childs.set(node.childs.size() - i, evolvenNode);
+            node.childs.set(node.childs.size() - (i + 1), evolvenNode);
         }
 
         for (EvolvenNode child : node.childs) {
-            replace(child);
+            mirror(child);
         }
 
     }
 
     @Test
-    public void evolvenChildTest() {
+    public void evolvenMirrorTreeWithMultipleChildTest() {
+        EvolvenNode node = new EvolvenNode(1);
+        node.childs = Arrays.asList(new EvolvenNode(2), new EvolvenNode(3), new EvolvenNode(4));
+        node.childs.get(0).childs = Arrays.asList(new EvolvenNode(21), new EvolvenNode(22), new EvolvenNode(23), new EvolvenNode(24), new EvolvenNode(25));
+        node.childs.get(1).childs = Arrays.asList(new EvolvenNode(31), new EvolvenNode(32), new EvolvenNode(33));
+        node.childs.get(2).childs = Arrays.asList(new EvolvenNode(41), new EvolvenNode(42), new EvolvenNode(43));
+
+        mirror(node);
+
+        Assert.assertEquals(4, node.childs.get(0).value);
+        Assert.assertEquals(3, node.childs.get(1).value);
+        Assert.assertEquals(2, node.childs.get(2).value);
+
+        Assert.assertEquals(43, node.childs.get(0).childs.get(0).value);
+        Assert.assertEquals(42, node.childs.get(0).childs.get(1).value);
+        Assert.assertEquals(41, node.childs.get(0).childs.get(2).value);
 
     }
 
     @Test
-    public void evolvenReplaceNodeTest() {
+    public void mirrorNodeTest() {
         Node node = new Node(2);
         node.left = new Node(1);
         node.right = new Node(3);
         node.right.left = new Node(5);
         node.right.right = new Node(4);
-        replace(node);
+        mirror(node);
     }
 
-    private void replace(Node node) {
+    private void mirror(Node node) {
         if (node == null)
             return;
         Node rightTemp = node.right;
         node.right = node.left;
         node.left = rightTemp;
-        replace(node.left);
-        replace(node.right);
+        mirror(node.left);
+        mirror(node.right);
     }
 
     @Test
