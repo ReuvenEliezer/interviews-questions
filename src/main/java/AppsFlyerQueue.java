@@ -1,9 +1,11 @@
 import org.junit.Test;
 
-public class AppsFlyerQueue {
+import java.util.Queue;
+
+public class AppsFlyerQueue<E> {
 //    https://www.geeksforgeeks.org/queue-linked-list-implementation/
 
-//    you need to create a Queue (FIFO)
+    //    you need to create a Queue (FIFO)
 //    implememt push & pop funcfions that will run with time complexity of o(1)
 //
 //    push(2) -> push(4) -> push(7)
@@ -12,15 +14,16 @@ public class AppsFlyerQueue {
     private Node rear;
 
     public class Node {
-        int value;
+        E value;
         Node next;
 
-        public Node(int value) {
+        public Node(E value) {
             this.value = value;
         }
     }
 
-    public void add(int i) {
+
+    public void add(E i) {
         Node currentNote = new Node(i);
         if (rear == null) {
             front = rear = currentNote;
@@ -30,14 +33,14 @@ public class AppsFlyerQueue {
         }
     }
 
-    public int peek() {
+    public E peek() {
         validateQueue();
         return front.value;
     }
 
-    public int poll() {
+    public E poll() {
         validateQueue();
-        int value = front.value;
+        E value = front.value;
         front = front.next;
 
         if (front == null)
@@ -52,17 +55,18 @@ public class AppsFlyerQueue {
 
     @Test
     public void test() {
-        add(1);
-        int pop1 = peek();
-        add(2);
-        int pop2 = peek();
-        add(3);
-        int pop3 = peek();
+        AppsFlyerQueue<Integer> appsFlyerQueue = new AppsFlyerQueue<>();
+        appsFlyerQueue.add(1);
+        Integer pop1 = appsFlyerQueue.peek();
+        appsFlyerQueue.add(2);
+        Integer pop2 = appsFlyerQueue.peek();
+        appsFlyerQueue.add(3);
+        Integer pop3 = appsFlyerQueue.peek();
 
-        int poll1 = poll();
-        int pop22 = peek();
-        int poll2 = poll();
-        int pop33 = peek();
+        Integer poll1 =appsFlyerQueue. poll();
+        Integer pop22 =appsFlyerQueue. peek();
+        Integer poll2 =appsFlyerQueue. poll();
+        Integer pop33 =appsFlyerQueue. peek();
 
     }
 }

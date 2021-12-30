@@ -16,6 +16,53 @@ import java.util.stream.Stream;
 public class InterviewsTest {
 
     @Test
+    public void trappingWaterTest() {
+        //https://practice.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1
+        //https://www.techiedelight.com/trapping-rain-water-within-given-set-bars/
+
+        Assert.assertEquals(10, trappingWater(new int[]{3, 0, 0, 2, 0, 4}));
+        Assert.assertEquals(10, trappingWater(new int[]{7, 4, 0, 9}));
+        Assert.assertEquals(0, trappingWater(new int[]{6, 9, 9}));
+
+        Assert.assertEquals(25, trappingWater(new int[]{7, 0, 4, 2, 5, 0, 6, 4, 0, 5}));
+    }
+
+    static int map(int n, String keys[], int arr[], String s) {
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < keys.length; i++) {
+            map.put(keys[i], arr[i]);
+        }
+        return map.get(s);
+        // code here
+    }
+
+    private static long trappingWater(int[] arr) {
+        if (arr.length < 2) return 0;
+
+        int startIndex = 0;
+        int endIndex = arr.length - 1;
+
+        int startHeight = arr[0];
+        int endHeight = arr[endIndex];
+
+
+        long totalWaterAmount = 0;
+        while (startIndex < endIndex) {
+            if (arr[startIndex] <= arr[endIndex]) {
+                startIndex++;
+                startHeight = Math.max(startHeight, arr[startIndex]);
+                totalWaterAmount += startHeight - arr[startIndex];
+            } else {
+                endIndex--;
+                endHeight = Math.max(endHeight, arr[endIndex]);
+                totalWaterAmount += endHeight - arr[endIndex];
+            }
+        }
+
+        return totalWaterAmount;
+    }
+
+    @Test
     public void test() {
         List<Integer> integers1 = Arrays.asList(1);
         Set<Integer> integers2 = new HashSet<>(Arrays.asList(2, 1));
@@ -170,8 +217,121 @@ public class InterviewsTest {
     int result;
 
     @Test
-    public void getCurrentMaxElementInOF1() {
+    public void binaryTreeReturnAllValuesAsListFromLeftToRightPostOrderTest() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/postorder-traversal-iterative/1/?problemStatus=unsolved&difficulty[]=1&page=1&query=problemStatusunsolveddifficulty[]1page1
+         */
+        BinaryTree tree = new BinaryTree();
 
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+
+        List<Integer> integers = postOrder(tree.root);
+        Assert.assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers);
+
+        List<Integer> integers2 = postOrderWithoutRecursive(tree.root);
+        Assert.assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers2);
+
+    }
+
+    @Test
+    public void binaryTreeReturnAllValuesAsListFromLeftToRightInOrderTest() {
+        /**
+         * https://practice.geeksforgeeks.org/problems/inorder-traversal-iterative/1/?problemStatus=unsolved&difficulty[]=1&page=1&query=problemStatusunsolveddifficulty[]1page1
+         */
+        BinaryTree tree = new BinaryTree();
+
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+
+        List<Integer> integers = inOrder(tree.root);
+        Assert.assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers);
+
+        List<Integer> integers2 = inOrderWithoutRecursive(tree.root);
+        Assert.assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers2);
+
+    }
+
+    private List<Integer> inOrderWithoutRecursive(Node root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<Node> queue = new Stack<>();
+        Node curr = root;
+        while (curr != null || !queue.isEmpty()) {
+            while (curr != null) {
+                queue.add(curr);
+                curr = curr.left;
+            }
+
+            curr = queue.pop();
+            result.add(curr.data);
+
+            curr = curr.right;
+        }
+        return result;
+    }
+
+    private List<Integer> inOrder(Node root) {
+        List<Integer> result = new ArrayList<>();
+        doRecursiveInOrder(root, result);
+        return result;
+    }
+
+    private void doRecursiveInOrder(Node node, List<Integer> result) {
+        if (node == null) return;
+        if (node.left != null) {
+            doRecursiveInOrder(node.left, result);
+        }
+        result.add(node.data);
+        if (node.right != null) {
+            doRecursiveInOrder(node.right, result);
+        }
+    }
+
+    private List<Integer> postOrderWithoutRecursive(Node root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            Node temp = stack.pop();
+            result.add(temp.data);
+            if (temp.left != null)
+                stack.push(temp.left);
+            if (temp.right != null)
+                stack.push(temp.right);
+        }
+        reverseList(result);
+        return result;
+    }
+
+    private void reverseList(List<Integer> result) {
+        for (int i = 0; i < result.size() / 2; i++) {
+            int tempValue = result.get(i);
+            result.set(i, result.get(result.size() - 1 - i));
+            result.set(result.size() - 1 - i, tempValue);
+        }
+    }
+
+    private List<Integer> postOrder(Node node) {
+        List<Integer> result = new ArrayList<>();
+        doRecursivePostOrder(node, result);
+        return result;
+    }
+
+    private void doRecursivePostOrder(Node node, List<Integer> result) {
+        if (node == null) return;
+        if (node.left != null) {
+            doRecursivePostOrder(node.left, result);
+        }
+        if (node.right != null) {
+            doRecursivePostOrder(node.right, result);
+        }
+        result.add(node.data);
     }
 
 

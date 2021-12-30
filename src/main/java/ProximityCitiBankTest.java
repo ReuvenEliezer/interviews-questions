@@ -105,7 +105,7 @@ public class ProximityCitiBankTest {
             mainMap.computeIfAbsent(map, v-> new ArrayList<>()).add(s);
         }
 
-        return mainMap.entrySet().stream().map(entry -> entry.getValue()).collect(Collectors.toList());
+        return new ArrayList<>(mainMap.values());
 
 //        List<List<String>> result = new ArrayList<>();
 //        for (Map.Entry<Map<Integer, Integer>, List<String>> mapListEntry : mainMap.entrySet()) {
