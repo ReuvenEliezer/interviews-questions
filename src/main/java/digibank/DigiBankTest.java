@@ -3,6 +3,13 @@ package digibank;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class DigiBankTest {
 
 
@@ -36,9 +43,24 @@ public class DigiBankTest {
 
 
     @Test
-    public void test() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        DigiBankService digiBankService = new DigiBankService();
-        digiBankService.init();
+    public void test() throws Exception {
+
+        EndWordRule endWordRuleA = new EndWordRule('a', true);
+        EndWordRule endWordRuleB = new EndWordRule('b', false);
+        EndWordRule endWordRuleC = new EndWordRule('c', true);
+
+        AllowedFollowersRule allowedFollowersRuleA = new AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
+
+         Map<Character, Set<DigiRule>> characterToRulesMap = new HashMap<>();
+
+        characterToRulesMap.put('a', Stream.of(allowedFollowersRuleA, endWordRuleA).collect(Collectors.toSet()));
+        characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).collect(Collectors.toSet()));
+        characterToRulesMap.put('c', Stream.of(allowedFollowersRuleC, endWordRuleC).collect(Collectors.toSet()));
+
+        DigiBankService digiBankService = new DigiBankService(characterToRulesMap);
+
         Assert.assertTrue(digiBankService.isValid("add"));
         Assert.assertTrue(digiBankService.isValid("ad"));
         Assert.assertFalse(digiBankService.isValid("ab"));

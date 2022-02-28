@@ -1,28 +1,14 @@
 package digibank;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DigiBankService {
-    private Map<Character, Set<DigiRule>> characterToRulesMap = new HashMap<>();
 
-    public void init() {
+    private Map<Character, Set<DigiRule>> characterToRulesMap;
 
-        EndWordRule endWordRuleA = new EndWordRule('a', true);
-        EndWordRule endWordRuleB = new EndWordRule('b', false);
-        EndWordRule endWordRuleC = new EndWordRule('c', true);
-
-        AllowedFollowersRule allowedFollowersRuleA = new AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
-        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
-        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
-
-        characterToRulesMap.put('a', Stream.of(allowedFollowersRuleA, endWordRuleA).collect(Collectors.toSet()));
-        characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).collect(Collectors.toSet()));
-        characterToRulesMap.put('c', Stream.of(allowedFollowersRuleC, endWordRuleC).collect(Collectors.toSet()));
+    public DigiBankService(Map<Character, Set<DigiRule>> characterToRulesMap) {
+        this.characterToRulesMap = characterToRulesMap;
     }
 
 

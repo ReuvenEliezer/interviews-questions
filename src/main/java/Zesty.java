@@ -25,9 +25,12 @@ public class Zesty {
 
     }
 
-    private List<Integer> calcResult(int[] ints) {
+    private List<Integer> calcResult(int[] arr) {
+        List<Integer> result = new ArrayList<>();
+
+        //collect all negative numbers in arr and put it to map
         Map<Integer, Integer> negativeValueToInstanceMap = new HashMap<>();
-        for (Integer integer : ints) {
+        for (Integer integer : arr) {
             if (integer < 0) {
                 negativeValueToInstanceMap.merge(integer, 1, Integer::sum);
 //                Integer instanceNum = negativeValueToInstanceMap.get(integer);
@@ -39,8 +42,8 @@ public class Zesty {
             }
         }
 
-        List<Integer> result = new ArrayList<>();
-        for (Integer integer : ints) {
+        //find the positive number in the map (by -) and if found -> reduce the instance from negative map.
+        for (Integer integer : arr) {
             if (integer > 0) {
                 Integer instanceNum = negativeValueToInstanceMap.computeIfPresent(-integer, (a, b) -> b - 1);
                 if (instanceNum != null && instanceNum >= 0) {

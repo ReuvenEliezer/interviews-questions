@@ -9,8 +9,8 @@ public class ImpervaTest {
 
     @Test
     public void imprevaTest() {
-//        mapCom mapCom = new mapComImpl();
-        mapCom mapCom = new mapComImplLocalDate();
+        mapCom mapCom = new mapComImpl();
+//        mapCom mapCom = new mapComImplLocalDate();
         mapCom.set(6, 20);
         mapCom.set(14, 25);
         mapCom.set(6, 25);

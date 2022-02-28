@@ -26,10 +26,16 @@ public class TimeTest {
 
     @Test
     public void dateTimeFormatter1() throws ParseException {
-        DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy H:mm:ss", Locale.ENGLISH);
+        /**
+         * https://www.callicoder.com/how-to-format-date-time-java/
+         * https://www.callicoder.com/how-to-convert-parse-string-to-date-java/
+         * https://www.callicoder.com/java-simpledateformat-thread-safety-issues/#how-should-i-use-simpledateformat-in-a-multi-threaded-environment
+         */
+
+        DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy H:mm:ss", Locale.ENGLISH);//thread-safety
         LocalDateTime out = LocalDateTime.parse("May 27, 2021 4:21:03", inFormatter);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy H:mm:ss aaa", Locale.ENGLISH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy H:mm:ss aaa", Locale.ENGLISH);//not-thread-safety
         Date date = simpleDateFormat.parse("May 27, 2021 4:21:03 PM");
         Timestamp timestamp = new Timestamp(date.getTime());
         long l = timestamp.toInstant().toEpochMilli();
