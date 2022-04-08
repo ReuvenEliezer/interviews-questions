@@ -7,8 +7,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
-import static sun.nio.cs.Surrogate.MAX;
-
 public class ComparatorTest {
 
 
@@ -265,9 +263,9 @@ public class ComparatorTest {
     }
 
     private String[] maxArray() {
-        String[] strings = new String[MAX];
+        String[] strings = new String[Integer.MAX_VALUE];
         Boolean result = Boolean.TRUE;
-        for (int i = 0; i < MAX; i++) {
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
             strings[i] = getString(result, i);
             result = !result;
         }

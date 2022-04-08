@@ -1,6 +1,5 @@
 import com.google.common.collect.Sets;
 
-import javafx.util.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
@@ -78,12 +77,12 @@ public class InterviewsTest {
 //        4 קיים במערך.
         int[] arr = {1, 3, 4, 8, 2, 6, 10, 7};
         // printSumOfPairIfExistInArr(arr);
-        List<Pair> result = getSumOfPairIfExistInArr(arr);
+        List<AmazonTest.Pair> result = getSumOfPairIfExistInArr(arr);
         Assert.assertEquals(6, result.size());
     }
 
-    private List<Pair> getSumOfPairIfExistInArr(int[] arr) {
-        List<Pair> result = new ArrayList<>();
+    private List<AmazonTest.Pair> getSumOfPairIfExistInArr(int[] arr) {
+        List<AmazonTest.Pair> result = new ArrayList<>();
         Map<Integer, Boolean> integersPrinted = new HashMap<>();
         for (int k : arr)
             integersPrinted.put(k, false);
@@ -96,7 +95,7 @@ public class InterviewsTest {
                 if (integersPrinted.containsKey(sum)) {
                     Boolean printed = integersPrinted.get(sum);
                     if (!printed) {
-                        result.add(new Pair(first, second));
+                        result.add(new AmazonTest.Pair(first, second));
                         integersPrinted.put(sum, true);
                         System.out.println(first + " " + second + " = " + sum);
                     }
