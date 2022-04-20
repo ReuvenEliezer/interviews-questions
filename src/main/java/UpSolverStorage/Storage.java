@@ -3,9 +3,9 @@ package UpSolverStorage;
 import java.util.List;
 
 public interface Storage {
-    void write(String fullPath, byte[] content);
+    void write(String fullPath, Content content);
 
-    byte[] read(String fullPath);
+    Content read(String fullPath);
 
     List<String> list(String fullPath);
 

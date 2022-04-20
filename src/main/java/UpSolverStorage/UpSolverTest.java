@@ -3,6 +3,7 @@ package UpSolverStorage;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.NoSuchElementException;
@@ -37,33 +38,44 @@ public class UpSolverTest {
 
 
     @Test
-    public void readTest() {
+    public void readFileTest() {
 //        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\");
         Path fullPath = Paths.get("C:\\Users\\fileName1");
-        byte[] content = "fileNameContent1".getBytes();
+        File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
         Storage storage = new StorageImpl();
         storage.write(fullPath.toString(), content);
 
-        byte[] result = storage.read(fullPath.toString());
+        Content result = storage.read(fullPath.toString());
+        Assert.assertNotNull(result);
+        Assert.assertEquals(content, result);
+    }
+
+    @Test
+    public void readDirectoryTest() {
+        Storage storage = new StorageImpl();
+        Path fullPath = Paths.get("C:\\Users\\Directory");
+        Content content = new Directory("Directory");
+        storage.write(fullPath.toString(), content);
+
+        Content result = storage.read(fullPath.toString());
         Assert.assertNotNull(result);
         Assert.assertEquals(content, result);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void notFoundTest() {
+    public void readFileNotExistPathTest() {
         Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\fileName1");
-        byte[] content = "fileNameContent1".getBytes();
+        File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
         storage.write(fullPath.toString(), content);
-        storage.read(fullPath.toString()+1);
+        storage.read(fullPath.toString() + 1);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void notFoundTest1() {
+    public void readFileNotFoundTest1() {
         Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\fileName1");
         storage.read(fullPath.toString());
-
     }
 
 

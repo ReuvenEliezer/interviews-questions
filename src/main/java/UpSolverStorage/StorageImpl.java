@@ -12,7 +12,7 @@ public class StorageImpl implements Storage {
 
 
     @Override
-    public void write(String fullPath, byte[] content) {
+    public void write(String fullPath, Content content) {
         //TODO impl
         validatePath(fullPath);
         String[] split = StringUtils.split(fullPath, "\\");
@@ -21,20 +21,13 @@ public class StorageImpl implements Storage {
         UpSolverNode upSolverRootNode = prefixPathToStorageMap.get(split[0]);
         UpSolverNode prevNode = null;
         if (upSolverRootNode == null) {
-            //TODO create it with children
+            //create it with children
             for (int i = 0; i < split.length; i++) {
-                Content content1;
-                if (i < split.length - 1) {
-                    content1 = new Directory(split[i]);
-                } else {
-                    content1 = new File(content, split[i]);
-                }
-
                 if (i == 0 && i < split.length - 1) {
-                    upSolverRootNode = new UpSolverNode(content1, null);
+                    upSolverRootNode = new UpSolverNode(content, null);
                     prefixPathToStorageMap.put(split[0], upSolverRootNode);
                 } else {
-                    upSolverRootNode = new UpSolverNode(content1, prevNode);
+                    upSolverRootNode = new UpSolverNode(content, prevNode);
                     prevNode.children.put(split[i], upSolverRootNode);
                 }
                 prevNode = upSolverRootNode;
@@ -49,7 +42,7 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public byte[] read(String fullPath) {
+    public Content read(String fullPath) {
         //TODO impl
         validatePath(fullPath);
         String[] split = StringUtils.split(fullPath, "\\");
@@ -64,10 +57,11 @@ public class StorageImpl implements Storage {
         }
         if (upSolverNode != null) {
             Content content = upSolverNode.content;
-            if (content instanceof File) {
-                File file = (File) content;
-                return file.content;
-            }
+            return content;
+//            if (content instanceof File) {
+//                File file = (File) content;
+//                return file.content;
+//            }
         }
         throw new NoSuchElementException();
     }
