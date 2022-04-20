@@ -59,7 +59,8 @@ public class UpSolverTest {
 
         Content result = storage.read(fullPath.toString());
         Assert.assertNotNull(result);
-        Assert.assertEquals(content, result);
+        Assert.assertTrue(result instanceof Directory);
+        Assert.assertEquals(content.name, result.name);
     }
 
     @Test(expected = NoSuchElementException.class)

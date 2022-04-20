@@ -2,6 +2,7 @@ package UpSolverStorage;
 
 import org.thymeleaf.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,13 +22,20 @@ public class StorageImpl implements Storage {
         UpSolverNode upSolverRootNode = prefixPathToStorageMap.get(split[0]);
         UpSolverNode prevNode = null;
         if (upSolverRootNode == null) {
-            //create it with children
+            //TODO create it with children
             for (int i = 0; i < split.length; i++) {
+                Content content1;
+                if (i < split.length - 1 || content instanceof Directory) {
+                    content1 = new Directory(split[i]);
+                } else {
+                    content1 = content;
+                }
+
                 if (i == 0 && i < split.length - 1) {
-                    upSolverRootNode = new UpSolverNode(content, null);
+                    upSolverRootNode = new UpSolverNode(content1, null);
                     prefixPathToStorageMap.put(split[0], upSolverRootNode);
                 } else {
-                    upSolverRootNode = new UpSolverNode(content, prevNode);
+                    upSolverRootNode = new UpSolverNode(content1, prevNode);
                     prevNode.children.put(split[i], upSolverRootNode);
                 }
                 prevNode = upSolverRootNode;
@@ -58,25 +66,8 @@ public class StorageImpl implements Storage {
         if (upSolverNode != null) {
             Content content = upSolverNode.content;
             return content;
-//            if (content instanceof File) {
-//                File file = (File) content;
-//                return file.content;
-//            }
         }
         throw new NoSuchElementException();
-    }
-
-    private UpSolverNode upSolverNodeRecursive(String prefix, Map<String, UpSolverNode> map) {
-        UpSolverNode upSolverNode = map.get(prefix);
-        if (upSolverNode.children == null) {
-            return upSolverNode;
-        }
-        return upSolverNodeRecursive(upSolverNode.path, upSolverNode.children);
-    }
-
-    private void validatePath(String fullPath) {
-        if (StringUtils.isEmpty(fullPath))
-            throw new IllegalArgumentException();
     }
 
     @Override
@@ -91,5 +82,18 @@ public class StorageImpl implements Storage {
         //TODO impl
         validatePath(fullPath);
         return Collections.emptyList();
+    }
+
+    private UpSolverNode upSolverNodeRecursive(String prefix, Map<String, UpSolverNode> map) {
+        UpSolverNode upSolverNode = map.get(prefix);
+        if (upSolverNode.children == null) {
+            return upSolverNode;
+        }
+        return upSolverNodeRecursive(upSolverNode.path, upSolverNode.children);
+    }
+
+    private void validatePath(String fullPath) {
+        if (StringUtils.isEmpty(fullPath))
+            throw new IllegalArgumentException();
     }
 }
