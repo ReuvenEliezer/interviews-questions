@@ -1,4 +1,8 @@
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Nokia {
 
@@ -11,7 +15,20 @@ public class Nokia {
      */
 
     @Test
-    public void test(){
+    public void returnIfAllStrStartWithSame() {
+        Assert.assertFalse(isAllStrStartWithSame(new String[]{"aaa", "aaa", "aab", "aba", "bb"}));
+        Assert.assertTrue(isAllStrStartWithSame(new String[]{"aaa", "aaa", "aab", "aba", "ab"}));
+    }
 
+    private boolean isAllStrStartWithSame(String[] arr) {
+        Map<String, Integer> map = new HashMap<>();
+        for (String s : arr) {
+            String s1 = s.split("")[0];
+            map.merge(s1, 1, Integer::sum);
+        }
+
+        if (map.size() <= 1)
+            return true;
+        return false;
     }
 }

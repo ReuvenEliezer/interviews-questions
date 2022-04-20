@@ -26,7 +26,7 @@ public class AmdocsTest {
 
     class EvolvenNode {
         int value;
-        List<EvolvenNode> childs;
+        List<EvolvenNode> children;
 
         public EvolvenNode(int value) {
             this.value = value;
@@ -34,17 +34,17 @@ public class AmdocsTest {
     }
 
     private void mirror(EvolvenNode node) {
-        if (node == null || node.childs == null)
+        if (node == null || node.children == null)
             return;
         //replace childs
-        for (int i = 0; i < node.childs.size() / 2; i++) {
-            EvolvenNode evolvenNode = node.childs.get(i);
-            EvolvenNode last = node.childs.get(node.childs.size() - (i + 1));
-            node.childs.set(i, last);
-            node.childs.set(node.childs.size() - (i + 1), evolvenNode);
+        for (int i = 0; i < node.children.size() / 2; i++) {
+            EvolvenNode evolvenNode = node.children.get(i);
+            EvolvenNode last = node.children.get(node.children.size() - (i + 1));
+            node.children.set(i, last);
+            node.children.set(node.children.size() - (i + 1), evolvenNode);
         }
 
-        for (EvolvenNode child : node.childs) {
+        for (EvolvenNode child : node.children) {
             mirror(child);
         }
 
@@ -53,20 +53,20 @@ public class AmdocsTest {
     @Test
     public void evolvenMirrorTreeWithMultipleChildTest() {
         EvolvenNode node = new EvolvenNode(1);
-        node.childs = Arrays.asList(new EvolvenNode(2), new EvolvenNode(3), new EvolvenNode(4));
-        node.childs.get(0).childs = Arrays.asList(new EvolvenNode(21), new EvolvenNode(22), new EvolvenNode(23), new EvolvenNode(24), new EvolvenNode(25));
-        node.childs.get(1).childs = Arrays.asList(new EvolvenNode(31), new EvolvenNode(32), new EvolvenNode(33));
-        node.childs.get(2).childs = Arrays.asList(new EvolvenNode(41), new EvolvenNode(42), new EvolvenNode(43));
+        node.children = Arrays.asList(new EvolvenNode(2), new EvolvenNode(3), new EvolvenNode(4));
+        node.children.get(0).children = Arrays.asList(new EvolvenNode(21), new EvolvenNode(22), new EvolvenNode(23), new EvolvenNode(24), new EvolvenNode(25));
+        node.children.get(1).children = Arrays.asList(new EvolvenNode(31), new EvolvenNode(32), new EvolvenNode(33));
+        node.children.get(2).children = Arrays.asList(new EvolvenNode(41), new EvolvenNode(42), new EvolvenNode(43));
 
         mirror(node);
 
-        Assert.assertEquals(4, node.childs.get(0).value);
-        Assert.assertEquals(3, node.childs.get(1).value);
-        Assert.assertEquals(2, node.childs.get(2).value);
+        Assert.assertEquals(4, node.children.get(0).value);
+        Assert.assertEquals(3, node.children.get(1).value);
+        Assert.assertEquals(2, node.children.get(2).value);
 
-        Assert.assertEquals(43, node.childs.get(0).childs.get(0).value);
-        Assert.assertEquals(42, node.childs.get(0).childs.get(1).value);
-        Assert.assertEquals(41, node.childs.get(0).childs.get(2).value);
+        Assert.assertEquals(43, node.children.get(0).children.get(0).value);
+        Assert.assertEquals(42, node.children.get(0).children.get(1).value);
+        Assert.assertEquals(41, node.children.get(0).children.get(2).value);
 
     }
 

@@ -75,6 +75,7 @@ public class MprestTest {
         Queue<LocalDateTime> lastReqTimeQueue = userReqTimeMap.get(userId);
         if (lastReqTimeQueue == null) {
             lastReqTimeQueue = new PriorityBlockingQueue<>();
+            lastReqTimeQueue.add(now);
             userReqTimeMap.put(userId, lastReqTimeQueue);
             return true;
         }

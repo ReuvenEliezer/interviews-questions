@@ -2,6 +2,8 @@ package angelsense;
 
 import lombok.*;
 
+import java.util.List;
+
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,5 +12,6 @@ import lombok.*;
 public class Name {
     private String firstName;
     private String lastName;
+    private List<String> stringList;
 
 }
