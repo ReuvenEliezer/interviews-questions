@@ -55,17 +55,19 @@ public class StorageImpl implements Storage {
         String[] split = StringUtils.split(fullPath, "\\");
         UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
         if (upSolverNode == null) {
-            new NoSuchElementException();
+            throw new NoSuchElementException();
         }
 
         for (int i = 1; i < split.length && upSolverNode.children != null; i++) {
             String s = split[i];
             upSolverNode = upSolverNode.children.get(s);
         }
-        Content content = upSolverNode.content;
-        if (content instanceof File) {
-            File file = (File) content;
-            return file.content;
+        if (upSolverNode != null) {
+            Content content = upSolverNode.content;
+            if (content instanceof File) {
+                File file = (File) content;
+                return file.content;
+            }
         }
         throw new NoSuchElementException();
     }

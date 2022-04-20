@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.NoSuchElementException;
 
 public class UpSolverTest {
 
@@ -36,20 +37,34 @@ public class UpSolverTest {
 
 
     @Test
-    public void test() {
+    public void readTest() {
 //        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\");
-        Path fullPath = Paths.get("C:\\Users\\fileNameContent1");
-
+        Path fullPath = Paths.get("C:\\Users\\fileName1");
         byte[] content = "fileNameContent1".getBytes();
-//        String fileName = "fil717717371eName1.csv";
-
         Storage storage = new StorageImpl();
         storage.write(fullPath.toString(), content);
 
         byte[] result = storage.read(fullPath.toString());
         Assert.assertNotNull(result);
         Assert.assertEquals(content, result);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void notFoundTest() {
+        Storage storage = new StorageImpl();
+        Path fullPath = Paths.get("C:\\Users\\fileName1");
+        byte[] content = "fileNameContent1".getBytes();
+        storage.write(fullPath.toString(), content);
+        storage.read(fullPath.toString()+1);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void notFoundTest1() {
+        Storage storage = new StorageImpl();
+        Path fullPath = Paths.get("C:\\Users\\fileName1");
+        storage.read(fullPath.toString());
 
     }
+
 
 }
