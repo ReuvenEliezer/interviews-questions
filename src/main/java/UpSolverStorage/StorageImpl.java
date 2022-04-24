@@ -9,7 +9,11 @@ import java.util.stream.Collectors;
 
 public class StorageImpl implements Storage {
 
-    private static Map<String, UpSolverNode> prefixPathToStorageMap = new ConcurrentHashMap<>();
+    private static Map<String, UpSolverNode> prefixPathToStorageMap;
+
+    StorageImpl() {
+        prefixPathToStorageMap = new ConcurrentHashMap<>();
+    }
 
     @Override
     public void write(String fullPath, Content content) {

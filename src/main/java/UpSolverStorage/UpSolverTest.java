@@ -1,6 +1,7 @@
 package UpSolverStorage;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -37,7 +38,6 @@ public class UpSolverTest {
      * Using the disk is not allowed.
      */
 
-
     @Test
     public void readFileTest() {
 //        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\");
@@ -52,8 +52,7 @@ public class UpSolverTest {
     }
 
     @Test
-    public void readFileOverrideTest() {
-//        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\");
+    public void readFileOverrideFile_AddDirAndListAndListRecursiveTest() {
         Path fullPath = Paths.get("C:\\Users\\fileName1");
         File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
         Storage storage = new StorageImpl();
@@ -93,6 +92,15 @@ public class UpSolverTest {
 
         List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
         Assert.assertEquals(3, listRecursively.size());
+    }
+
+    @Test
+    public void listAndListRecursiveTest() {
+        Storage storage = new StorageImpl();
+        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\fileName1.scv");
+        storage.write(fullPath.toString(), new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1.scv"));
+        List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
+        Assert.assertEquals(8, listRecursively.size());
     }
 
     @Test
