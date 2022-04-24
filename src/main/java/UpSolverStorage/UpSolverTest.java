@@ -3,9 +3,11 @@ package UpSolverStorage;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class UpSolverTest {
@@ -48,6 +50,50 @@ public class UpSolverTest {
         Content result = storage.read(fullPath.toString());
         Assert.assertNotNull(result);
         Assert.assertEquals(content, result);
+    }
+
+    @Test
+    public void readFileOverrideTest() {
+//        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\");
+        Path fullPath = Paths.get("C:\\Users\\fileName1");
+        File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
+        Storage storage = new StorageImpl();
+        storage.write(fullPath.toString(), content);
+
+        Content result = storage.read(fullPath.toString());
+        Assert.assertNotNull(result);
+        Assert.assertEquals(content, result);
+
+
+        File content2 = new File("fileName1Override".getBytes(StandardCharsets.UTF_8), "fileName1");
+        storage.write(fullPath.toString(), content2);
+
+        Content result2 = storage.read(fullPath.toString());
+        Assert.assertNotNull(result2);
+        Assert.assertTrue(result2 instanceof File);
+        File file = (File) result2;
+        String value = new String(file.content, StandardCharsets.UTF_8);
+        Assert.assertEquals(new String(content2.content, StandardCharsets.UTF_8), value);
+        Assert.assertEquals(content2, result2);
+
+
+        //create new dir
+        Path fullPath3 = Paths.get("C:\\Users\\Directory");
+        Content content3 = new Directory("Directory");
+        storage.write(fullPath3.toString(), content3);
+
+        Content result3 = storage.read(fullPath3.toString());
+        Assert.assertNotNull(result3);
+        Assert.assertTrue(result3 instanceof Directory);
+        Assert.assertEquals(content3.name, result3.name);
+
+
+        List<Content> list = storage.list(Paths.get("C:\\").toString());
+        Assert.assertEquals(1, list.size());
+//        Assert.assertEquals(List.of(content3), list);
+
+        List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
+        Assert.assertEquals(3, listRecursively.size());
     }
 
     @Test

@@ -5,12 +5,11 @@ import org.thymeleaf.util.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class StorageImpl implements Storage {
 
     private static Map<String, UpSolverNode> prefixPathToStorageMap = new ConcurrentHashMap<>();
-//    private static Map<String, ConcurrentHashMap<String, Content>> storage = new ConcurrentHashMap<>();
-
 
     @Override
     public void write(String fullPath, Content content) {
@@ -43,7 +42,43 @@ public class StorageImpl implements Storage {
 
         } else {
             //TODO search
-            for (String s : split) {
+            UpSolverNode prev = upSolverRootNode;
+            for (int i = 1; i < split.length; i++) {
+                Map<String, UpSolverNode> children = prev.children;
+                String s = split[i];
+                UpSolverNode upSolverRoot = children.get(s);
+                Content content1;
+                if (upSolverRoot == null) {
+                    //TODO create it
+                    if (i < split.length - 1 || content instanceof Directory) {
+                        content1 = new Directory(split[i]);
+                    } else {
+                        content1 = content;
+                    }
+                    upSolverRoot = new UpSolverNode(content1, prev);
+                    upSolverRoot.content = content1;
+                    prevNode.children.put(split[i], upSolverRoot);
+                } else {
+                    //TODO override
+                    if (i == split.length - 1) {
+                        if (content.name.equals(split[i]) && content instanceof File) {
+                            //TODO override
+                            prevNode.content = content;
+                        } else {
+                            //TODO create new
+                            if (content instanceof Directory) {
+                                content1 = new Directory(split[i]);
+                            } else {
+                                content1 = content;
+                            }
+                            upSolverRoot = new UpSolverNode(content1, prev);
+                            upSolverRoot.content = content1;
+                            prevNode.children.put(split[i], upSolverRoot);
+
+                        }
+                    }
+                }
+                prevNode = upSolverRoot;
             }
         }
 
@@ -71,25 +106,56 @@ public class StorageImpl implements Storage {
     }
 
     @Override
-    public List<String> list(String fullPath) {
+    public List<Content> list(String fullPath) {
         //TODO impl
         validatePath(fullPath);
+
+        String[] split = StringUtils.split(fullPath, "\\");
+        UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
+        if (upSolverNode == null) {
+            throw new NoSuchElementException();
+        }
+
+        for (int i = 1; i < split.length && upSolverNode.children != null; i++) {
+            String s = split[i];
+            upSolverNode = upSolverNode.children.get(s);
+        }
+        if (upSolverNode != null) {
+            Map<String, UpSolverNode> children = upSolverNode.children;
+            return children.values().stream().map(solverNode -> solverNode.content).collect(Collectors.toList());
+        }
         return Collections.emptyList();
     }
 
     @Override
-    public List<String> listRecursively(String fullPath) {
+    public List<Content> listRecursively(String fullPath) {
         //TODO impl
         validatePath(fullPath);
+        String[] split = StringUtils.split(fullPath, "\\");
+        UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
+        if (upSolverNode == null) {
+            throw new NoSuchElementException();
+        }
+
+        for (int i = 1; i < split.length && upSolverNode.children != null; i++) {
+            String s = split[i];
+            upSolverNode = upSolverNode.children.get(s);
+        }
+
+        if (upSolverNode != null) {
+            List<Content> contents = new ArrayList<>();
+            addContent(upSolverNode.children,contents);
+            return contents;
+        }
+
         return Collections.emptyList();
     }
 
-    private UpSolverNode upSolverNodeRecursive(String prefix, Map<String, UpSolverNode> map) {
-        UpSolverNode upSolverNode = map.get(prefix);
-        if (upSolverNode.children == null) {
-            return upSolverNode;
+    private void addContent(Map<String, UpSolverNode> upSolverNodeMap, List<Content> result) {
+        for (Map.Entry<String, UpSolverNode> entry : upSolverNodeMap.entrySet()) {
+            result.add(entry.getValue().content);
+            addContent(entry.getValue().children, result);
         }
-        return upSolverNodeRecursive(upSolverNode.path, upSolverNode.children);
     }
 
     private void validatePath(String fullPath) {

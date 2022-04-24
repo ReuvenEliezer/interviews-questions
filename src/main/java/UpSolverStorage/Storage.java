@@ -7,7 +7,7 @@ public interface Storage {
 
     Content read(String fullPath);
 
-    List<String> list(String fullPath);
+    List<Content> list(String fullPath);
 
-    List<String> listRecursively(String fullPath);
+    List<Content> listRecursively(String fullPath);
 }
