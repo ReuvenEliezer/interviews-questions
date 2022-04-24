@@ -16,10 +16,7 @@ public class StorageImpl implements Storage {
         //TODO impl
         validatePath(fullPath);
         String[] split = StringUtils.split(fullPath, "\\");
-
-//        UpSolverNode upSolverNode = prefixPathToStorageMap.computeIfAbsent(split[0], e -> new UpSolverNode(split[0]));
         UpSolverNode upSolverRootNode = prefixPathToStorageMap.get(split[0]);
-        UpSolverNode prevNode = null;
         if (upSolverRootNode == null) {
             //TODO create it with children
             for (int i = 0; i < split.length; i++) {
@@ -29,24 +26,22 @@ public class StorageImpl implements Storage {
                 } else {
                     content1 = content;
                 }
-
+                UpSolverNode upSolverNode;
                 if (i == 0 && i < split.length - 1) {
-                    upSolverRootNode = new UpSolverNode(content1, null);
-                    prefixPathToStorageMap.put(split[0], upSolverRootNode);
+                    upSolverNode = new UpSolverNode(content1, null);
+                    prefixPathToStorageMap.put(split[0], upSolverNode);
                 } else {
-                    upSolverRootNode = new UpSolverNode(content1, prevNode);
-                    prevNode.getChildren().put(split[i], upSolverRootNode);
+                    upSolverNode = new UpSolverNode(content1, upSolverRootNode);
+                    upSolverRootNode.getChildren().put(split[i], upSolverNode);
                 }
-                prevNode = upSolverRootNode;
+                upSolverRootNode = upSolverNode;
             }
-
         } else {
             //TODO search
-            UpSolverNode prev = upSolverRootNode;
             for (int i = 1; i < split.length; i++) {
-                Map<String, UpSolverNode> children = prev.getChildren();
-                String s = split[i];
-                UpSolverNode upSolverRoot = children.get(s);
+                Map<String, UpSolverNode> children = upSolverRootNode.getChildren();
+                String path = split[i];
+                UpSolverNode upSolverRoot = children.get(path);
                 Content content1;
                 if (upSolverRoot == null) {
                     //TODO create it
@@ -55,15 +50,15 @@ public class StorageImpl implements Storage {
                     } else {
                         content1 = content;
                     }
-                    upSolverRoot = new UpSolverNode(content1, prev);
+                    upSolverRoot = new UpSolverNode(content1, upSolverRootNode);
                     upSolverRoot.setContent(content1);
-                    prevNode.getChildren().put(split[i], upSolverRoot);
+                    upSolverRootNode.getChildren().put(split[i], upSolverRoot);
                 } else {
                     //TODO override
                     if (i == split.length - 1) {
                         if (content.name.equals(split[i]) && content instanceof File) {
                             //TODO override
-                            prevNode.setContent(content);
+                            upSolverRoot.setContent(content);
                         } else {
                             //TODO create new
                             if (content instanceof Directory) {
@@ -71,14 +66,13 @@ public class StorageImpl implements Storage {
                             } else {
                                 content1 = content;
                             }
-                            upSolverRoot = new UpSolverNode(content1, prev);
+                            upSolverRoot = new UpSolverNode(content1, upSolverRootNode);
                             upSolverRoot.setContent(content1);
-                            prevNode.getChildren().put(split[i], upSolverRoot);
-
+                            upSolverRootNode.getChildren().put(split[i], upSolverRoot);
                         }
                     }
                 }
-                prevNode = upSolverRoot;
+                upSolverRootNode = upSolverRoot;
             }
         }
 
