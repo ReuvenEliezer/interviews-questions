@@ -1,14 +1,19 @@
 package UpSolverStorage;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Getter
+@Setter
 public class UpSolverNode {
-    String path;
-    Content content;
-    UpSolverNode parent;
+    private String path;
+    private Content content;
+    private UpSolverNode parent;
 
-    Map<String, UpSolverNode> children = new ConcurrentHashMap<>();
+    private Map<String, UpSolverNode> children = new ConcurrentHashMap<>();
 
     public UpSolverNode(Content content, UpSolverNode parent) {
         this.path = content.name;
@@ -18,6 +23,5 @@ public class UpSolverNode {
 
     public UpSolverNode(String path) {
         this.path = path;
-
     }
 }

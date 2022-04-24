@@ -35,7 +35,7 @@ public class StorageImpl implements Storage {
                     prefixPathToStorageMap.put(split[0], upSolverRootNode);
                 } else {
                     upSolverRootNode = new UpSolverNode(content1, prevNode);
-                    prevNode.children.put(split[i], upSolverRootNode);
+                    prevNode.getChildren().put(split[i], upSolverRootNode);
                 }
                 prevNode = upSolverRootNode;
             }
@@ -44,7 +44,7 @@ public class StorageImpl implements Storage {
             //TODO search
             UpSolverNode prev = upSolverRootNode;
             for (int i = 1; i < split.length; i++) {
-                Map<String, UpSolverNode> children = prev.children;
+                Map<String, UpSolverNode> children = prev.getChildren();
                 String s = split[i];
                 UpSolverNode upSolverRoot = children.get(s);
                 Content content1;
@@ -56,14 +56,14 @@ public class StorageImpl implements Storage {
                         content1 = content;
                     }
                     upSolverRoot = new UpSolverNode(content1, prev);
-                    upSolverRoot.content = content1;
-                    prevNode.children.put(split[i], upSolverRoot);
+                    upSolverRoot.setContent(content1);
+                    prevNode.getChildren().put(split[i], upSolverRoot);
                 } else {
                     //TODO override
                     if (i == split.length - 1) {
                         if (content.name.equals(split[i]) && content instanceof File) {
                             //TODO override
-                            prevNode.content = content;
+                            prevNode.setContent(content);
                         } else {
                             //TODO create new
                             if (content instanceof Directory) {
@@ -72,8 +72,8 @@ public class StorageImpl implements Storage {
                                 content1 = content;
                             }
                             upSolverRoot = new UpSolverNode(content1, prev);
-                            upSolverRoot.content = content1;
-                            prevNode.children.put(split[i], upSolverRoot);
+                            upSolverRoot.setContent(content1);
+                            prevNode.getChildren().put(split[i], upSolverRoot);
 
                         }
                     }
@@ -94,13 +94,12 @@ public class StorageImpl implements Storage {
             throw new NoSuchElementException();
         }
 
-        for (int i = 1; i < split.length && upSolverNode.children != null; i++) {
+        for (int i = 1; i < split.length && upSolverNode.getChildren() != null; i++) {
             String s = split[i];
-            upSolverNode = upSolverNode.children.get(s);
+            upSolverNode = upSolverNode.getChildren().get(s);
         }
         if (upSolverNode != null) {
-            Content content = upSolverNode.content;
-            return content;
+            return upSolverNode.getContent();
         }
         throw new NoSuchElementException();
     }
@@ -116,13 +115,13 @@ public class StorageImpl implements Storage {
             throw new NoSuchElementException();
         }
 
-        for (int i = 1; i < split.length && upSolverNode.children != null; i++) {
+        for (int i = 1; i < split.length && upSolverNode.getChildren() != null; i++) {
             String s = split[i];
-            upSolverNode = upSolverNode.children.get(s);
+            upSolverNode = upSolverNode.getChildren().get(s);
         }
         if (upSolverNode != null) {
-            Map<String, UpSolverNode> children = upSolverNode.children;
-            return children.values().stream().map(solverNode -> solverNode.content).collect(Collectors.toList());
+            Map<String, UpSolverNode> children = upSolverNode.getChildren();
+            return children.values().stream().map(UpSolverNode::getContent).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -137,14 +136,14 @@ public class StorageImpl implements Storage {
             throw new NoSuchElementException();
         }
 
-        for (int i = 1; i < split.length && upSolverNode.children != null; i++) {
+        for (int i = 1; i < split.length && upSolverNode.getChildren() != null; i++) {
             String s = split[i];
-            upSolverNode = upSolverNode.children.get(s);
+            upSolverNode = upSolverNode.getChildren().get(s);
         }
 
         if (upSolverNode != null) {
             List<Content> contents = new ArrayList<>();
-            addContent(upSolverNode.children,contents);
+            addContent(upSolverNode.getChildren(), contents);
             return contents;
         }
 
@@ -153,8 +152,9 @@ public class StorageImpl implements Storage {
 
     private void addContent(Map<String, UpSolverNode> upSolverNodeMap, List<Content> result) {
         for (Map.Entry<String, UpSolverNode> entry : upSolverNodeMap.entrySet()) {
-            result.add(entry.getValue().content);
-            addContent(entry.getValue().children, result);
+            UpSolverNode upSolverNode = entry.getValue();
+            result.add(upSolverNode.getContent());
+            addContent(upSolverNode.getChildren(), result);
         }
     }
 
