@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class LRUCacheImpl2 implements LRUCache {
+public class LRUCacheImpl2 implements LRUCache<Integer, Integer> {
     private Map<Integer, RecentlyValueUsed> map;
     private final int maxSize;
     private PriorityQueue<RecentlyValueUsed> queue;
@@ -19,8 +19,7 @@ public class LRUCacheImpl2 implements LRUCache {
     }
 
     @Override
-    public int get(int key){
-
+    public Integer get(Integer key){
         RecentlyValueUsed recentlyUsedValue = map.get(key);
         if (recentlyUsedValue == null)
             return -1;
@@ -31,7 +30,7 @@ public class LRUCacheImpl2 implements LRUCache {
     }
 
     @Override
-    public void put(int key, int value)  {
+    public void put(Integer key, Integer value)  {
 
         if (map.size() == maxSize && !map.containsKey(key)) {
             RecentlyValueUsed poll = queue.remove();

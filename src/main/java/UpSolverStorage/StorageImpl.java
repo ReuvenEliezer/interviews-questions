@@ -2,7 +2,6 @@ package UpSolverStorage;
 
 import org.thymeleaf.util.StringUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -17,7 +16,6 @@ public class StorageImpl implements Storage {
 
     @Override
     public void write(String fullPath, Content content) {
-        //TODO impl
         validatePath(fullPath);
         String[] split = StringUtils.split(fullPath, "\\");
         UpSolverNode upSolverRootNode = prefixPathToStorageMap.get(split[0]);
@@ -79,23 +77,12 @@ public class StorageImpl implements Storage {
                 upSolverRootNode = upSolverRoot;
             }
         }
-
     }
 
     @Override
     public Content read(String fullPath) {
-        //TODO impl
         validatePath(fullPath);
-        String[] split = StringUtils.split(fullPath, "\\");
-        UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
-        if (upSolverNode == null) {
-            throw new NoSuchElementException();
-        }
-
-        for (int i = 1; i < split.length && upSolverNode.getChildren() != null; i++) {
-            String s = split[i];
-            upSolverNode = upSolverNode.getChildren().get(s);
-        }
+        UpSolverNode upSolverNode = findRelevantPath(fullPath);
         if (upSolverNode != null) {
             return upSolverNode.getContent();
         }
@@ -104,19 +91,9 @@ public class StorageImpl implements Storage {
 
     @Override
     public List<Content> list(String fullPath) {
-        //TODO impl
         validatePath(fullPath);
 
-        String[] split = StringUtils.split(fullPath, "\\");
-        UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
-        if (upSolverNode == null) {
-            throw new NoSuchElementException();
-        }
-
-        for (int i = 1; i < split.length && upSolverNode.getChildren() != null; i++) {
-            String s = split[i];
-            upSolverNode = upSolverNode.getChildren().get(s);
-        }
+        UpSolverNode upSolverNode = findRelevantPath(fullPath);
         if (upSolverNode != null) {
             Map<String, UpSolverNode> children = upSolverNode.getChildren();
             return children.values().stream().map(UpSolverNode::getContent).collect(Collectors.toList());
@@ -126,8 +103,19 @@ public class StorageImpl implements Storage {
 
     @Override
     public List<Content> listRecursively(String fullPath) {
-        //TODO impl
         validatePath(fullPath);
+        UpSolverNode upSolverNode = findRelevantPath(fullPath);
+
+        if (upSolverNode != null) {
+            List<Content> contents = new ArrayList<>();
+            addContent(upSolverNode.getChildren(), contents);
+            return contents;
+        }
+
+        return Collections.emptyList();
+    }
+
+    private UpSolverNode findRelevantPath(String fullPath) {
         String[] split = StringUtils.split(fullPath, "\\");
         UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
         if (upSolverNode == null) {
@@ -138,14 +126,7 @@ public class StorageImpl implements Storage {
             String s = split[i];
             upSolverNode = upSolverNode.getChildren().get(s);
         }
-
-        if (upSolverNode != null) {
-            List<Content> contents = new ArrayList<>();
-            addContent(upSolverNode.getChildren(), contents);
-            return contents;
-        }
-
-        return Collections.emptyList();
+        return upSolverNode;
     }
 
     private void addContent(Map<String, UpSolverNode> upSolverNodeMap, List<Content> result) {

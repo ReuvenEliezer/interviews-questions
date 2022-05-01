@@ -21,7 +21,4 @@ public class UpSolverNode {
         this.parent = parent;
     }
 
-    public UpSolverNode(String path) {
-        this.path = path;
-    }
 }

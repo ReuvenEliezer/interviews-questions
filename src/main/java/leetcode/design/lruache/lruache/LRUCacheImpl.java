@@ -3,7 +3,7 @@ package leetcode.design.lruache.lruache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LRUCacheImpl implements LRUCache {
+public class LRUCacheImpl implements LRUCache<Integer, Integer> {
     private LinkedHashMap<Integer, Integer> map;
 
     public LRUCacheImpl(int capacity) {
@@ -16,7 +16,7 @@ public class LRUCacheImpl implements LRUCache {
     }
 
     @Override
-    public int get(int key) {
+    public Integer get(Integer key) {
         if (!map.containsKey(key))
             return -1;
 
@@ -27,7 +27,7 @@ public class LRUCacheImpl implements LRUCache {
     }
 
     @Override
-    public void put(int key, int value) {
+    public void put(Integer key, Integer value) {
         map.remove(key);
         map.put(key, value);
     }

@@ -126,7 +126,7 @@ public class UpSolverTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void readFileNotFoundTest1() {
+    public void readFileNotFoundTest() {
         Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\fileName1");
         storage.read(fullPath.toString());

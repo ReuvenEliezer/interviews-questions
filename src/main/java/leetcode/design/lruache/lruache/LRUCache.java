@@ -1,8 +1,8 @@
 package leetcode.design.lruache.lruache;
 
-public interface LRUCache {
+public interface LRUCache<K, V> {
 
-    int get(int key);
+    V get(K key);
 
-    void put(int key, int value);
+    void put(K key, V value);
 }
