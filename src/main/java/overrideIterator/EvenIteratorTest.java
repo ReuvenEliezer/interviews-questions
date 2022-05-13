@@ -1,4 +1,4 @@
-package overideiIterator;
+package overrideIterator;
 
 import org.junit.Test;
 

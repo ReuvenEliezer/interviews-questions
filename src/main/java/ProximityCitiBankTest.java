@@ -106,14 +106,6 @@ public class ProximityCitiBankTest {
         }
 
         return new ArrayList<>(mainMap.values());
-
-//        List<List<String>> result = new ArrayList<>();
-//        for (Map.Entry<Map<Integer, Integer>, List<String>> mapListEntry : mainMap.entrySet()) {
-//            List<String> inner = new ArrayList<>();
-//            inner.addAll(mapListEntry.getValue());
-//            result.add(inner);
-//        }
-//        return result;
     }
 
     private boolean isAnagram(String str1, String str2) {
@@ -160,6 +152,9 @@ public class ProximityCitiBankTest {
 
     @Test
     public void sortChars() {
+        /**
+         * https://www.geeksforgeeks.org/sort-string-characters/
+         */
         String s = "zxcvbnmlkjhgffffdaserwqtyufffiop";
         Map<Integer, Integer> charsCounts = getCharsCounts(s);
         StringBuilder sb = new StringBuilder();

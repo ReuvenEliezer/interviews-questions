@@ -1,12 +1,13 @@
 package leetcode.design.lruache.lruache;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.apache.commons.collections4.map.LRUMap;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class LRUCacheTests {
@@ -88,6 +89,20 @@ public class LRUCacheTests {
 
     @Test
     public void test5() {
+        LRUCacheImpl5<Integer, Integer> lruCache = new LRUCacheImpl5<>(2);
+        lruCache.put(1, 1); // cache is {1=1}
+        lruCache.put(2, 2); // cache is {1=1, 2=2}
+        Assert.assertEquals(Integer.valueOf(1), lruCache.get(1));
+        lruCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+        Assert.assertEquals(null, lruCache.get(2));    // returns -1 (not found)
+        lruCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+        Assert.assertEquals(null, lruCache.get(1));    // return -1 (not found)
+        Assert.assertEquals(Integer.valueOf(3), lruCache.get(3));    // return 3
+        Assert.assertEquals(Integer.valueOf(4), lruCache.get(4));    // return 4
+    }
+
+    @Test
+    public void test6() {
         LRUMap<Integer, Integer> lruCache = new LRUMap<>(2);
         lruCache.put(1, 1); // cache is {1=1}
         lruCache.put(2, 2); // cache is {1=1, 2=2}
@@ -101,4 +116,36 @@ public class LRUCacheTests {
     }
 
 
+    @Test
+    public void test7() {
+        Lock lock1 = new Lock(1, 2, 3);
+        Lock lock2 = new Lock(1, 3, 1);
+//        boolean equals = lock1.equals(lock2);
+        Set<Lock> locks = new HashSet<>();
+        locks.add(lock1);
+        locks.add(lock2);
+
+    }
+
+    @AllArgsConstructor
+    @Getter
+    class Lock {
+        Integer current;
+        Integer prev;
+        Integer next;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Lock lock = (Lock) o;
+            return Objects.equals(current, lock.current) && Objects.equals(prev, lock.prev) && Objects.equals(next, lock.next);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(current, prev, next);
+        }
+    }
 }
+

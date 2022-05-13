@@ -6,8 +6,8 @@ import java.util.Map;
 public class LRUCacheImpl implements LRUCache<Integer, Integer> {
     private LinkedHashMap<Integer, Integer> map;
 
-    public LRUCacheImpl(int capacity) {
-        this.map = new LinkedHashMap<Integer, Integer>() {
+    public LRUCacheImpl(final int capacity) {
+        this.map = new LinkedHashMap<>() {
             @Override
             public boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
                 return size() > capacity;

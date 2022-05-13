@@ -6,12 +6,14 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class LRUCacheTests3 {
 
     @Test
     public void test() {
+        LinkedHashMap  map = new LinkedHashMap<>();
         LRUCacheImpl3 lruCache = new LRUCacheImpl3(2);
 
 //        LRUCache lruCache = new LRUCacheImpl2(2);

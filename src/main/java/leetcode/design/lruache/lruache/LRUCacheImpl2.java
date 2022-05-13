@@ -12,7 +12,7 @@ public class LRUCacheImpl2 implements LRUCache<Integer, Integer> {
     private final int maxSize;
     private PriorityQueue<RecentlyValueUsed> queue;
 
-    public LRUCacheImpl2(int capacity) {
+    public LRUCacheImpl2(final int capacity) {
         map = new HashMap<>(capacity);
         maxSize = capacity;
         queue = new PriorityQueue(capacity, Comparator.comparing(RecentlyValueUsed::getLocalDateTime));

@@ -38,6 +38,7 @@ public class AngleSenseReflectionTest {
             Boolean.class, Character.class, Byte.class, Short.class,
             Integer.class, Long.class, Float.class, Double.class, Void.class,
             String.class);
+
     private static String printObject(Object o) throws Exception {
         if (o == null)
             return "";
@@ -45,17 +46,17 @@ public class AngleSenseReflectionTest {
             return o.toString();
 
         Field[] fields = o.getClass().getDeclaredFields();
-        String className = o.getClass().getName();
+        String className = o.getClass().getSimpleName();
         StringBuilder sb = new StringBuilder(className)
                 .append(System.lineSeparator())
-                .append("-----------")
+//                .append("-----------")
 //                .append(tabs(1, true)
                 ;
         for (Field field : fields) {
             if (Modifier.isStatic(field.getModifiers()))
                 continue;
             field.setAccessible(true); // You might want to set modifier to public first.
-            Object value =  field.get(o);
+            Object value = field.get(o);
             sb.append(field.getName()).append("=");
             if (value instanceof Object[]) {
                 writeArr(sb, (Object[]) value);
@@ -103,5 +104,53 @@ public class AngleSenseReflectionTest {
         IntStream.range(0, count).forEach(i -> result.append(TAB));
         return result;
     }
+
+
+    @Test
+    public void test1() throws Exception {
+        A a = new A();
+        System.out.println(printObject(a));
+        System.out.println(toStringRecursive(a));
+    }
+
+    class A {
+        int i = 5;
+        B obj = new B();
+        String str = "hello";
+
+        public String toString() {
+            return String.format("A: [i: %d, obj: %s, str: %s]", i, obj, str);
+        }
+    }
+
+    class B {
+        int j = 17;
+
+        public String toString() {
+            return String.format("B: [j: %d]", j);
+        }
+    }
+
+    public static String toStringRecursive(Object o) throws Exception {
+
+        if (o == null)
+            return "null";
+
+        if (LEAVES.contains(o.getClass()))
+            return o.toString();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(o.getClass().getSimpleName()).append(": [");
+        for (Field f : o.getClass().getDeclaredFields()) {
+            if (Modifier.isStatic(f.getModifiers()))
+                continue;
+            f.setAccessible(true);
+            sb.append(f.getName()).append(": ");
+            sb.append(toStringRecursive(f.get(o))).append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 
 }
