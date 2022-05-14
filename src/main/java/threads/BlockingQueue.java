@@ -16,7 +16,6 @@ public class BlockingQueue<T> {
      * https://www.geeksforgeeks.org/blockingqueue-interface-in-java/
      */
 
-    ExecutorService executorService = new ScheduledThreadPoolExecutor(2);
     private List<T> list = new LinkedList<>();
 
     public synchronized void put(T t) {
@@ -40,6 +39,7 @@ public class BlockingQueue<T> {
 
     @Test
     public void test() throws InterruptedException, ExecutionException {
+        ExecutorService executorService = new ScheduledThreadPoolExecutor(2);
         BlockingQueue<Integer> blockingQueue = new BlockingQueue();
         Future<?> get = executorService.submit(blockingQueue::get);
         Thread.sleep(5000);
