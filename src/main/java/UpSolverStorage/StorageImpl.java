@@ -24,8 +24,10 @@ public class StorageImpl implements Storage {
             upSolverParentNode = createRootNode(content, split[0]);
             for (int i = 1; i < split.length; i++) {
                 String path = split[i];
-                UpSolverNode upSolverNode = createNewNode(content, upSolverParentNode, path);
-                upSolverParentNode = upSolverNode;
+                /**
+                 * the next node that created will be a parent node for the next iteration
+                 */
+                upSolverParentNode = createNewNode(content, upSolverParentNode, path);
             }
         } else {
             //TODO search
@@ -127,7 +129,6 @@ public class StorageImpl implements Storage {
     }
 
     private void validatePath(String fullPath) {
-        if (StringUtils.isEmpty(fullPath))
-            throw new IllegalArgumentException();
+        if (StringUtils.isEmpty(fullPath)) throw new IllegalArgumentException();
     }
 }
