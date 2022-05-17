@@ -22,7 +22,7 @@ public class BlockingQueue<T> {
         System.out.println("put value: " + t);
         list.add(t);
         System.out.println("notifyAll");
-        notifyAll(); // u can to mark if using wait(timeout) with a timeout value
+        notifyAll(); // u can to mark it, if using wait(timeout) with a timeout value
     }
 
     public synchronized T get() throws InterruptedException {

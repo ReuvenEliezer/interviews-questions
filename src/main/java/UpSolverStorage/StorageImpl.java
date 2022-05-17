@@ -17,9 +17,9 @@ public class StorageImpl implements Storage {
     @Override
     public void write(String fullPath, Content content) {
         validatePath(fullPath);
-        String[] split = StringUtils.split(fullPath, "\\");
-        UpSolverNode upSolverRootNode = prefixPathToStorageMap.get(split[0]);
-        if (upSolverRootNode == null) {
+        String[] split = splitPath(fullPath);
+        UpSolverNode upSolverParentNode = prefixPathToStorageMap.get(split[0]);
+        if (upSolverParentNode == null) {
             //TODO create it with children
             for (int i = 0; i < split.length; i++) {
                 Content content1;
@@ -33,50 +33,55 @@ public class StorageImpl implements Storage {
                     upSolverNode = new UpSolverNode(content1, null);
                     prefixPathToStorageMap.put(split[0], upSolverNode);
                 } else {
-                    upSolverNode = new UpSolverNode(content1, upSolverRootNode);
-                    upSolverRootNode.getChildren().put(split[i], upSolverNode);
+                    upSolverNode = createNewNode(content1, upSolverParentNode, split[i]);
                 }
-                upSolverRootNode = upSolverNode;
+                upSolverParentNode = upSolverNode;
             }
         } else {
             //TODO search
             for (int i = 1; i < split.length; i++) {
-                Map<String, UpSolverNode> children = upSolverRootNode.getChildren();
+                Map<String, UpSolverNode> children = upSolverParentNode.getChildren();
                 String path = split[i];
-                UpSolverNode upSolverRoot = children.get(path);
+                UpSolverNode upSolverNode = children.get(path);
                 Content content1;
-                if (upSolverRoot == null) {
+                if (upSolverNode == null) {
                     //TODO create it
                     if (i < split.length - 1 || content instanceof Directory) {
                         content1 = new Directory(split[i]);
                     } else {
                         content1 = content;
                     }
-                    upSolverRoot = new UpSolverNode(content1, upSolverRootNode);
-                    upSolverRoot.setContent(content1);
-                    upSolverRootNode.getChildren().put(split[i], upSolverRoot);
+                    upSolverNode = createNewNode(content1, upSolverParentNode, split[i]);
                 } else {
                     //TODO override
                     if (i == split.length - 1) {
-                        if (content.name.equals(split[i]) && content instanceof File) {
+                        if (content.name.equals(path) && content instanceof File) {
                             //TODO override
-                            upSolverRoot.setContent(content);
+                            upSolverNode.setContent(content);
                         } else {
                             //TODO create new
                             if (content instanceof Directory) {
-                                content1 = new Directory(split[i]);
+                                content1 = new Directory(path);
                             } else {
                                 content1 = content;
                             }
-                            upSolverRoot = new UpSolverNode(content1, upSolverRootNode);
-                            upSolverRoot.setContent(content1);
-                            upSolverRootNode.getChildren().put(split[i], upSolverRoot);
+                            upSolverNode = createNewNode(content1, upSolverParentNode, path);
                         }
                     }
                 }
-                upSolverRootNode = upSolverRoot;
+                upSolverParentNode = upSolverNode;
             }
         }
+    }
+
+    private UpSolverNode createNewNode(Content content, UpSolverNode parentNode, String path) {
+        UpSolverNode upSolverRoot = new UpSolverNode(content, parentNode);
+        parentNode.getChildren().put(path, upSolverRoot);
+        return upSolverRoot;
+    }
+
+    private String[] splitPath(String fullPath) {
+        return StringUtils.split(fullPath, "\\");
     }
 
     @Override
@@ -92,7 +97,6 @@ public class StorageImpl implements Storage {
     @Override
     public List<Content> list(String fullPath) {
         validatePath(fullPath);
-
         UpSolverNode upSolverNode = findRelevantPath(fullPath);
         if (upSolverNode != null) {
             Map<String, UpSolverNode> children = upSolverNode.getChildren();
@@ -106,17 +110,17 @@ public class StorageImpl implements Storage {
         validatePath(fullPath);
         UpSolverNode upSolverNode = findRelevantPath(fullPath);
 
+        List<Content> contents = new ArrayList<>();
         if (upSolverNode != null) {
-            List<Content> contents = new ArrayList<>();
             addContent(upSolverNode.getChildren(), contents);
             return contents;
         }
 
-        return Collections.emptyList();
+        return contents;
     }
 
     private UpSolverNode findRelevantPath(String fullPath) {
-        String[] split = StringUtils.split(fullPath, "\\");
+        String[] split = splitPath(fullPath);
         UpSolverNode upSolverNode = prefixPathToStorageMap.get(split[0]);
         if (upSolverNode == null) {
             throw new NoSuchElementException();

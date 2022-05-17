@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LRUCacheImpl5<K, V> extends LinkedHashMap<K, V> {//implements LRUCache<K, V> {
     /**
      * https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/?ref=lbp
+     * https://aaronice.gitbook.io/lintcode/data_structure/lru_cache
      * <p>
      * <p>
      * /**
