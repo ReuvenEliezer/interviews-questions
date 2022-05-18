@@ -8,35 +8,35 @@ import java.util.stream.Collectors;
 
 public class StorageImpl implements Storage {
 
-    private static Map<String, UpSolverNode> prefixPathToStorageMap;
-
-    StorageImpl() {
-        prefixPathToStorageMap = new ConcurrentHashMap<>();
-    }
+    private Map<String, UpSolverNode> prefixPathToStorageMap = new ConcurrentHashMap<>();
 
     @Override
     public void write(String fullPath, Content content) {
         validatePath(fullPath);
         String[] split = splitPath(fullPath);
         UpSolverNode upSolverParentNode = prefixPathToStorageMap.get(split[0]);
+        boolean isDirectory;
         if (upSolverParentNode == null) {
-            //TODO create it with children
-            upSolverParentNode = createRootNode(content, split[0], split.length > 1);
+            //create it with children
+            isDirectory = isDirectory(split.length, 0, content);
+            upSolverParentNode = createRootNode(content, split[0], isDirectory);
             for (int i = 1; i < split.length; i++) {
                 String path = split[i];
                 //the next node that created will be a parent node for the next iteration
-                upSolverParentNode = createNewNode(content, upSolverParentNode, path, i < split.length - 1);
+                isDirectory = isDirectory(split.length, i, content);
+                upSolverParentNode = createNewNode(content, upSolverParentNode, path, isDirectory);
             }
         } else {
-            //TODO search
+            //search by path
             for (int i = 1; i < split.length; i++) {
                 Map<String, UpSolverNode> children = upSolverParentNode.getChildren();
                 String path = split[i];
                 UpSolverNode upSolverNode = children.get(path);
                 if (upSolverNode == null) {
-                    upSolverNode = createNewNode(content, upSolverParentNode, path, i < split.length - 1);
+                    isDirectory = isDirectory(split.length, i, content);
+                    upSolverNode = createNewNode(content, upSolverParentNode, path, isDirectory);
                 } else if (i == split.length - 1 && content.name.equals(path) && content instanceof File) {
-                    //TODO override
+                    //override content file
                     upSolverNode.setContent(content);
                 }
                 upSolverParentNode = upSolverNode;
@@ -87,28 +87,23 @@ public class StorageImpl implements Storage {
             addContentRecursive(upSolverNode.getChildren().values(), contents);
             return contents;
         }
-
         return contents;
     }
 
     private UpSolverNode createRootNode(Content content, String path, boolean isDirectory) {
-        content = buildContentPath(content, path, isDirectory);
+        content = isDirectory ? new Directory(path) : content;
         UpSolverNode upSolverRoot = new UpSolverNode(content, null);
         prefixPathToStorageMap.put(path, upSolverRoot);
         return upSolverRoot;
     }
 
-    private Content buildContentPath(Content content, String path, boolean isDirectory) {
-        if (isDirectory || content instanceof Directory) {
-            //create the path as Directory
-            return new Directory(path);
-        }
-        return content;
+    private boolean isDirectory(int length, int currentIndex, Content content) {
+        return currentIndex < length - 1 || content instanceof Directory;
     }
 
     private UpSolverNode createNewNode(Content content, UpSolverNode parentNode, String path, boolean isDirectory) {
         //content by value (not by reference)
-        content = buildContentPath(content, path, isDirectory);
+        content = isDirectory ? new Directory(path) : content;
         UpSolverNode upSolverNode = new UpSolverNode(content, parentNode);
         parentNode.getChildren().put(path, upSolverNode);
         return upSolverNode;
