@@ -12,8 +12,6 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 public class UpSolverTest {
-
-
     /**
      * https://upsolver.slite.com/p/note/fbGuc3HquW95bEcuL_klOD
      * <p>
@@ -84,7 +82,7 @@ public class UpSolverTest {
         Content result3 = storage.read(fullPath3.toString());
         assertNotNull(result3);
         assertTrue(result3 instanceof Directory);
-        assertEquals(content3.name, result3.name);
+        assertEquals(content3.getProp().getName(), result3.getProp().getName());
 
 
         List<Content> list = storage.list(Paths.get("C:\\").toString());
@@ -104,7 +102,7 @@ public class UpSolverTest {
         assertEquals(8, listRecursively.size());
         String[] split = StringUtils.split(fullPath, "\\");
         for (int i = 1; i < split.length; i++) {
-            assertEquals(split[i], listRecursively.get(i - 1).name);
+            assertEquals(split[i], listRecursively.get(i - 1).getProp().getName());
         }
 //        IntStream.range(1, split.length).boxed().collect(Collectors.toList());
     }
@@ -119,7 +117,7 @@ public class UpSolverTest {
         Content result = storage.read(fullPath.toString());
         assertNotNull(result);
         assertTrue(result instanceof Directory);
-        assertEquals(content.name, result.name);
+        assertEquals(content.getProp().getName(), result.getProp().getName());
     }
 
     @Test

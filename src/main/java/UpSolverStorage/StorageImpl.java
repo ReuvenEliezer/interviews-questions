@@ -2,6 +2,7 @@ package UpSolverStorage;
 
 import org.thymeleaf.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -35,8 +36,9 @@ public class StorageImpl implements Storage {
                 if (upSolverNode == null) {
                     isDirectory = isDirectory(split.length, i, content);
                     upSolverNode = createNewNode(content, upSolverParentNode, path, isDirectory);
-                } else if (i == split.length - 1 && content.name.equals(path) && content instanceof File) {
+                } else if (i == split.length - 1 && content.getProp().getName().equals(path) && content instanceof File) {
                     //override content file
+                    content.getProp().setUpdatedDateTime(LocalDateTime.now());
                     upSolverNode.setContent(content);
                 }
                 upSolverParentNode = upSolverNode;
@@ -63,7 +65,7 @@ public class StorageImpl implements Storage {
         }
 
         Map<String, UpSolverNode> children = upSolverNode.getParent().getChildren();
-        children.remove(upSolverNode.getContent().name);
+        children.remove(upSolverNode.getContent().getProp().getName());
     }
 
     @Override

@@ -8,7 +8,7 @@ public class File extends Content {
 
     public File(byte[] content, String name) {
         this.content = content;
-        this.name = name;
+        this.prop = new Prop(name);
     }
 
 }
