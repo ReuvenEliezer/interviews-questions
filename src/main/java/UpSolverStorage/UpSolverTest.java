@@ -71,8 +71,8 @@ public class UpSolverTest {
         assertNotNull(result2);
         assertTrue(result2 instanceof File);
         File file = (File) result2;
-        String value = new String(file.content, StandardCharsets.UTF_8);
-        assertEquals(new String(content2.content, StandardCharsets.UTF_8), value);
+        String value = new String(file.getContent(), StandardCharsets.UTF_8);
+        assertEquals(new String(content2.getContent(), StandardCharsets.UTF_8), value);
         assertEquals(content2, result2);
 
 

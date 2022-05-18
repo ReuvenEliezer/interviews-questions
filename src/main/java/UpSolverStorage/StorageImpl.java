@@ -24,9 +24,7 @@ public class StorageImpl implements Storage {
             upSolverParentNode = createRootNode(content, split[0], split.length > 1);
             for (int i = 1; i < split.length; i++) {
                 String path = split[i];
-                /**
-                 * the next node that created will be a parent node for the next iteration
-                 */
+                //the next node that created will be a parent node for the next iteration
                 upSolverParentNode = createNewNode(content, upSolverParentNode, path, i < split.length - 1);
             }
         } else {

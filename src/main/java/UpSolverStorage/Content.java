@@ -1,5 +1,8 @@
 package UpSolverStorage;
 
+import lombok.Getter;
+
+@Getter
 public abstract class Content {
-    String name;
+    protected String name;
 }
