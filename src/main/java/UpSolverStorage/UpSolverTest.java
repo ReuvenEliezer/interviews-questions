@@ -1,14 +1,15 @@
 package UpSolverStorage;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.thymeleaf.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static org.junit.Assert.*;
 
 public class UpSolverTest {
 
@@ -47,8 +48,8 @@ public class UpSolverTest {
         storage.write(fullPath.toString(), content);
 
         Content result = storage.read(fullPath.toString());
-        Assert.assertNotNull(result);
-        Assert.assertEquals(content, result);
+        assertNotNull(result);
+        assertEquals(content, result);
     }
 
     @Test
@@ -59,20 +60,20 @@ public class UpSolverTest {
         storage.write(fullPath.toString(), content);
 
         Content result = storage.read(fullPath.toString());
-        Assert.assertNotNull(result);
-        Assert.assertEquals(content, result);
+        assertNotNull(result);
+        assertEquals(content, result);
 
 
         File content2 = new File("fileName1Override".getBytes(StandardCharsets.UTF_8), "fileName1");
         storage.write(fullPath.toString(), content2);
 
         Content result2 = storage.read(fullPath.toString());
-        Assert.assertNotNull(result2);
-        Assert.assertTrue(result2 instanceof File);
+        assertNotNull(result2);
+        assertTrue(result2 instanceof File);
         File file = (File) result2;
         String value = new String(file.content, StandardCharsets.UTF_8);
-        Assert.assertEquals(new String(content2.content, StandardCharsets.UTF_8), value);
-        Assert.assertEquals(content2, result2);
+        assertEquals(new String(content2.content, StandardCharsets.UTF_8), value);
+        assertEquals(content2, result2);
 
 
         //create new dir
@@ -81,17 +82,17 @@ public class UpSolverTest {
         storage.write(fullPath3.toString(), content3);
 
         Content result3 = storage.read(fullPath3.toString());
-        Assert.assertNotNull(result3);
-        Assert.assertTrue(result3 instanceof Directory);
-        Assert.assertEquals(content3.name, result3.name);
+        assertNotNull(result3);
+        assertTrue(result3 instanceof Directory);
+        assertEquals(content3.name, result3.name);
 
 
         List<Content> list = storage.list(Paths.get("C:\\").toString());
-        Assert.assertEquals(1, list.size());
-//        Assert.assertEquals(List.of(content3), list);
+        assertEquals(1, list.size());
+//        assertEquals(List.of(content3), list);
 
         List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
-        Assert.assertEquals(3, listRecursively.size());
+        assertEquals(3, listRecursively.size());
     }
 
     @Test
@@ -100,7 +101,12 @@ public class UpSolverTest {
         Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\fileName1.scv");
         storage.write(fullPath.toString(), new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1.scv"));
         List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
-        Assert.assertEquals(8, listRecursively.size());
+        assertEquals(8, listRecursively.size());
+        String[] split = StringUtils.split(fullPath, "\\");
+        for (int i = 1; i < split.length; i++) {
+            assertEquals(split[i], listRecursively.get(i - 1).name);
+        }
+//        IntStream.range(1, split.length).boxed().collect(Collectors.toList());
     }
 
     @Test
@@ -111,9 +117,22 @@ public class UpSolverTest {
         storage.write(fullPath.toString(), content);
 
         Content result = storage.read(fullPath.toString());
-        Assert.assertNotNull(result);
-        Assert.assertTrue(result instanceof Directory);
-        Assert.assertEquals(content.name, result.name);
+        assertNotNull(result);
+        assertTrue(result instanceof Directory);
+        assertEquals(content.name, result.name);
+    }
+
+    @Test
+    public void deleteTest() {
+        Storage storage = new StorageImpl();
+        Path fullPath = Paths.get("C:\\Users\\Directory");
+        Content content = new Directory("Directory");
+        storage.write(fullPath.toString(), content);
+        storage.write(fullPath.toString() + 1, content);
+
+        assertEquals(2, storage.list("C:\\Users").size());
+        storage.delete(fullPath.toString());
+        assertEquals(1, storage.list("C:\\Users").size());
     }
 
     @Test(expected = NoSuchElementException.class)

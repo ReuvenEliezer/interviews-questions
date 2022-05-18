@@ -21,13 +21,13 @@ public class StorageImpl implements Storage {
         UpSolverNode upSolverParentNode = prefixPathToStorageMap.get(split[0]);
         if (upSolverParentNode == null) {
             //TODO create it with children
-            upSolverParentNode = createRootNode(content, split[0]);
+            upSolverParentNode = createRootNode(content, split[0], split.length > 1);
             for (int i = 1; i < split.length; i++) {
                 String path = split[i];
                 /**
                  * the next node that created will be a parent node for the next iteration
                  */
-                upSolverParentNode = createNewNode(content, upSolverParentNode, path);
+                upSolverParentNode = createNewNode(content, upSolverParentNode, path, i < split.length - 1);
             }
         } else {
             //TODO search
@@ -36,19 +36,10 @@ public class StorageImpl implements Storage {
                 String path = split[i];
                 UpSolverNode upSolverNode = children.get(path);
                 if (upSolverNode == null) {
-                    //TODO create it
-                    upSolverNode = createNewNode(content, upSolverParentNode, path);
-                } else {
+                    upSolverNode = createNewNode(content, upSolverParentNode, path, i < split.length - 1);
+                } else if (i == split.length - 1 && content.name.equals(path) && content instanceof File) {
                     //TODO override
-                    if (i == split.length - 1) {
-                        if (content.name.equals(path) && content instanceof File) {
-                            //TODO override
-                            upSolverNode.setContent(content);
-                        } else {
-                            //TODO create new
-                            upSolverNode = createNewNode(content, upSolverParentNode, path);
-                        }
-                    }
+                    upSolverNode.setContent(content);
                 }
                 upSolverParentNode = upSolverNode;
             }
@@ -59,10 +50,22 @@ public class StorageImpl implements Storage {
     public Content read(String fullPath) {
         validatePath(fullPath);
         UpSolverNode upSolverNode = findRelevantPath(fullPath);
-        if (upSolverNode != null) {
-            return upSolverNode.getContent();
+        if (upSolverNode == null) {
+            throw new NoSuchElementException();
         }
-        throw new NoSuchElementException();
+        return upSolverNode.getContent();
+    }
+
+    @Override
+    public void delete(String fullPath) {
+        validatePath(fullPath);
+        UpSolverNode upSolverNode = findRelevantPath(fullPath);
+        if (upSolverNode == null) {
+            throw new NoSuchElementException();
+        }
+
+        Map<String, UpSolverNode> children = upSolverNode.getParent().getChildren();
+        children.remove(upSolverNode.getContent().name);
     }
 
     @Override
@@ -83,20 +86,31 @@ public class StorageImpl implements Storage {
 
         List<Content> contents = new ArrayList<>();
         if (upSolverNode != null) {
-            addContent(upSolverNode.getChildren(), contents);
+            addContentRecursive(upSolverNode.getChildren().values(), contents);
             return contents;
         }
 
         return contents;
     }
 
-    private UpSolverNode createRootNode(Content content, String path) {
+    private UpSolverNode createRootNode(Content content, String path, boolean isDirectory) {
+        content = buildContentPath(content, path, isDirectory);
         UpSolverNode upSolverRoot = new UpSolverNode(content, null);
         prefixPathToStorageMap.put(path, upSolverRoot);
         return upSolverRoot;
     }
 
-    private UpSolverNode createNewNode(Content content, UpSolverNode parentNode, String path) {
+    private Content buildContentPath(Content content, String path, boolean isDirectory) {
+        if (isDirectory || content instanceof Directory) {
+            //create the path as Directory
+            return new Directory(path);
+        }
+        return content;
+    }
+
+    private UpSolverNode createNewNode(Content content, UpSolverNode parentNode, String path, boolean isDirectory) {
+        //content by value (not by reference)
+        content = buildContentPath(content, path, isDirectory);
         UpSolverNode upSolverNode = new UpSolverNode(content, parentNode);
         parentNode.getChildren().put(path, upSolverNode);
         return upSolverNode;
@@ -120,11 +134,10 @@ public class StorageImpl implements Storage {
         return upSolverNode;
     }
 
-    private void addContent(Map<String, UpSolverNode> upSolverNodeMap, List<Content> result) {
-        for (Map.Entry<String, UpSolverNode> entry : upSolverNodeMap.entrySet()) {
-            UpSolverNode upSolverNode = entry.getValue();
-            result.add(upSolverNode.getContent());
-            addContent(upSolverNode.getChildren(), result);
+    private void addContentRecursive(Collection<UpSolverNode> nodes, List<Content> result) {
+        for (UpSolverNode mode : nodes) {
+            result.add(mode.getContent());
+            addContentRecursive(mode.getChildren().values(), result);
         }
     }
 
