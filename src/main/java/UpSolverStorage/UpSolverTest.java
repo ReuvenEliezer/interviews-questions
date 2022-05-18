@@ -51,7 +51,7 @@ public class UpSolverTest {
     }
 
     @Test
-    public void readFileOverrideFile_AddDirAndListAndListRecursiveTest() {
+    public void readFileOverrideFile_AddDirAndListAndListRecursiveTest() throws InterruptedException {
         Path fullPath = Paths.get("C:\\Users\\fileName1");
         File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
         Storage storage = new StorageImpl();
@@ -60,12 +60,13 @@ public class UpSolverTest {
         Content result = storage.read(fullPath.toString());
         assertNotNull(result);
         assertEquals(content, result);
-
+        assertEquals(result.getProp().getCreateDateTime(), result.getProp().getUpdatedDateTime());
 
         File content2 = new File("fileName1Override".getBytes(StandardCharsets.UTF_8), "fileName1");
+        Thread.sleep(10);
         storage.write(fullPath.toString(), content2);
-
         Content result2 = storage.read(fullPath.toString());
+        assertNotEquals(result2.getProp().getCreateDateTime(), result2.getProp().getUpdatedDateTime());
         assertNotNull(result2);
         assertTrue(result2 instanceof File);
         File file = (File) result2;
