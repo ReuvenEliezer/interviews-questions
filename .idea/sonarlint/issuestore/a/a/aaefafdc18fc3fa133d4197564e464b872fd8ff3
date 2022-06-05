@@ -1,18 +1,0 @@
-
-0
-java:S1220""Move this file to a named package.
-[
-java:S1854"@Remove this useless assignment to local variable "subDirectory".(­Õ¾Êûÿÿÿÿ
-T
-java:S1854"9Remove this useless assignment to local variable "file2".(£ı×©ûÿÿÿÿ
-E
-java:S1481"*Remove this unused "file2" local variable.(£ı×©ûÿÿÿÿ
-L
-java:S1481"1Remove this unused "subDirectory" local variable.(­Õ¾Êûÿÿÿÿ
-T	java:S106"9Replace this use of System.out or System.err by a logger.(­ËÖşÿÿÿÿ
-I
-java:S1135Â"2Complete the task associated to this TODO comment.(ùæ†¨
-B
-java:S1481Ã"&Remove this unused "i" local variable.(ùó›Ìøÿÿÿÿ
-F
-java:S5960"+Remove this assertion from production code.(½Ó§Úıÿÿÿÿ

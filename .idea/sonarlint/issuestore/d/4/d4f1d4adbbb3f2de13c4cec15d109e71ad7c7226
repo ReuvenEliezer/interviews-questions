@@ -1,9 +1,0 @@
-
-h	java:S100a"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ªÖŠ‘øÿÿÿÿ
-`
-java:S1854h"ERemove this useless assignment to local variable "actualFieldNames2".(¨İüÿÿÿÿ
-Q
-java:S1481h"6Remove this unused "actualFieldNames2" local variable.(¨İüÿÿÿÿ
-N	java:S106y"9Replace this use of System.out or System.err by a logger.(ö¬
-G
-java:S5960€"+Remove this assertion from production code.(¸´Ò´úÿÿÿÿ

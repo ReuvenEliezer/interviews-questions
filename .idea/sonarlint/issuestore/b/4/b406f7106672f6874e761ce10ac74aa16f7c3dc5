@@ -1,21 +1,0 @@
-
-E
-java:S3740?"/Provide the parametrized type for this generic.(ÁÃç
-P
-java:S1854":Remove this useless assignment to local variable "fields".(ëËìª
-P
-java:S1854"5Remove this useless assignment to local variable "s".(ğµÍÏşÿÿÿÿ
-A
-java:S1481"+Remove this unused "fields" local variable.(ëËìª
-A
-java:S1481"&Remove this unused "s" local variable.(ğµÍÏşÿÿÿÿ
-=
-java:S1481!"'Remove this unused "s1" local variable.(‡šÀŸ
-A
-java:S1481""&Remove this unused "i" local variable.(ùó›Ìøÿÿÿÿ
-V	java:S125#"<This block of commented-out lines of code should be removed.(ëª¿ªûÿÿÿÿ
-B
-java:S30118",This accessibility update should be removed.(˜ÂÓ˜
->	java:S108:")Either remove or fill this block of code.(”ı¾
->	java:S108B")Either remove or fill this block of code.(”ı¾
-S	java:S106O"9Replace this use of System.out or System.err by a logger.(­ËÖşÿÿÿÿ

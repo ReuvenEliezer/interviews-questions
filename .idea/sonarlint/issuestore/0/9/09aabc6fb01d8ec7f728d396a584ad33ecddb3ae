@@ -1,11 +1,0 @@
-
-ƒ
-java:S1319""mThe return type of this method should be an interface such as "Set" rather than the implementation "HashSet".(å¶„
-„
-java:S1319+"iThe type of "negativeChar" should be an interface such as "Set" rather than the implementation "HashSet".(Ñ¶ÏÇüÿÿÿÿ
-ˆ
-java:S1319/"mThe return type of this method should be an interface such as "Set" rather than the implementation "HashSet".(‘°à¬ûÿÿÿÿ
-…
-java:S13193"jThe type of "relevantWords" should be an interface such as "Set" rather than the implementation "HashSet".(ïÍÚéıÿÿÿÿ
-2
-java:S1643"Use a StringBuilder instead.(É†¦ò

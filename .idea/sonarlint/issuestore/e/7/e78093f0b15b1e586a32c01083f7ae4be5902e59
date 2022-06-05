@@ -1,9 +1,0 @@
-
-0
-java:S1220""Move this file to a named package.
-\
-java:S1854"ARemove this useless assignment to local variable "readWriteLock".(Û—­üÿÿÿÿ
-M
-java:S1481"2Remove this unused "readWriteLock" local variable.(Û—­üÿÿÿÿ
-=
-java:S1659""Declare "FREE" on a separate line.(„»›·úÿÿÿÿ

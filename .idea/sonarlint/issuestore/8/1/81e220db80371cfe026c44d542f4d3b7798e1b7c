@@ -1,17 +1,0 @@
-
-E
-java:S3740+"/Provide the parametrized type for this generic.(ÜÂæ­
-S	java:S106"9Replace this use of System.out or System.err by a logger.(‡üûùøÿÿÿÿ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(Ø™±ÿÿÿÿÿ
-N	java:S106"9Replace this use of System.out or System.err by a logger.(‘º´Ğ
-N	java:S106"9Replace this use of System.out or System.err by a logger.(“–Îï
-V	java:S125!"<This block of commented-out lines of code should be removed.(³‹Œ¹ùÿÿÿÿ
-S	java:S106$"9Replace this use of System.out or System.err by a logger.(‚¨˜·ıÿÿÿÿ
-P
-java:S1854/"5Remove this useless assignment to local variable "o".(Ò‚¹ûÿÿÿÿ
-A
-java:S1481/"&Remove this unused "o" local variable.(Ò‚¹ûÿÿÿÿ
-K
-java:S1128"0Remove this unused import 'lombok.SneakyThrows'.(¨³üÖûÿÿÿÿ
-F
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ

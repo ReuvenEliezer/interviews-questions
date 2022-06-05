@@ -1,11 +1,0 @@
-
-7
-java:S1220""Move this file to a named package.8…ªˆ½ƒ0
-r
-java:S1149&"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ÿÄ‡èøÿÿÿÿ8ªˆ½ƒ0
-M
-java:S2160&"+Override the "equals" method in this class.(ÿÄ‡èøÿÿÿÿ8’ªˆ½ƒ0
-k
-java:S3551+"IMake this method "synchronized" to match the parent class implementation.(è÷ëæüÿÿÿÿ8•ªˆ½ƒ0
-H
-java:S5960"+Remove this assertion from production code.(ÎÎ×°8™ªˆ½ƒ0
