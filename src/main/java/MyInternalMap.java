@@ -130,7 +130,6 @@ public class MyInternalMap<K, V> implements Map<K, V> {
     public void clear() {
         mapEntries = new MapEntry[initialCapacity];
         size = 0;
-        //TODO impl
     }
 
     @Override
