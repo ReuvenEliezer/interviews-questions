@@ -51,10 +51,9 @@ public class MyInternalMapTest {
 
     private static Stream<Arguments> mapArgumentsProvider() {
         return Stream.of(
-                Arguments.of(
-                        new MyInternalMap<>(),
-                        new HashMap<>()
-                ));
+                Arguments.of(new MyInternalMap<>()),
+                Arguments.of(new HashMap<>())
+        );
     }
 
 }
