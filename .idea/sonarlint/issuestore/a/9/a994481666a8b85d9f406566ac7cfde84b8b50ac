@@ -1,0 +1,11 @@
+
+V	java:S125"<This block of commented-out lines of code should be removed.(ü¼È˜şÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(§“¦Ì
+a
+java:S2153""KRemove the boxing to "Character"; The argument is already of the same type.(ˆ§­
+9
+java:S2129""#Remove this "Character" constructor(ˆ§­
+^
+java:S5738""HRemove this call to a deprecated method, it has been marked for removal.(ˆ§­
+V	java:S125)"<This block of commented-out lines of code should be removed.(ß—üÿÿÿÿ
+Q	java:S125;"<This block of commented-out lines of code should be removed.(Šé’Š

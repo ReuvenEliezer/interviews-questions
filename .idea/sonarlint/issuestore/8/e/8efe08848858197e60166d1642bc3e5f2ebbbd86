@@ -1,0 +1,24 @@
+
+]
+java:S1854"BRemove this useless assignment to local variable "toiletService2".(Ù©ÂÖøÿÿÿÿ
+_
+java:S1854"DRemove this useless assignment to local variable "nearestLocation2".(¯Úèéşÿÿÿÿ
+^
+java:S1854"CRemove this useless assignment to local variable "nearestLocation".(Ğ©¸øûÿÿÿÿ
+O
+java:S1481"4Remove this unused "nearestLocation" local variable.(Ğ©¸øûÿÿÿÿ
+P
+java:S1481"5Remove this unused "nearestLocation2" local variable.(¯Úèéşÿÿÿÿ
+N
+java:S1481"3Remove this unused "toiletService2" local variable.(Ù©ÂÖøÿÿÿÿ
+J
+java:S1128"/Remove this unused import 'java.time.Duration'.(ëá¯‰üÿÿÿÿ
+O
+java:S1128"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ
+^
+java:S1128	"CRemove this unused import 'java.util.concurrent.ConcurrentHashMap'.(ÓŠÓøúÿÿÿÿ
+`
+java:S1128
+"ERemove this unused import 'java.util.concurrent.LinkedBlockingDeque'.(ÌÇœüÿÿÿÿ
+F
+java:S5960"+Remove this assertion from production code.(ÏƒÉºøÿÿÿÿ

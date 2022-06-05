@@ -1,0 +1,11 @@
+
+0
+java:S1220""Move this file to a named package.
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+S	java:S106""9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+N	java:S106("9Replace this use of System.out or System.err by a logger.(¥×Ã‚
+S	java:S106)"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+N	java:S1062"9Replace this use of System.out or System.err by a logger.(áîîÊ
+S	java:S1067"9Replace this use of System.out or System.err by a logger.(‹µê‰ýÿÿÿÿ
+S	java:S106<"9Replace this use of System.out or System.err by a logger.(†ÙÝ¶ùÿÿÿÿ

@@ -1,0 +1,87 @@
+
+0
+java:S1220""Move this file to a named package.
+w
+java:S1845Ã"`Rename method "RightRotation" to prevent any misunderstanding/clash with method "rightRotation".(®—¶È
+z
+java:S1845Æ"^Rename method "LeftRotation" to prevent any misunderstanding/clash with method "leftRotation".(È…¢¸ýÿÿÿÿ
+V	java:S125"<This block of commented-out lines of code should be removed.(¬§™…øÿÿÿÿ
+O
+java:S1481"9Remove this unused "sizeAndRotationIndex" local variable.(ç‡¥
+Y
+java:S1612">Replace this lambda with method reference 'Integer::parseInt'.(ÞàœÙüÿÿÿÿ
+Q	java:S125"<This block of commented-out lines of code should be removed.(ÒÇ“ƒ
+N	java:S106$"9Replace this use of System.out or System.err by a logger.(ã‰Ï¡
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+N
+java:S1854+"8Remove this useless assignment to local variable "scan".(ÅÒ²º
+?
+java:S1481+")Remove this unused "scan" local variable.(ÅÒ²º
+Q	java:S125,"<This block of commented-out lines of code should be removed.(Ü±ªÄ
+V	java:S125/"<This block of commented-out lines of code should be removed.(ûçÉùÿÿÿÿ
+R
+java:S14810"7Remove this unused "elementsListIndex1" local variable.(Ÿ¹ì¥þÿÿÿÿ
+Y
+java:S16127">Replace this lambda with method reference 'Integer::parseInt'.(Š›ÇÊùÿÿÿÿ
+T
+java:S16128">Replace this lambda with method reference 'Integer::parseInt'.(Î§Œœ
+S	java:S106;"9Replace this use of System.out or System.err by a logger.(Ç‘î¬ÿÿÿÿÿ
+S	java:S106="9Replace this use of System.out or System.err by a logger.(ž«ñ·ûÿÿÿÿ
+N
+java:S1854G"8Remove this useless assignment to local variable "scan".(ÅÒ²º
+P
+java:S1854S":Remove this useless assignment to local variable "count1".(çÔãº
+?
+java:S1481G")Remove this unused "scan" local variable.(ÅÒ²º
+Q	java:S125H"<This block of commented-out lines of code should be removed.(Ü±ªÄ
+^
+java:S5361Q"HReplace this call to "replaceAll()" by a call to the "replace()" method.(ë¿úª
+A
+java:S1481S"+Remove this unused "count1" local variable.(çÔãº
+S	java:S106U"9Replace this use of System.out or System.err by a logger.(Ž³ð¸ûÿÿÿÿ
+S	java:S106W"9Replace this use of System.out or System.err by a logger.(¡ò†þÿÿÿÿ
+A
+java:S1197‡"*Move the array designators [] to the type.(°¶¢ì
+F
+java:S1197‰"*Move the array designators [] to the type.(ÅÌ—ßøÿÿÿÿ
+J
+java:S1172Ž".Remove this unused method parameter "arrSize".(—˜‚Áúÿÿÿÿ
+O	java:S106ž"9Replace this use of System.out or System.err by a logger.(Ù©È±
+T	java:S106 "9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+O	java:S106°"9Replace this use of System.out or System.err by a logger.(Ù©È±
+B
+java:S1659·"&Declare "previous" on a separate line.(úãÇ®ýÿÿÿÿ
+d	java:S100Ã"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®—¶È
+T	java:S106É"9Replace this use of System.out or System.err by a logger.(ÌíÈÊþÿÿÿÿ
+W	java:S125Ç"<This block of commented-out lines of code should be removed.(Ø¶´üÿÿÿÿ
+W	java:S125Ñ"<This block of commented-out lines of code should be removed.(Àû¶ñûÿÿÿÿ
+R	java:S125Ö"<This block of commented-out lines of code should be removed.(†’½Ú
+T	java:S106Þ"9Replace this use of System.out or System.err by a logger.(ÚÀ×¢øÿÿÿÿ
+n
+java:S3776â"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(‘ðØüÿÿÿÿ
+P
+java:S2130æ"9Use "Integer.parseInt" for this string-to-int conversion.(ê§³ú
+O	java:S106„"9Replace this use of System.out or System.err by a logger.(ã‰Ï¡
+T	java:S106…"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+i
+java:S3776–"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‡ð´¹
+R	java:S125›"<This block of commented-out lines of code should be removed.(ÁáªË
+Q
+java:S1481 ":Remove this unused "sizeAndRotationIndex1" local variable.(ÕÕóÏ
+R	java:S125¢"<This block of commented-out lines of code should be removed.(®ÐÕô
+Z
+java:S1612¥">Replace this lambda with method reference 'Integer::parseInt'.(ä´ÖÍüÿÿÿÿ
+O	java:S106¿"9Replace this use of System.out or System.err by a logger.(ã‰Ï¡
+T	java:S106À"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+i	java:S100Æ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(È…¢¸ýÿÿÿÿ
+[
+java:S1854Ì"?Remove this useless assignment to local variable "resultArray".(ÖŽ’Éýÿÿÿÿ
+R	java:S125É"<This block of commented-out lines of code should be removed.(ý«Éä
+L
+java:S1481Ì"0Remove this unused "resultArray" local variable.(ÖŽ’Éýÿÿÿÿ
+W	java:S125Í"<This block of commented-out lines of code should be removed.(Àý©¸úÿÿÿÿ
+O	java:S106Ñ"9Replace this use of System.out or System.err by a logger.(Ù©È±
+T	java:S106Ó"9Replace this use of System.out or System.err by a logger.(ªÓ¼áþÿÿÿÿ
+O	java:S106ã"9Replace this use of System.out or System.err by a logger.(Ù©È±
+B
+java:S5960ˆ"+Remove this assertion from production code.(›âÄž

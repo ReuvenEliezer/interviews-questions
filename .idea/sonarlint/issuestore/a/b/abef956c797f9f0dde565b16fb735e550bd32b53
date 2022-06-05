@@ -1,0 +1,46 @@
+
+F
+java:S3740í"/Provide the parametrized type for this generic.(Şå
+a
+java:S1192Â"JDefine a constant instead of duplicating this literal "12345678" 14 times.(±Ëæ’
+X
+java:S4973‡"<Strings and Boxed types should be compared using "equals()".(ã‹î¶úÿÿÿÿ
+X
+java:S4973Š"<Strings and Boxed types should be compared using "equals()".(õ”Çôúÿÿÿÿ
+0
+java:S1220""Move this file to a named package.
+˜
+java:S1186å"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Šµ‚º
+S	java:S106f"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+S	java:S106r"9Replace this use of System.out or System.err by a logger.(ëæ›¿úÿÿÿÿ
+S	java:S106{"9Replace this use of System.out or System.err by a logger.(ëæ›¿úÿÿÿÿ
+6
+java:S2129ˆ" Remove this "String" constructor(òàöx
+F
+java:S1611“"/Remove the parentheses around the "c" parameter(å²†ã
+F
+java:S1611“"/Remove the parentheses around the "c" parameter(å²†ã
+O	java:S106”"9Replace this use of System.out or System.err by a logger.(µˆœÑ
+i
+java:S3776˜"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(½ıÖË
+T	java:S106³"9Replace this use of System.out or System.err by a logger.(­ËÖşÿÿÿÿ
+T	java:S106Ê"9Replace this use of System.out or System.err by a logger.(™˜Ì§ûÿÿÿÿ
+~
+java:S1854Ø"bRemove this useless assignment to local variable "startTimeStampThatPassedMaxCarOptimisticMemory".(°¼À½üÿÿÿÿ
+o
+java:S1481Ø"SRemove this unused "startTimeStampThatPassedMaxCarOptimisticMemory" local variable.(°¼À½üÿÿÿÿ
+n
+java:S3776Û"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(‹Êâ¹ıÿÿÿÿ
+O	java:S106İ"9Replace this use of System.out or System.err by a logger.(®Â‡Á
+T	java:S106è"9Replace this use of System.out or System.err by a logger.(Ã¸¡Ùüÿÿÿÿ
+>
+java:S1125…"'Remove the unnecessary boolean literal.(ØÓ©ã
+T	java:S106‡"9Replace this use of System.out or System.err by a logger.(—ºíÖıÿÿÿÿ
+O	java:S106"9Replace this use of System.out or System.err by a logger.(ê‹Ç‹
+W	java:S125ë"<This block of commented-out lines of code should be removed.(ñ¶»ÿùÿÿÿÿ
+P	java:S899ö";Do something with the "boolean" value returned by "remove".(µ­Ò#
+R	java:S125ú"<This block of commented-out lines of code should be removed.(¶ïîµ
+Y
+java:S2094"BRemove this empty class, write its code or make it an "interface".(«Ğ³
+@
+java:S5960?"+Remove this assertion from production code.(³şà

@@ -1,0 +1,21 @@
+
+K
+java:S3740‡"/Provide the parametrized type for this generic.(¬ÌÑ¾ýÿÿÿÿ
+]
+java:S1192"GDefine a constant instead of duplicating this literal "Reuven" 3 times.(í¾ˆ×
+0
+java:S1220""Move this file to a named package.
+M
+java:S3655|"7Call "Optional#isPresent()" before accessing the value.( ô–¤
+S	java:S106="9Replace this use of System.out or System.err by a logger.(™ƒÚ×úÿÿÿÿ
+S	java:S106A"9Replace this use of System.out or System.err by a logger.(øŠÓËüÿÿÿÿ
+L
+java:S1751X"6Remove this "return" statement or make it conditional.(Žºœø
+S	java:S106^"9Replace this use of System.out or System.err by a logger.(™ƒÚ×úÿÿÿÿ
+S	java:S106b"9Replace this use of System.out or System.err by a logger.(øŠÓËüÿÿÿÿ
+N	java:S106p"9Replace this use of System.out or System.err by a logger.(Ôá¿ß
+S	java:S106u"9Replace this use of System.out or System.err by a logger.(¶ò†‘ûÿÿÿÿ
+T	java:S106Ž"9Replace this use of System.out or System.err by a logger.(ˆª±¶ýÿÿÿÿ
+R	java:S125˜"<This block of commented-out lines of code should be removed.(ÎÄš÷
+@
+java:S5960"+Remove this assertion from production code.(›¬é4

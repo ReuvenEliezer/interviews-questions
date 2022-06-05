@@ -1,0 +1,196 @@
+
+d
+java:S1192x"IDefine a constant instead of duplicating this literal "result: " 5 times.(Š•éùÿÿÿÿ
+i
+java:S1104ë"MMake x a static final constant or non-public and provide accessors if needed.(±Šõ¶ûÿÿÿÿ
+i
+java:S1104ì"MMake y a static final constant or non-public and provide accessors if needed.(ÔçÛşÿÿÿÿ
+E
+java:S5411a"*Use the primitive boolean expression here.(Œäıõùÿÿÿÿ
+X
+java:S4973Ì"<Strings and Boxed types should be compared using "equals()".(˜Ü“‘úÿÿÿÿ
+0
+java:S1220""Move this file to a named package.
+U
+java:S3516¶"9Refactor this method to not always return the same value.(¤ôúÚøÿÿÿÿ
+P
+java:S3516¨"9Refactor this method to not always return the same value.(Ì¹˜µ
+I
+java:S3958ù"2Refactor the code so this stream pipeline is used.(í¬º¨
+N
+java:S3958û"2Refactor the code so this stream pipeline is used.(Åõ™óúÿÿÿÿ
+Å
+java:S1845Ÿ"¨Rename method "findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum" to prevent any misunderstanding/clash with method "findIfArrayCanBeDividedIntoTwoSubarraysOfEqualSum".(çÆ™ûÿÿÿÿ
+g
+java:S1149†"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(šÚŒá
+g
+java:S1149©"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ã¦Ò
+l
+java:S1149Á"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(ÑÖÙƒıÿÿÿÿ
+=
+java:S1172"(Remove this unused method parameter "n".(Ú¿ï:
+?
+java:S1197"*Move the array designators [] to the type.(Ú¿ï:
+?
+java:S1197"*Move the array designators [] to the type.(Ú¿ï:
+K
+java:S1854E"5Remove this useless assignment to local variable "b".(„•·
+R
+java:S1854D"<Remove this useless assignment to local variable "contains".(×³ïå
+C
+java:S1481D"-Remove this unused "contains" local variable.(×³ïå
+<
+java:S1481E"&Remove this unused "b" local variable.(„•·
+V
+java:S1117P";Rename "result" which hides the field declared at line 216.(ì«Ÿ¤úÿÿÿÿ
+V	java:S125O"<This block of commented-out lines of code should be removed.(ô½’Ñÿÿÿÿÿ
+Q
+java:S1117U";Rename "result" which hides the field declared at line 216.(–ãÖ
+N	java:S106d"9Replace this use of System.out or System.err by a logger.(œÆ‘Ñ
+M	java:S106k"9Replace this use of System.out or System.err by a logger.(÷Å‘Y
+S	java:S106u"9Replace this use of System.out or System.err by a logger.(Å´§¡ıÿÿÿÿ
+V
+java:S1117w";Rename "result" which hides the field declared at line 216.(æ¦Âãùÿÿÿÿ
+S	java:S106x"9Replace this use of System.out or System.err by a logger.(Š•éùÿÿÿÿ
+S	java:S106z"9Replace this use of System.out or System.err by a logger.(¥•Øııÿÿÿÿ
+7
+java:S1659~"!Declare "end" on a separate line.(Ä×â
+N	java:S106š"9Replace this use of System.out or System.err by a logger.(ô–
+O	java:S106›"9Replace this use of System.out or System.err by a logger.(ö¾Ìü
+O	java:S106œ"9Replace this use of System.out or System.err by a logger.(­ü£â
+O	java:S106"9Replace this use of System.out or System.err by a logger.(È£ó¤
+d	java:S100£"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èÙ—Í
+T	java:S106¬"9Replace this use of System.out or System.err by a logger.(è½²Åÿÿÿÿÿ
+T	java:S106¯"9Replace this use of System.out or System.err by a logger.(®ıáëûÿÿÿÿ
+:
+java:S1659´"#Declare "right" on a separate line.(çùà¶
+R
+java:S1117…";Rename "result" which hides the field declared at line 216.(’ïÔñ
+R
+java:S1117—";Rename "result" which hides the field declared at line 216.(’ïÔñ
+R
+java:S1117¨";Rename "result" which hides the field declared at line 216.(’ïÔñ
+R
+java:S1117À";Rename "result" which hides the field declared at line 216.(’ïÔñ
+d	java:S100Ò"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ûâ¡ó
+O	java:S106Ó"9Replace this use of System.out or System.err by a logger.(·‹‡¤
+T	java:S106Õ"9Replace this use of System.out or System.err by a logger.(µ¯¯ùÿÿÿÿ
+O	java:S106Ü"9Replace this use of System.out or System.err by a logger.(Ü‹¦Ú
+T	java:S106İ"9Replace this use of System.out or System.err by a logger.(µ¯¯ùÿÿÿÿ
+T	java:S106à"9Replace this use of System.out or System.err by a logger.(ªÓ¼áşÿÿÿÿ
+O	java:S106â"9Replace this use of System.out or System.err by a logger.(óŒ—È
+i	java:S100ç"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ïÕ‹Áıÿÿÿÿ
+T
+java:S1854"8Remove this useless assignment to local variable "ints".(ØƒùÙùÿÿÿÿ
+R	java:S125ê"<This block of commented-out lines of code should be removed.(÷§û«
+R	java:S125ï"<This block of commented-out lines of code should be removed.(ÊùĞ‹
+W	java:S125õ"<This block of commented-out lines of code should be removed.(¹…«ùøÿÿÿÿ
+R	java:S125‚"<This block of commented-out lines of code should be removed.(ãö©
+i	java:S100Š"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯ŒÊÎøÿÿÿÿ
+U
+java:S1854”">Remove this useless assignment to local variable "linkedList".(³ÉÓæ
+Q
+java:S1854Œ":Remove this useless assignment to local variable "result".(Öú»°
+R
+java:S1117Œ";Rename "result" which hides the field declared at line 216.(Öú»°
+B
+java:S1481Œ"+Remove this unused "result" local variable.(Öú»°
+F
+java:S1481”"/Remove this unused "linkedList" local variable.(³ÉÓæ
+R	java:S125–"<This block of commented-out lines of code should be removed.(œ£í
+R	java:S125œ"<This block of commented-out lines of code should be removed.(½»´»
+B
+java:S1481"&Remove this unused "u" local variable.(†òá—şÿÿÿÿ
+W
+java:S1117¦";Rename "result" which hides the field declared at line 216.(é¬±Õûÿÿÿÿ
+T	java:S106§"9Replace this use of System.out or System.err by a logger.(Š•éùÿÿÿÿ
+T	java:S106ª"9Replace this use of System.out or System.err by a logger.(ôçË¦øÿÿÿÿ
+d	java:S100­"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿùƒŸ
+R
+java:S1117®";Rename "result" which hides the field declared at line 216.(»«–Î
+d	java:S100º"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ã„¢´
+N
+java:S1854Ê"7Remove this useless assignment to local variable "mid".(à˜ú
+N
+java:S1854Ì"7Remove this useless assignment to local variable "mid".(éÈÆ
+T	java:S106×"9Replace this use of System.out or System.err by a logger.(§Ø€İÿÿÿÿÿ
+T	java:S106Ø"9Replace this use of System.out or System.err by a logger.(ÿÕƒıÿÿÿÿ
+?
+java:S1659ã"#Declare "right" on a separate line.(»ïÇÀşÿÿÿÿ
+W	java:S125è"<This block of commented-out lines of code should be removed.(öİÙôùÿÿÿÿ
+Q
+java:S1854ù":Remove this useless assignment to local variable "sorted".(í¬º¨
+B
+java:S1481ù"+Remove this unused "sorted" local variable.(í¬º¨
+O	java:S106‹"9Replace this use of System.out or System.err by a logger.(×Æáî
+]
+java:S1854­"FRemove this useless assignment to local variable "japperTempPosition".(öÙ„¨
+R	java:S125«"<This block of commented-out lines of code should be removed.(±„î
+N
+java:S1481­"7Remove this unused "japperTempPosition" local variable.(öÙ„¨
+W	java:S125¯"<This block of commented-out lines of code should be removed.(šıÁ²üÿÿÿÿ
+W	java:S125²"<This block of commented-out lines of code should be removed.(ôàßâÿÿÿÿÿ
+I
+java:S1135·"2Complete the task associated to this TODO comment.(ÖÙéÚ
+O
+java:S1172¿"3Remove this unused method parameter "matrixStrArr".(±‹ÿÿÿÿÿÿ
+X
+java:S1126Ã"AReplace this if-then-else statement by a single return statement.(ÒÎŞœ
+P	java:S125Á"<This block of commented-out lines of code should be removed.(¯
+R	java:S125Æ"<This block of commented-out lines of code should be removed.(½Š§”
+O
+java:S1172Ï"3Remove this unused method parameter "matrixStrArr".(üÙôˆùÿÿÿÿ
+]
+java:S1126Ñ"AReplace this if-then-else statement by a single return statement.(İÿ°ïûÿÿÿÿ
+R	java:S125Õ"<This block of commented-out lines of code should be removed.(½Š§”
+R	java:S125÷"<This block of commented-out lines of code should be removed.(î°Çø
+W
+java:S1117‹";Rename "result" which hides the field declared at line 216.(Ğóä³ùÿÿÿÿ
+R	java:S125‰"<This block of commented-out lines of code should be removed.(ÕˆØ·
+T	java:S106Œ"9Replace this use of System.out or System.err by a logger.(Š•éùÿÿÿÿ
+R	java:S125‘"<This block of commented-out lines of code should be removed.(Êâ–ı
+d	java:S100µ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µÛéÆ
+h
+java:S1854¸"QRemove this useless assignment to local variable "balancedParenthesesExpression".(ÆÔ
+W	java:S125¶"<This block of commented-out lines of code should be removed.(—šìØøÿÿÿÿ
+Y
+java:S1481¸"BRemove this unused "balancedParenthesesExpression" local variable.(ÆÔ
+Q
+java:S1854ü":Remove this useless assignment to local variable "result".(²ÎÄÁ
+W	java:S125ù"<This block of commented-out lines of code should be removed.(çèŞûÿÿÿÿ
+R
+java:S1117ü";Rename "result" which hides the field declared at line 216.(²ÎÄÁ
+B
+java:S1481ü"+Remove this unused "result" local variable.(²ÎÄÁ
+S
+java:S1854¤"<Remove this useless assignment to local variable "subtract".(öëÈœ
+X
+java:S1854£"<Remove this useless assignment to local variable "multiply".(³Ó³³øÿÿÿÿ
+I
+java:S1481£"-Remove this unused "multiply" local variable.(³Ó³³øÿÿÿÿ
+D
+java:S1481¤"-Remove this unused "subtract" local variable.(öëÈœ
+W
+java:S1117°";Rename "result" which hides the field declared at line 216.(Ó°¬Ñøÿÿÿÿ
+I
+java:S1135Á"2Complete the task associated to this TODO comment.(›‹†Ä
+i	java:S100Ğ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚÄéøÿÿÿÿ
+W
+java:S1117ƒ";Rename "result" which hides the field declared at line 216.(µÄÇïÿÿÿÿÿ
+T	java:S106„"9Replace this use of System.out or System.err by a logger.(±÷‡…øÿÿÿÿ
+W
+java:S1117½";Rename "result" which hides the field declared at line 216.(Ó°¬Ñøÿÿÿÿ
+F
+java:S3631Ç"/Use "Arrays.stream" instead of "Arrays.asList".(ßÙÛš
+=
+java:S2129É"!Remove this "Integer" constructor(ªùğúÿÿÿÿ
+d
+java:S5738É"HRemove this call to a deprecated method, it has been marked for removal.(ªùğúÿÿÿÿ
+T	java:S106Ê"9Replace this use of System.out or System.err by a logger.(ŸƒÖÀûÿÿÿÿ
+Q	java:S125Ò"<This block of commented-out lines of code should be removed.(Š¿ØL
+W
+java:S1117ß";Rename "result" which hides the field declared at line 216.(Ôµ”Ñşÿÿÿÿ
+R
+java:S1117è";Rename "result" which hides the field declared at line 216.(àìİ’
+@
+java:S5960"+Remove this assertion from production code.(æ€ÿM
