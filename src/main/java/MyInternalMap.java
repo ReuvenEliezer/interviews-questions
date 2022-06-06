@@ -1,20 +1,13 @@
-import org.junit.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.*;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class MyInternalMap<K, V> implements Map<K, V> {
 
     //https://stackoverflow.com/questions/16266459/implementing-a-remove-method-in-a-java-hashmap
 
-    private int initialCapacity;
-    private MapEntry<K, V>[] mapEntries;
+    private final int initialCapacity;
+    private MyMapEntry<K, V>[] mapEntries;
     private int size;
 
     public MyInternalMap() {
@@ -23,7 +16,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
 
     public MyInternalMap(int initialCapacity) {
         this.initialCapacity = initialCapacity;
-        mapEntries = new MapEntry[initialCapacity];
+        mapEntries = new MyMapEntry[initialCapacity];
     }
 
     @Override
@@ -43,8 +36,23 @@ public class MyInternalMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        //TODO impl
+        for (int i = 0; i < mapEntries.length; i++) {
+            MyMapEntry<K, V> mapEntry = mapEntries[i];
+            if (containsValue(value, mapEntry)) {
+                return true;
+            }
+        }
         return false;
+    }
+
+    private boolean containsValue(Object value, MyMapEntry<K, V> mapEntry) {
+        if (mapEntry == null) {
+            return false;
+        }
+        if (value == mapEntry.getValue() || mapEntry.getValue().equals(value)) {
+            return true;
+        }
+        return containsValue(value, mapEntry.next);
     }
 
     @Override
@@ -52,7 +60,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
         if (key == null) {
             return null;
         }
-        MapEntry<K, V> entry = mapEntries[getHashCode(key)];
+        MyMapEntry<K, V> entry = mapEntries[getHashCode(key)];
         while (entry != null) {
             if (key.equals(entry.key)) {
                 return entry.value;
@@ -69,10 +77,10 @@ public class MyInternalMap<K, V> implements Map<K, V> {
     public V put(K key, V value) {
         int keyBucket = getHashCode(key);
 
-        MapEntry<K, V> temp = mapEntries[keyBucket];
+        MyMapEntry<K, V> temp = mapEntries[keyBucket];
         if (temp == null) {
             //create new head node in this bucket
-            mapEntries[keyBucket] = new MapEntry<>(key, value);
+            mapEntries[keyBucket] = new MyMapEntry<>(key, value);
             size++;
             return null;
         }
@@ -87,7 +95,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
         }
 
         //create new node in this bucket
-        mapEntries[keyBucket].next = new MapEntry<>(key, value);
+        mapEntries[keyBucket].next = new MyMapEntry<>(key, value);
         size++;
         return null;
     }
@@ -100,10 +108,10 @@ public class MyInternalMap<K, V> implements Map<K, V> {
          * otherwise set the next field of the element just before e to e.next. Note that you need one more variable (updated as you're finding e) to keep track of the previous entry in the bucket
          */
         int keyBucket = getHashCode(key);
-        MapEntry<K, V> temp = mapEntries[keyBucket];
+        MyMapEntry<K, V> temp = mapEntries[keyBucket];
         if (temp == null)
             return null;
-        MapEntry<K, V> prev = temp;
+        MyMapEntry<K, V> prev = temp;
         while (temp != null) {
             if (temp.key != null && temp.key.equals(key)) {
                 V valueReturn = temp.value;
@@ -128,7 +136,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-        mapEntries = new MapEntry[initialCapacity];
+        mapEntries = new MyMapEntry[initialCapacity];
         size = 0;
     }
 
@@ -158,14 +166,31 @@ public class MyInternalMap<K, V> implements Map<K, V> {
     }
 
 
-    class MapEntry<K, V> {
-        K key;
-        V value;
-        MapEntry<K, V> next;
+    class MyMapEntry<K, V> implements Map.Entry<K, V> {
+        private K key;
+        private V value;
+        private MyMapEntry<K, V> next;
 
-        public MapEntry(K key, V value) {
+        public MyMapEntry(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            V oldValue = this.value;
+            this.value = value;
+            return oldValue;
         }
     }
 

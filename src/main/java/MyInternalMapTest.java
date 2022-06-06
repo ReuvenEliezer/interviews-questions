@@ -47,6 +47,9 @@ public class MyInternalMapTest {
         assertEquals("1", map.get(1));
         assertEquals("2", map.get(17));
         assertEquals("1", map.get(1));
+        assertTrue(map.containsValue("1"));
+        assertTrue(map.containsValue("2"));
+        assertFalse(map.containsValue("3"));
     }
 
     private static Stream<Arguments> mapArgumentsProvider() {
