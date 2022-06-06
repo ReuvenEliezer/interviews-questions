@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MyInternalMap<K, V> implements Map<K, V> {
 
@@ -143,8 +140,19 @@ public class MyInternalMap<K, V> implements Map<K, V> {
 
     @Override
     public Set<K> keySet() {
-        //TODO impl
-        return null;
+        Set<K> resultKeys = new HashSet<>();
+        for (int i = 0; i < mapEntries.length; i++) {
+            MyMapEntry<K, V> mapEntry = mapEntries[i];
+            addKeySet(mapEntry, resultKeys);
+        }
+        return resultKeys;
+    }
+
+    private void addKeySet(MyMapEntry<K, V> mapEntry, Set<K> resultKeys) {
+        if (mapEntry != null) {
+            resultKeys.add(mapEntry.key);
+            addKeySet(mapEntry.next, resultKeys);
+        }
     }
 
     @Override
@@ -152,22 +160,33 @@ public class MyInternalMap<K, V> implements Map<K, V> {
         Collection<V> resultValues = new ArrayList<>();
         for (int i = 0; i < mapEntries.length; i++) {
             MyMapEntry<K, V> mapEntry = mapEntries[i];
-            values(mapEntry, resultValues);
+            addValue(mapEntry, resultValues);
         }
         return resultValues;
     }
 
-    private void values(MyMapEntry<K, V> mapEntry, Collection<V> resultValues) {
+    private void addValue(MyMapEntry<K, V> mapEntry, Collection<V> resultValues) {
         if (mapEntry != null) {
             resultValues.add(mapEntry.value);
-            values(mapEntry.next, resultValues);
+            addValue(mapEntry.next, resultValues);
         }
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        //TODO impl
-        return null;
+        Set<Entry<K, V>> entrySetResult = new HashSet<>();
+        for (int i = 0; i < mapEntries.length; i++) {
+            MyMapEntry<K, V> mapEntry = mapEntries[i];
+            addEntrySet(mapEntry, entrySetResult);
+        }
+        return entrySetResult;
+    }
+
+    private void addEntrySet(MyMapEntry<K, V> mapEntry, Set<Entry<K, V>> entrySetResult) {
+        if (mapEntry != null) {
+            entrySetResult.add(mapEntry);
+            addEntrySet(mapEntry.next, entrySetResult);
+        }
     }
 
     private int getHashCode(Object key) {
@@ -178,7 +197,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
     }
 
 
-    class MyMapEntry<K, V> implements Map.Entry<K, V> {
+    static class MyMapEntry<K, V> implements Map.Entry<K, V> {
         private K key;
         private V value;
         private MyMapEntry<K, V> next;
