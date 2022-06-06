@@ -1,10 +1,14 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
 public class MyInternalMap<K, V> implements Map<K, V> {
 
-    //https://stackoverflow.com/questions/16266459/implementing-a-remove-method-in-a-java-hashmap
+    /**
+     * https://stackoverflow.com/questions/16266459/implementing-a-remove-method-in-a-java-hashmap
+     */
+
 
     private final int initialCapacity;
     private MyMapEntry<K, V>[] mapEntries;
@@ -67,10 +71,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
             }
             entry = entry.next;
         }
-        if (entry == null) {
-            return null;
-        }
-        return entry.value;
+        return null;
     }
 
     @Override
@@ -148,8 +149,19 @@ public class MyInternalMap<K, V> implements Map<K, V> {
 
     @Override
     public Collection<V> values() {
-        //TODO impl
-        return null;
+        Collection<V> resultValues = new ArrayList<>();
+        for (int i = 0; i < mapEntries.length; i++) {
+            MyMapEntry<K, V> mapEntry = mapEntries[i];
+            values(mapEntry, resultValues);
+        }
+        return resultValues;
+    }
+
+    private void values(MyMapEntry<K, V> mapEntry, Collection<V> resultValues) {
+        if (mapEntry != null) {
+            resultValues.add(mapEntry.value);
+            values(mapEntry.next, resultValues);
+        }
     }
 
     @Override
