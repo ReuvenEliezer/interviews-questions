@@ -1,7 +1,14 @@
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PingTest {
 
@@ -19,8 +26,8 @@ public class PingTest {
      * 1   2   3
      * 4   5   6
      * 7   8
-     *
-     *
+     * <p>
+     * <p>
      * select * from grades ;
      */
 
@@ -46,81 +53,104 @@ public class PingTest {
 
 
     @Test
-    public void test() {
+    public void test() throws InterruptedException {
         /**
          *write a service that provide an interface with:
          * מקבל TASK להריץ בעוד X זמן מכל מיני שירותים ומבצע אותם כשמגיע הזמן
-         *
-         *פתרון:
-         * נחשוף INTERFACE שמספק עם CALLBACK
-         * הממשק יאכסן את הTASK ברשימה (LINKED LIST) ממויינת לפי זמן ריצה בסדר יורד
-         * ירוץ נניח כל שניה ויבדוק את המיקום האחרון ברשימה, אם הזמן שלה גדול מהזמן הנוכחי ייצא מהלולאה, אחרת יקרא לCALLBASK בASYNC ויבצע את הACTION. יסיר את הרשומה מהליסט. ימשיך עד שהזמן הנוכחי קטן מהזמן של הTASK הבא. -
          */
 
-        TaskSchedulerImpl taskScheduler = new TaskSchedulerImpl();
-        CreateCallbackImpl1 createCallbackImpl1 = new CreateCallbackImpl1(1, taskScheduler, LocalDateTime.now());
-        CreateCallbackImpl2 createCallbackImpl2 = new CreateCallbackImpl2("s", taskScheduler, LocalDateTime.now().plusSeconds(10));
-//        createCallbackImpl1.invoke();
+        TaskScheduler taskScheduler = new TaskSchedulerImpl();
+        taskScheduler.schedule(() -> System.out.println(2), LocalDateTime.now());
+        taskScheduler.schedule(this::doSomething, LocalDateTime.now().plusSeconds(5));
+        taskScheduler.schedule(() -> System.out.println(1), LocalDateTime.now().minusDays(10));
 
+        Thread.sleep(10000);
+    }
+
+    private void doSomething() {
+        System.out.println(3);
     }
 
     @FunctionalInterface
-    public interface TaskScheduler<T> {
-        void schedule(T t, LocalDateTime localDateTime);
+    public interface TaskScheduler {
+        void schedule(Runnable runnable, LocalDateTime localDateTime);
     }
 
-    public class TaskSchedulerImpl<T> implements TaskScheduler<T> {
+    public class TaskSchedulerImpl implements TaskScheduler {
+        private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
+        private PriorityQueue<TaskTime> priorityQueue = new PriorityQueue(Comparator.comparing(TaskTime::getScheduleTime));
 
-        LinkedList<T> tLinkedList = new LinkedList<>();
-
-        @Override
-        public void schedule(T t, LocalDateTime localDateTime) {
-            tLinkedList.add(t);
-        }
-    }
-
-    @FunctionalInterface
-    public interface CreateCallback<T> {
-        void invoke(T t);
-    }
-
-    public class ExecutorTask<T> {
-        private T callback;
-
-        public T getCallback() {
-            return callback;
-        }
-
-        public void setCallback(T callback) {
-            this.callback = callback;
-        }
-    }
-
-    public class CreateCallbackImpl1 extends ExecutorTask<Integer> implements CreateCallback<Integer> {
-        public CreateCallbackImpl1(Integer integer, TaskScheduler taskScheduler, LocalDateTime localDateTime) {
-            taskScheduler.schedule(integer, localDateTime);
+        public TaskSchedulerImpl() {
+            executorService.scheduleWithFixedDelay(this::init, 0, 3, TimeUnit.SECONDS);
         }
 
         @Override
-        public void invoke(Integer integer) {
-            System.out.println(integer.toString());
+        public void schedule(Runnable runnable, LocalDateTime localDateTime) {
+            priorityQueue.add(new TaskTime(runnable, localDateTime));
         }
 
-    }
-
-    public class CreateCallbackImpl2 implements CreateCallback<String> {
-//        private TaskSchedulerImpl taskScheduler;
-
-        public CreateCallbackImpl2(String string, TaskSchedulerImpl taskScheduler, LocalDateTime localDateTime) {
-//            this.taskScheduler = taskScheduler;
-            taskScheduler.schedule(string, localDateTime);
-        }
-
-        @Override
-        public void invoke(String s) {
-            System.out.println(s);
+        private void init() {
+            while (!priorityQueue.isEmpty()) {
+                TaskTime taskTime = priorityQueue.peek();
+                if (taskTime.scheduleTime.isAfter(LocalDateTime.now())) {
+                    break;
+                }
+                taskTime = priorityQueue.poll();
+                System.out.println(taskTime.getScheduleTime());
+                executorService.submit(taskTime.getRunnable());
+            }
         }
     }
+
+    @AllArgsConstructor
+    @Getter
+    class TaskTime {
+        Runnable runnable;
+        LocalDateTime scheduleTime;
+    }
+
+//    @FunctionalInterface
+//    public interface CreateCallback {
+//        void invoke(Runnable t);
+//    }
+//
+//    public class ExecutorTask {
+//        private Runnable callback;
+//
+//        public Runnable getCallback() {
+//            return callback;
+//        }
+//
+//        public void setCallback(Runnable callback) {
+//            this.callback = callback;
+//        }
+//    }
+//
+//    public class CreateCallbackImpl1 extends ExecutorTask implements CreateCallback {
+//        public CreateCallbackImpl1(Runnable runnable, TaskScheduler taskScheduler, LocalDateTime localDateTime) {
+//            taskScheduler.schedule(runnable, localDateTime);
+//        }
+//
+////        @Override
+////        public void invoke(Runnable runnable) {
+////            System.out.println(runnable);
+////        }
+//
+//    }
+//
+//    public class CreateCallbackImpl2 implements CreateCallback {
+////        private TaskSchedulerImpl taskScheduler;
+//
+//        public CreateCallbackImpl2(Runnable runnable, TaskSchedulerImpl taskScheduler, LocalDateTime localDateTime) {
+////            this.taskScheduler = taskScheduler;
+//            taskScheduler.schedule(runnable, localDateTime);
+//        }
+//
+//        @Override
+//        public void invoke(Runnable runnable) {
+//            System.out.println(runnable);
+//        }
+//    }
 
 
 }
