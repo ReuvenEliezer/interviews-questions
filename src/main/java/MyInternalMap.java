@@ -37,8 +37,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        for (int i = 0; i < mapEntries.length; i++) {
-            MyMapEntry<K, V> mapEntry = mapEntries[i];
+        for (MyMapEntry<K, V> mapEntry : mapEntries) {
             if (containsValue(value, mapEntry)) {
                 return true;
             }
@@ -141,8 +140,7 @@ public class MyInternalMap<K, V> implements Map<K, V> {
     @Override
     public Set<K> keySet() {
         Set<K> resultKeys = new HashSet<>();
-        for (int i = 0; i < mapEntries.length; i++) {
-            MyMapEntry<K, V> mapEntry = mapEntries[i];
+        for (MyMapEntry<K, V> mapEntry : mapEntries) {
             addKeySet(mapEntry, resultKeys);
         }
         return resultKeys;
