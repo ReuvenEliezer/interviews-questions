@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -253,7 +254,7 @@ public class ComparatorTest {
     @Test
     public void arrayListAdd() {
         Watch watch = new Watch();
-        ArrayList<String> strings = new ArrayList<>();
+        List<String> strings = new ArrayList<>();
 //        LinkedList<String> strings = new LinkedList<>();
 
         watch.start();
@@ -273,12 +274,12 @@ public class ComparatorTest {
     }
 
     private String getString(Boolean result, int i) {
-        return String.valueOf(result) + i + String.valueOf(!result);
+        return String.valueOf(result) + i + !result;
     }
 
     @Test
     public void Test1() {
-        HashMap<Integer, ObjectClass> hashMap = new HashMap();
+        Map<Integer, ObjectClass> hashMap = new HashMap();
         ObjectClass objectClass = new ObjectClass(2, "new");
         hashMap.put(1, objectClass);
         ObjectClass objectClass1 = hashMap.get(1);
@@ -290,7 +291,7 @@ public class ComparatorTest {
     }
 
     @Test
-    public void undateMapTest() {
+    public void updateMapTest() {
         Map<Integer, ObjectClass> hashMap = new HashMap();
         ObjectClass objectClass = new ObjectClass(2, "new");
         hashMap.put(1, objectClass);
@@ -301,18 +302,26 @@ public class ComparatorTest {
 
     @Test
     public void InstanceOf_Vs_getClass_Performance_Test() {
-        String a = new String();
+        String a = "";
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("equals");
         for (long i = 0; i < 1000000000; i++) {
-            if (a.getClass().equals(String.class)) {
+            if (String.class.equals(a.getClass())) {
 //            System.out.println("getClass = equals");
             }
         }
+        stopWatch.stop();
+        stopWatch.start("instanceof");
+
         for (int i = 0; i < 1000000000; i++) {
 
             if (a instanceof String) {
 //            System.out.println("instanceof = equals");
             }
         }
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
+        System.out.println(stopWatch.shortSummary());
     }
 
     @Test
