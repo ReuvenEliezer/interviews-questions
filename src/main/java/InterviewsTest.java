@@ -1,5 +1,6 @@
 import com.google.common.collect.Sets;
 
+import lombok.ToString;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
@@ -361,8 +362,7 @@ public class InterviewsTest {
         List<Integer> integerHashSet = new ArrayList<>();
         // HashSet<Integer> indexToRemove = new HashSet<>();
 
-        for (int i = 0; i < ints.length; i++) {
-            int value = ints[i];
+        for (int value : ints) {
             if (!integerHashSet.contains(value)) {
                 // indexToRemove.add(value);
                 // } else {
@@ -1004,4 +1004,72 @@ public class InterviewsTest {
         return result;
     }
 
+    @Test
+    public void reverseListTest() {
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.next = new ListNode(5);
+        printList(head);
+        ListNode listNode = reverseList(head);
+        printList(listNode);
+        ListNode listNode1 = reverseListUsingStack(listNode);
+        printList(listNode1);
+
+    }
+
+    static void printList(ListNode temp) {
+        while (temp != null) {
+            System.out.print(temp.val + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+        ListNode next = null;
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
+        return head;
+    }
+
+    public ListNode reverseListUsingStack(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+
+        Stack<ListNode> stk = new Stack<>();
+
+        // Push the elements of list to stack
+        ListNode ptr = head;
+        while (ptr.next != null) {
+            stk.push(ptr);
+            ptr = ptr.next;
+        }
+        head = ptr;
+        while (!stk.isEmpty()) {
+            ptr.next = stk.pop();
+            ptr = ptr.next;
+        }
+        ptr.next = null;
+        return head;
+    }
+
+    @ToString
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+    }
 }

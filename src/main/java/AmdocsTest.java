@@ -36,7 +36,7 @@ public class AmdocsTest {
     private void mirror(EvolvenNode node) {
         if (node == null || node.children == null)
             return;
-        //replace childs
+        //replace children
         for (int i = 0; i < node.children.size() / 2; i++) {
             EvolvenNode evolvenNode = node.children.get(i);
             EvolvenNode last = node.children.get(node.children.size() - (i + 1));
