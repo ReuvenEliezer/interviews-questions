@@ -2,6 +2,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -57,7 +58,7 @@ public class MainTraining {
 
         try {
             writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("filename.txt"), "utf-8"));
+                    new FileOutputStream("filename.txt"), StandardCharsets.UTF_8));
             writer.write(straightLineEquation.toString());
         } catch (IOException ex) {
             // Report

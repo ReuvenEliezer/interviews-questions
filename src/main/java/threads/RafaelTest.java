@@ -1,5 +1,6 @@
 package threads;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,6 +27,11 @@ public class RafaelTest {
          * 5001-8000 - 20%
          * 8001-10000 - 30%
          * 10001+ - 40%
+         *
+         *
+         * should be support add or changes tax level without changes in source code  ->
+         *      supply a controller that add/remove/changed it and re-sorted the list.
+         *      so, the calc func could not be changed !!
          */
         salaryTaxRanks.add(new SalaryTaxRank(0d, 3000, 0));
         salaryTaxRanks.add(new SalaryTaxRank(3001d, 5000, 10));
@@ -42,16 +48,12 @@ public class RafaelTest {
     List<SalaryTaxRank> salaryTaxRanks = new ArrayList<>();
 
     @Data
+    @AllArgsConstructor
     class SalaryTaxRank implements Comparable<SalaryTaxRank> {
         Double minSalary;
         double maxSalary;
         double taxPercent;
-
-        public SalaryTaxRank(Double minSalary, double maxSalary, double taxPercent) {
-            this.minSalary = minSalary;
-            this.maxSalary = maxSalary;
-            this.taxPercent = taxPercent;
-        }
+        //TODO add validations: min value must be smaller than max value & not overlap rank
 
         @Override
         public int compareTo(SalaryTaxRank o) {
@@ -64,9 +66,14 @@ public class RafaelTest {
         for (SalaryTaxRank currentRankMin : salaryTaxRanks) {
             if (salary <= currentRankMin.minSalary)
                 break;
-            totalTax += (Math.min(salary, currentRankMin.maxSalary) - currentRankMin.minSalary) * currentRankMin.taxPercent / 100;
+            totalTax += (Math.min(salary, currentRankMin.maxSalary) - currentRankMin.minSalary) * currentRankMin.taxPercent / 100; // take sum of tax of current level and added it to the total tax
         }
 
         return totalTax;
+
+//        return salaryTaxRanks.stream()
+//                .takeWhile(currentRankMin -> !(salary <= currentRankMin.minSalary))
+//                .mapToDouble(currentRankMin -> (Math.min(salary, currentRankMin.maxSalary) - currentRankMin.minSalary) * currentRankMin.taxPercent / 100).sum();
+
     }
 }

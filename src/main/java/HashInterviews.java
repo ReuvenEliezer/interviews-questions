@@ -1,9 +1,11 @@
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.*;
 
 public class HashInterviews {
 
@@ -12,7 +14,7 @@ public class HashInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/frequency-game/1/?problemType=functional&page=1&query=problemTypefunctionalpage1
          */
-        Assert.assertEquals(50, largButMinFreq(new int[]{2, 2, 5, 50, 1}));
+        assertEquals(50, largButMinFreq(new int[]{2, 2, 5, 50, 1}));
     }
 
     public int largButMinFreq(int[] arr) {
@@ -25,8 +27,8 @@ public class HashInterviews {
 
     @Test
     public void isIsogram() {
-        Assert.assertTrue(isIsogram("machine"));
-        Assert.assertFalse(isIsogram("geeks"));
+        assertTrue(isIsogram("machine"));
+        assertFalse(isIsogram("geeks"));
     }
 
     private boolean isIsogram(String data) {
@@ -41,8 +43,8 @@ public class HashInterviews {
 
     @Test
     public void uniqueNumbers() {
-        Assert.assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9), uniqueNumbers(1, 9));
-        Assert.assertEquals(Arrays.asList(10, 12, 13, 14, 15, 16, 17, 18, 19, 20), uniqueNumbers(10, 20));
+        assertEquals(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9), uniqueNumbers(1, 9));
+        assertEquals(Arrays.asList(10, 12, 13, 14, 15, 16, 17, 18, 19, 20), uniqueNumbers(10, 20));
     }
 
     private ArrayList<Integer> uniqueNumbers(int l, int r) {
@@ -59,11 +61,11 @@ public class HashInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/subarrays-with-sum-k/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1category[]Hash
          */
-        Assert.assertEquals(3, findSubArraySum(new int[]{10, 2, -2, -20, 10}, -10));
-        Assert.assertEquals(2, findSubArraySum(new int[]{9, 4, 20, 3, 10, 5}, 33));
+        assertEquals(3, findSubArraySum(new int[]{10, 2, -2, -20, 10}, -10));
+        assertEquals(2, findSubArraySum(new int[]{9, 4, 20, 3, 10, 5}, 33));
 
-        Assert.assertEquals(3, findSubArraySum1(new int[]{10, 2, -2, -20, 10}, -10));
-        Assert.assertEquals(2, findSubArraySum1(new int[]{9, 4, 20, 3, 10, 5}, 33));
+        assertEquals(3, findSubArraySum1(new int[]{10, 2, -2, -20, 10}, -10));
+        assertEquals(2, findSubArraySum1(new int[]{9, 4, 20, 3, 10, 5}, 33));
     }
 
     private int findSubArraySum1(int[] arr, int k) {
@@ -128,8 +130,11 @@ public class HashInterviews {
         /**
          *  https://practice.geeksforgeeks.org/problems/in-first-but-second5423/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&sortBy=accuracy&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1sortByaccuracycategory[]Hash
          */
-        Assert.assertEquals(Arrays.asList(4, 10), findMissing(new long[]{1, 2, 3, 4, 5, 10}, new long[]{2, 3, 1, 0, 5}));
-        Assert.assertEquals(Arrays.asList(5), findMissing(new long[]{4, 3, 5, 9, 11}, new long[]{4, 9, 3, 11, 10}));
+        //https://www.baeldung.com/introduction-to-assertj
+        assertThatCollection(findMissing(new long[]{1, 2, 3, 4, 5, 10}, new long[]{2, 3, 1, 0, 5}))
+                .containsExactly(4l, 10l);
+        assertThatCollection(findMissing(new long[]{4, 3, 5, 9, 11}, new long[]{4, 9, 3, 11, 10}))
+                .containsExactly(5l);
     }
 
     private List<Long> findMissing(long[] a, long[] b) {
@@ -154,9 +159,9 @@ public class HashInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/minimum-insertions-to-make-two-arrays-equal/1/?category[]=Hash&category[]=Hash&problemType=functional&difficulty[]=2&page=1&query=category[]HashproblemTypefunctionaldifficulty[]2page1category[]Hash
          */
-        Assert.assertEquals(4, minInsAndDel(new int[]{1, 2, 5, 3, 1}, new int[]{1, 3, 5}));
-        Assert.assertEquals(0, minInsAndDel(new int[]{1, 4}, new int[]{1, 4}));
-        Assert.assertEquals(3, minInsAndDel(new int[]{1, 4, 2, 5}, new int[]{1, 2, 4}));
+        assertEquals(4, minInsAndDel(new int[]{1, 2, 5, 3, 1}, new int[]{1, 3, 5}));
+        assertEquals(0, minInsAndDel(new int[]{1, 4}, new int[]{1, 4}));
+        assertEquals(3, minInsAndDel(new int[]{1, 4, 2, 5}, new int[]{1, 2, 4}));
     }
 
     private int minInsAndDel(int[] a, int[] b) {
@@ -183,8 +188,8 @@ public class HashInterviews {
          */
         int[] array = {1, 3, 5, 7};
         List<Pair> pairList = returnIndexOfSumOf2Elements(array, 6);
-        Assert.assertEquals(1, pairList.size());
-        Assert.assertEquals(Arrays.asList(0, 2), Arrays.asList(pairList.get(0).getKey(), pairList.get(0).getValue()));
+        assertEquals(1, pairList.size());
+        assertEquals(Arrays.asList(0, 2), Arrays.asList(pairList.get(0).getKey(), pairList.get(0).getValue()));
     }
 
     private List<Pair> returnIndexOfSumOf2Elements(int[] arr, int sum) {
@@ -228,8 +233,8 @@ public class HashInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/smallest-number-repeating-k-times3239/1/?problemStatus=unsolved&problemType=functional&sortBy=accuracy&category[]=Hash&page=1&query=problemStatusunsolvedproblemTypefunctionalsortByaccuracycategory[]Hashpage1
          */
-        Assert.assertEquals(1, findDuplicate(new int[]{2, 2, 1, 3, 1}, 2));
-        Assert.assertEquals(2, findDuplicate(new int[]{3, 5, 3, 2}, 1));
+        assertEquals(1, findDuplicate(new int[]{2, 2, 1, 3, 1}, 2));
+        assertEquals(2, findDuplicate(new int[]{3, 5, 3, 2}, 1));
     }
 
     private int findDuplicate(int[] arr, int k) {
@@ -260,11 +265,11 @@ public class HashInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/sorting-elements-of-an-array-by-frequency-1587115621/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&difficulty[]=1&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionaldifficulty[]1page1category[]Hash
          */
-        Assert.assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq(new int[]{5, 5, 4, 6, 4}));
-        Assert.assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq(new int[]{9, 9, 9, 2, 5}));
+        assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq(new int[]{5, 5, 4, 6, 4}));
+        assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq(new int[]{9, 9, 9, 2, 5}));
 
-        Assert.assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq1(new int[]{5, 5, 4, 6, 4}));
-        Assert.assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq1(new int[]{9, 9, 9, 2, 5}));
+        assertEquals(Arrays.asList(4, 4, 5, 5, 6), sortByFreq1(new int[]{5, 5, 4, 6, 4}));
+        assertEquals(Arrays.asList(9, 9, 9, 2, 5), sortByFreq1(new int[]{9, 9, 9, 2, 5}));
     }
 
     private List<Integer> sortByFreq(int[] arr) {
@@ -369,7 +374,7 @@ public class HashInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/match-specific-pattern/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionalpage1category[]Hash
          */
-        Assert.assertEquals(Arrays.asList("abb", "xyy"), findMatchedWords(Arrays.asList("abb", "abc", "xyz", "xyy"), "foo"));
+        assertEquals(Arrays.asList("abb", "xyy"), findMatchedWords(Arrays.asList("abb", "abc", "xyz", "xyy"), "foo"));
     }
 
     private List<String> findMatchedWords(List<String> dict, String pattern) {
@@ -399,11 +404,11 @@ public class HashInterviews {
         /**
          *         https://practice.geeksforgeeks.org/problems/max-distance-between-same-elements/1/?category[]=Hash&category[]=Hash&problemStatus=unsolved&problemType=functional&page=1&query=category[]HashproblemStatusunsolvedproblemTypefunctionalpage1category[]Hash
          */
-        Assert.assertEquals(5, maxDistance(new int[]{1, 1, 2, 2, 2, 1}));
-        Assert.assertEquals(10, maxDistance(new int[]{3, 2, 1, 2, 1, 4, 5, 8, 6, 7, 4, 2}));
+        assertEquals(5, maxDistance(new int[]{1, 1, 2, 2, 2, 1}));
+        assertEquals(10, maxDistance(new int[]{3, 2, 1, 2, 1, 4, 5, 8, 6, 7, 4, 2}));
 
-        Assert.assertEquals(5, maxDistanceLessMemory(new int[]{1, 1, 2, 2, 2, 1}));
-        Assert.assertEquals(10, maxDistanceLessMemory(new int[]{3, 2, 1, 2, 1, 4, 5, 8, 6, 7, 4, 2}));
+        assertEquals(5, maxDistanceLessMemory(new int[]{1, 1, 2, 2, 2, 1}));
+        assertEquals(10, maxDistanceLessMemory(new int[]{3, 2, 1, 2, 1, 4, 5, 8, 6, 7, 4, 2}));
     }
 
     private int maxDistance(int[] arr) {
