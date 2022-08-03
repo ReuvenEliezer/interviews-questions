@@ -1,31 +1,30 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Stack;
 
-public class TripAction {
+import static org.assertj.core.api.Assertions.*;
+
+public class TripActionTest {
 
     @Test
     public void test() {
-        MyQueue myQueue = new MyQueue();
+        MyQueue<Integer> myQueue = new MyQueue<>();
         myQueue.push(1);
         myQueue.push(2);
         myQueue.push(2);
         myQueue.push(1);
 
-        Assert.assertEquals(1, myQueue.peek());
-        Assert.assertEquals(1, myQueue.peek());
-
-        Assert.assertEquals(1, myQueue.pop());
-        Assert.assertEquals(2, myQueue.peek());
-        Assert.assertEquals(2, myQueue.pop());
-        Assert.assertEquals(2, myQueue.peek());
-        Assert.assertEquals(2, myQueue.pop());
-        Assert.assertEquals(1, myQueue.peek());
-        Assert.assertEquals(1, myQueue.pop());
+        assertThat(myQueue.peek()).isEqualTo(1);
+        assertThat(myQueue.pop()).isEqualTo(1);
+        assertThat(myQueue.peek()).isEqualTo(2);
+        assertThat(myQueue.pop()).isEqualTo(2);
+        assertThat(myQueue.peek()).isEqualTo(2);
+        assertThat(myQueue.pop()).isEqualTo(2);
+        assertThat(myQueue.peek()).isEqualTo(1);
+        assertThat(myQueue.pop()).isEqualTo(1);
     }
 
-    class MyQueue<T> {
+    public static class MyQueue<T> {
 
         Stack<T> stack1;
         Stack<T> stack2;

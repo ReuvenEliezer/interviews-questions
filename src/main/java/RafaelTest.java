@@ -1,5 +1,3 @@
-package threads;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Assert;
@@ -49,11 +47,11 @@ public class RafaelTest {
 
     @Data
     @AllArgsConstructor
+    //TODO add validations: min value must be smaller than max value & not overlap rank
     class SalaryTaxRank implements Comparable<SalaryTaxRank> {
         Double minSalary;
         double maxSalary;
         double taxPercent;
-        //TODO add validations: min value must be smaller than max value & not overlap rank
 
         @Override
         public int compareTo(SalaryTaxRank o) {
@@ -62,18 +60,18 @@ public class RafaelTest {
     }
 
     private double calcTax(double salary) {
-        double totalTax = 0;
-        for (SalaryTaxRank currentRankMin : salaryTaxRanks) {
-            if (salary <= currentRankMin.minSalary)
-                break;
-            totalTax += (Math.min(salary, currentRankMin.maxSalary) - currentRankMin.minSalary) * currentRankMin.taxPercent / 100; // take sum of tax of current level and added it to the total tax
-        }
+//        double totalTax = 0;
+//        for (SalaryTaxRank salaryTaxRank : salaryTaxRanks) {
+//            if (salary <= salaryTaxRank.minSalary)
+//                break;
+//            totalTax += (Math.min(salary, salaryTaxRank.maxSalary) - salaryTaxRank.minSalary) * salaryTaxRank.taxPercent / 100; // take sum of tax of current level and added it to the total tax
+//        }
+//        return totalTax;
 
-        return totalTax;
-
-//        return salaryTaxRanks.stream()
-//                .takeWhile(currentRankMin -> !(salary <= currentRankMin.minSalary))
-//                .mapToDouble(currentRankMin -> (Math.min(salary, currentRankMin.maxSalary) - currentRankMin.minSalary) * currentRankMin.taxPercent / 100).sum();
+        return salaryTaxRanks.stream()
+                .takeWhile(salaryTaxRank -> salary > salaryTaxRank.minSalary)
+                .mapToDouble(salaryTaxRank -> (Math.min(salary, salaryTaxRank.maxSalary) - salaryTaxRank.minSalary) * salaryTaxRank.taxPercent / 100)
+                .sum();
 
     }
 }
