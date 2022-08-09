@@ -48,7 +48,7 @@ public class RafaelTest {
     @Data
     @AllArgsConstructor
     //TODO add validations: min value must be smaller than max value & not overlap rank
-    class SalaryTaxRank implements Comparable<SalaryTaxRank> {
+    static class SalaryTaxRank implements Comparable<SalaryTaxRank> {
         Double minSalary;
         double maxSalary;
         double taxPercent;

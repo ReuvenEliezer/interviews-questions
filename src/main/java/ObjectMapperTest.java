@@ -86,6 +86,8 @@ public class ObjectMapperTest {
     public void readFileTest() throws IOException {
         String basePath = "/Users/eliezer/Downloads/";
         Set<String> allServicesToUpdate = getAllServiceToUpdate(basePath);
+        String joinedString = allServicesToUpdate.stream().collect(Collectors.joining(",", "(", ")"));
+        System.out.println(joinedString);
         writeOutput(allServicesToUpdate, basePath + "allServiceToUpdate.csv");
     }
 

@@ -153,7 +153,7 @@ public class RandomTest {
 
     @Test
     public void RandomOnArr() {
-        int X = 100;
+        int X = 10;
 
         List<Integer> integerList = new ArrayList<>();
         int[] array = new int[X];
@@ -167,7 +167,7 @@ public class RandomTest {
             int randomValue = array[index];
             integerList.add(randomValue);
             array[index] = array[i];
-            array[i] = randomValue;
+//            array[i] = randomValue;
         }
 
         Assert.assertEquals(X, integerList.size());
