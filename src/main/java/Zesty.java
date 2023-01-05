@@ -2,8 +2,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertFalse;
 
 public class Zesty {
 
@@ -61,5 +62,20 @@ public class Zesty {
             }
         }
         return result;
+    }
+
+    @Test
+    public void mapReferenceTest() {
+        Map<Integer, String> integerStringMap = new HashMap<>();
+        integerStringMap.put(1, "one");
+        Set<Integer> integers = integerStringMap.keySet();
+        integers.remove(1);
+        Assert.assertTrue(integerStringMap.isEmpty());
+
+        integerStringMap.put(1, "one");
+        Set<Integer> integers1 = new HashSet<>(integerStringMap.keySet());
+        integers1.remove(1);
+        assertFalse(integerStringMap.isEmpty());
+
     }
 }

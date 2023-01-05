@@ -197,5 +197,28 @@ public class TimeTest {
         int i = between.compareTo(duration);
     }
 
+    @Test
+    public void millisToDateTest() {
+        long millisStart = 1665608400000L;
+        Date date = new Date(millisStart);
+        LocalDateTime localDateTimeStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(millisStart), ZoneId.of("Asia/Jerusalem"));
+        ZonedDateTime zonedDateTimeStart = ZonedDateTime.ofInstant(Instant.ofEpochMilli(millisStart), ZoneId.of("Asia/Jerusalem"));
+
+        long millisEnd = 1666126799999L;
+        Date date1 = new Date(millisEnd);
+        LocalDateTime localDateTimeEnd= LocalDateTime.ofInstant(Instant.ofEpochMilli(millisEnd), ZoneId.of("Asia/Jerusalem"));
+        ZonedDateTime zonedDateTimeEnd = ZonedDateTime.ofInstant(Instant.ofEpochMilli(millisEnd), ZoneId.of("Asia/Jerusalem"));
+
+        Duration between = Duration.between(localDateTimeStart, localDateTimeEnd);
+//        Assert.assertTrue(between.minus(Duration.ofDays(5).plusMinutes(1)).isNegative());
+
+
+        long millisValue = 1666116004000L;
+        Date date2 = new Date(millisValue);
+        LocalDateTime localDateTimeValue= LocalDateTime.ofInstant(Instant.ofEpochMilli(millisValue), ZoneId.of("Asia/Jerusalem"));
+        ZonedDateTime zonedDateTimeValue= ZonedDateTime.ofInstant(Instant.ofEpochMilli(millisValue), ZoneId.of("Asia/Jerusalem"));
+
+    }
+
 
 }

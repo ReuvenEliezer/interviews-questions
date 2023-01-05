@@ -86,6 +86,9 @@ public class ObjectMapperTest {
     public void readFileTest() throws IOException {
         String basePath = "/Users/eliezer/Downloads/";
         Set<String> allServicesToUpdate = getAllServiceToUpdate(basePath);
+        System.out.println(Arrays.toString(allServicesToUpdate.toArray()));
+//        String accountsNameToArchiveArr = String.join("&ids=", allServicesToUpdate);
+
         String joinedString = allServicesToUpdate.stream().collect(Collectors.joining(",", "(", ")"));
         System.out.println(joinedString);
         writeOutput(allServicesToUpdate, basePath + "allServiceToUpdate.csv");

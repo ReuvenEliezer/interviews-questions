@@ -1,10 +1,9 @@
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Java8Features {
@@ -91,4 +90,5 @@ public class Java8Features {
             return Objects.hash(buyerId, sellerId, settlementDate);
         }
     }
+
 }
