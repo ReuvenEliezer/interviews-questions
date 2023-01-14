@@ -16,13 +16,20 @@
         <poi-scratchpad.version>5.2.2</poi-scratchpad.version>
         <batik-transcoder.version>1.14</batik-transcoder.version>
         <poi-ooxml.version>5.2.2</poi-ooxml.version>
-        <log4j2.version>2.17.2</log4j2.version>
+        <log4j2.version>2.18.0</log4j2.version>
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.13.4</jackson.version>
         <flying-saucer-pdf.version>9.1.22</flying-saucer-pdf.version>
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>

@@ -196,7 +196,7 @@ public class Capitolis {
         }
     }
 
-    class Aggregation {
+    static class Aggregation {
         Long id;
         String buyerId;
         String sellerId;
@@ -205,7 +205,7 @@ public class Capitolis {
 
     }
 
-    class Transaction {
+    static class Transaction {
         Long id;
         String buyerId;
         String sellerId;
