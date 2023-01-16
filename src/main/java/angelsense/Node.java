@@ -13,12 +13,13 @@ class Node {
     Node next;
     List<String> stringList;
 
+    public Node(int value) {
+        this.value = value;
+    }
+
     public Node(int value, List<String> stringList) {
         this.value = value;
         this.stringList = stringList;
     }
 
-    public Node(int value) {
-        this.value = value;
-    }
 }

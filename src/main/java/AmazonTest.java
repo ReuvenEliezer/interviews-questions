@@ -19,6 +19,7 @@ public class AmazonTest {
 
     }
 
+
     private int generalizedGCD(int[] arr) {
         int result = arr[0];
         for (int i = 1; i < arr.length; i++)

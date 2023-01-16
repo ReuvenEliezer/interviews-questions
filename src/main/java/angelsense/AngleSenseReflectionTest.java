@@ -29,6 +29,8 @@ public class AngleSenseReflectionTest {
         node.next.next.next = new Node(4);
         node.next.next.next.next = new Node(5);
         System.out.println(printObject(node));
+        System.out.println(node);
+
     }
 
     /**

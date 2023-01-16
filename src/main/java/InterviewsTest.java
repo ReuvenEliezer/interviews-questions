@@ -1,7 +1,6 @@
 import com.google.common.collect.Sets;
 
 import lombok.ToString;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
 
@@ -13,18 +12,204 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.*;
+
 public class InterviewsTest {
+
+
+    @Test
+    public void twoSumTest() {
+        //https://leetcode.com/problems/two-sum/
+        assertArrayEquals(new int[]{0, 1}, twoSum(new int[]{2, 7, 11, 15}, 9));
+        assertArrayEquals(new int[]{1, 2}, twoSum(new int[]{3, 2, 4}, 6));
+        assertArrayEquals(new int[]{0, 1}, twoSum(new int[]{3, 3}, 6));
+        assertArrayEquals(new int[]{0, 3}, twoSum(new int[]{0, 4, 3, 0}, 0));
+        assertArrayEquals(new int[]{0, 2}, twoSum(new int[]{-3, 4, 3, 90}, 0));
+        assertArrayEquals(new int[]{2, 4}, twoSum(new int[]{-1, -2, -3, -4, -5}, -8));
+    }
+
+    @Test
+    public void twoSum2Test() {
+        //https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
+        assertArrayEquals(new int[]{1, 2}, twoSum2(new int[]{2, 7, 11, 15}, 9));
+        assertArrayEquals(new int[]{1, 3}, twoSum2(new int[]{2, 3, 4}, 6));
+        assertArrayEquals(new int[]{1, 2}, twoSum2(new int[]{-1, 0}, -1));
+    }
+
+    @Test
+    public void twoSumBFSTest() {
+        //https://leetcode.com/problems/two-sum-iv-input-is-a-bst/description/
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(3);
+        root.right = new TreeNode(6);
+        root.left.left = new TreeNode(2);
+        root.left.right = new TreeNode(4);
+        root.right.right = new TreeNode(7);
+
+        assertEquals(true, twoSumBFS(root, 9));
+        assertEquals(false, twoSumBFS(root, 28));
+
+        TreeNode root1 = new TreeNode(3);
+        root1.left = new TreeNode(1);
+        root1.right = new TreeNode(4);
+        root1.left.right = new TreeNode(2);
+        assertEquals(true, twoSumBFS(root1, 6));
+
+        TreeNode root2 = new TreeNode(1);
+        assertEquals(false, twoSumBFS(root2, 2));
+
+        TreeNode root3 = new TreeNode(532);
+
+        root3.left = new TreeNode(278);
+
+        root3.left.right = new TreeNode(397);
+        root3.left.right.left = new TreeNode(346);
+        root3.left.right.right = new TreeNode(493);
+        root3.left.right.right = new TreeNode(504);
+
+        root3.left.left = new TreeNode(115);
+        root3.left.left.left = new TreeNode(75);
+        root3.left.left.right = new TreeNode(123);
+        root3.left.left.right.right = new TreeNode(270);
+
+
+        root3.right = new TreeNode(676);
+        root3.right.left = new TreeNode(629);
+        root3.right.left.left = new TreeNode(591);
+        root3.right.left.right = new TreeNode(633);
+        root3.right.left.right.right = new TreeNode(504);
+
+        root3.right.right = new TreeNode(762);
+        root3.right.right.left = new TreeNode(715);
+        root3.right.right.left.right = new TreeNode(738);
+
+        root3.right.right.right = new TreeNode(866);
+        root3.right.right.right.right = new TreeNode(886);
+
+        assertEquals(true, twoSumBFS(root3, 1159));
+        assertEquals(true, twoSumBFS2(root3, 1159, new HashSet<>()));
+
+    }
+
+    private boolean twoSumBFS2(TreeNode root, int target, Set<Integer> valuesSet) {
+        if (root == null)
+            return false;
+
+        if (!valuesSet.contains(root.val)) {
+            int delta = target - root.val;
+            if (valuesSet.contains(delta)) {
+                return true;
+            }
+            valuesSet.add(root.val);
+        }
+        return twoSumBFS2(root.left, target, valuesSet) || twoSumBFS2(root.right, target, valuesSet);
+    }
+
+    private boolean twoSumBFS(TreeNode root, int target) {
+        //location by depth and direction (right/left)
+        Map<Integer, String> numValueToLocationMap = new HashMap<>();
+        collectNumsRecursively(root, numValueToLocationMap, 0, Direction.root);
+
+        for (Map.Entry<Integer, String> entry : numValueToLocationMap.entrySet()) {
+            Integer numValue = entry.getKey();
+            String location = entry.getValue();
+            int delta = target - numValue;
+            String locationMap = numValueToLocationMap.get(delta);
+            if (locationMap != null && !location.equals(locationMap)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    enum Direction {
+        root, right, left
+    }
+
+    private void collectNumsRecursively(TreeNode root, Map<Integer, String> numValueToLocationMap, int recursiveDepth, Direction direction) {
+        if (root == null) {
+            return;
+        }
+        numValueToLocationMap.put(root.val, root.val + "_recursiveDepth:" + recursiveDepth +"_"+ direction);
+        ++recursiveDepth;
+        collectNumsRecursively(root.left, numValueToLocationMap, recursiveDepth, Direction.left);
+        collectNumsRecursively(root.right, numValueToLocationMap, recursiveDepth, Direction.right);
+    }
+
+    private static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    private int[] twoSum2(int[] nums, int target) {
+        Map<Integer, Integer> valueToIndexMap = new HashMap<>();
+        for (int index = 0; index < nums.length; index++) {
+            int value = nums[index];
+            valueToIndexMap.put(value, index);
+        }
+
+        for (int index = 0; index < nums.length; index++) {
+            int value = nums[index];
+            int delta = target - value;
+            Integer indexMap = valueToIndexMap.get(delta);
+            if (indexMap != null && !indexMap.equals(index)) {
+                return new int[]{index + 1, indexMap + 1};
+            }
+        }
+        return new int[]{};
+    }
+
+    private int[] twoSum(int[] nums, int target) {
+//        Map<Integer, Set<Integer>> valueToIndexMap = new HashMap<>();
+        Map<Integer, Integer> valueToIndexMap = new HashMap<>();
+
+
+        for (int index = 0; index < nums.length; index++) {
+            int value = nums[index];
+//            if (value <= target) {
+//                valueToIndexMap.computeIfAbsent(value, i -> new HashSet<>()).add(index);
+            valueToIndexMap.put(value, index);
+//            }
+        }
+
+        for (int index = 0; index < nums.length; index++) {
+            int value = nums[index];
+            int delta = target - value;
+//            if (delta >= 0) {
+//                Set<Integer> indexes = valueToIndexMap.get(delta);
+//                if (indexes != null) {
+//                    return new int[]{index, indexes.iterator().next()};
+//                }
+            Integer indexMap = valueToIndexMap.get(delta);
+            if (indexMap != null && !indexMap.equals(index)) {
+                return new int[]{index, indexMap};
+            }
+//            }
+        }
+        return new int[]{};
+    }
 
     @Test
     public void trappingWaterTest() {
         //https://practice.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1
         //https://www.techiedelight.com/trapping-rain-water-within-given-set-bars/
 
-        Assert.assertEquals(10, trappingWater(new int[]{3, 0, 0, 2, 0, 4}));
-        Assert.assertEquals(10, trappingWater(new int[]{7, 4, 0, 9}));
-        Assert.assertEquals(0, trappingWater(new int[]{6, 9, 9}));
+        assertEquals(10, trappingWater(new int[]{3, 0, 0, 2, 0, 4}));
+        assertEquals(10, trappingWater(new int[]{7, 4, 0, 9}));
+        assertEquals(0, trappingWater(new int[]{6, 9, 9}));
 
-        Assert.assertEquals(25, trappingWater(new int[]{7, 0, 4, 2, 5, 0, 6, 4, 0, 5}));
+        assertEquals(25, trappingWater(new int[]{7, 0, 4, 2, 5, 0, 6, 4, 0, 5}));
     }
 
     static int map(int n, String keys[], int arr[], String s) {
@@ -79,7 +264,7 @@ public class InterviewsTest {
         int[] arr = {1, 3, 4, 8, 2, 6, 10, 7};
         // printSumOfPairIfExistInArr(arr);
         List<AmazonTest.Pair> result = getSumOfPairIfExistInArr(arr);
-        Assert.assertEquals(6, result.size());
+        assertEquals(6, result.size());
     }
 
     private List<AmazonTest.Pair> getSumOfPairIfExistInArr(int[] arr) {
@@ -156,8 +341,8 @@ public class InterviewsTest {
         System.out.println("mapReduceResult: " + mapReduceResult.size());
         System.out.println(watch.getTotalTimeSeconds());
         System.out.println(watch.prettyPrint());
-        Assert.assertEquals(forEachResult.size(), mapReduceResult.size());
-        Assert.assertEquals(forEachResult, mapReduceResult);
+        assertEquals(forEachResult.size(), mapReduceResult.size());
+        assertEquals(forEachResult, mapReduceResult);
     }
 
     @Test
@@ -230,10 +415,10 @@ public class InterviewsTest {
         tree.root.left.right = new Node(5);
 
         List<Integer> integers = postOrder(tree.root);
-        Assert.assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers);
+        assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers);
 
         List<Integer> integers2 = postOrderWithoutRecursive(tree.root);
-        Assert.assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers2);
+        assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers2);
 
     }
 
@@ -251,10 +436,10 @@ public class InterviewsTest {
         tree.root.left.right = new Node(5);
 
         List<Integer> integers = inOrder(tree.root);
-        Assert.assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers);
+        assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers);
 
         List<Integer> integers2 = inOrderWithoutRecursive(tree.root);
-        Assert.assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers2);
+        assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers2);
 
     }
 
@@ -847,9 +1032,9 @@ public class InterviewsTest {
     @Test
     public void ATATTest() {
         String s1 = "9384";
-        Assert.assertEquals(4, solve(s1));
+        assertEquals(4, solve(s1));
         String s2 = "138925";
-        Assert.assertEquals(4, solve(s2));
+        assertEquals(4, solve(s2));
     }
 
     private int solve(String s) {
@@ -918,10 +1103,10 @@ public class InterviewsTest {
         /**
          *       https://www.geeksforgeeks.org/find-if-array-can-be-divided-into-two-subarrays-of-equal-sum/
          */
-        Assert.assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, 2, 3, 2, 1}));
-        Assert.assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, 1, 3, 2, 5}));
-        Assert.assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, -2, -3, 2, 3}));
-        Assert.assertFalse(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, -2, 3, 2, 3}));
+        assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, 2, 3, 2, 1}));
+        assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, 1, 3, 2, 5}));
+        assertTrue(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, -2, -3, 2, 3}));
+        assertFalse(findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(new int[]{6, -2, 3, 2, 3}));
     }
 
     private boolean findIfArrayCanBeDividedIntoTwoSubArraysOfEqualSum(int[] arr) {
@@ -946,8 +1131,8 @@ public class InterviewsTest {
         /**
          *  https://practice.geeksforgeeks.org/problems/intersection-of-two-arrays2404/1
          */
-        Assert.assertEquals(1, numberOfElementsInIntersection(new int[]{89, 2, 4}, new int[]{89, 24, 75, 11, 23}));
-        Assert.assertEquals(4, numberOfElementsInIntersection(new int[]{1, 2, 3, 4, 5, 6}, new int[]{3, 4, 5, 6, 7}));
+        assertEquals(1, numberOfElementsInIntersection(new int[]{89, 2, 4}, new int[]{89, 24, 75, 11, 23}));
+        assertEquals(4, numberOfElementsInIntersection(new int[]{1, 2, 3, 4, 5, 6}, new int[]{3, 4, 5, 6, 7}));
     }
 
     private int numberOfElementsInIntersection(int[] arr1, int[] arr2) {
@@ -981,10 +1166,10 @@ public class InterviewsTest {
 //        lists.add(Arrays.asList(1, 3, 10, 11));
 
         Set<Integer> intersection = intersection(Arrays.asList(1, 3, 5), Arrays.asList(1, 6, 7, 9, 3), Arrays.asList(1, 3, 10, 11));
-        Assert.assertEquals(Sets.newHashSet(1, 3), intersection);
+        assertEquals(Sets.newHashSet(1, 3), intersection);
 
         Set<Integer> set = retainAll(Sets.newHashSet(1, 3, 5), Sets.newHashSet(1, 6, 7, 9, 3), Sets.newHashSet(1, 3, 10, 11));
-        Assert.assertEquals(Sets.newHashSet(1, 3), set);
+        assertEquals(Sets.newHashSet(1, 3), set);
     }
 
     public <T> Set<T> intersection(List<T>... list) {
