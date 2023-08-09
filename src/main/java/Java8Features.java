@@ -1,3 +1,4 @@
+import digibank.RuleEnum;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -7,6 +8,21 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Java8Features {
+
+
+    @Test
+    public void test1(){
+        Map<RuleEnum, String> map = new EnumMap<>(RuleEnum.class);
+        final String string = map.toString();
+    }
+
+    @Test
+    public void test() {
+        boolean b = Boolean.TRUE == null;
+
+        Supplier<String> s = () -> "{}";
+        s.get();
+    }
 
     @Test
     public void groupingBy() {
@@ -23,7 +39,7 @@ public class Java8Features {
                 .collect(Collectors.groupingBy(Trade::getBuyerId, Collectors.groupingBy(Trade::getSellerId, Collectors.groupingBy(Trade::getSettlementDate,
                         Collectors.summingInt(Trade::getQty)))));
 
-        System.out.println("collect: "+collect);
+        System.out.println("collect: " + collect);
         for (Map.Entry<Integer, Map<Integer, Map<LocalDate, Integer>>> entry : collect.entrySet()) {
             Integer key = entry.getKey();
             for (Map.Entry<Integer, Map<LocalDate, Integer>> entry1 : entry.getValue().entrySet()) {
@@ -31,10 +47,10 @@ public class Java8Features {
                 for (Map.Entry<LocalDate, Integer> entry2 : entry1.getValue().entrySet()) {
                     Integer value = entry2.getValue();
                     LocalDate key2 = entry2.getKey();
-                    System.out.print("      getBuyerId: "+key);
-                    System.out.print("      getSellerId: "+key1);
-                    System.out.print("      getSettlementDate: "+key2);
-                    System.out.print("      getQty: "+value);
+                    System.out.print("      getBuyerId: " + key);
+                    System.out.print("      getSellerId: " + key1);
+                    System.out.print("      getSettlementDate: " + key2);
+                    System.out.print("      getQty: " + value);
                     System.out.println();
                 }
             }

@@ -1,5 +1,4 @@
 import com.google.common.collect.Sets;
-
 import lombok.ToString;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,6 +13,34 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class InterviewsTest {
+
+
+    @Test
+    public void katanPlayTest() {
+        Map<Integer, Integer> numToInstancesMap = new HashMap<>();
+
+        int numOfOptions = 6;
+        for (int i = 1; i < numOfOptions + 1; i++) {
+            for (int j = 1; j < numOfOptions + 1; j++) {
+                numToInstancesMap.merge(i + j, 1, Integer::sum);
+            }
+        }
+
+        int sum = numToInstancesMap.values().stream().mapToInt(Integer::intValue).sum();
+        numToInstancesMap.forEach((key, value) -> System.out.printf("num: %s  :  %.2f %s%n", key, (double) value / sum * 100, "%"));
+
+    }
+
+    @Test
+    public void setCollectionFinalTest() {
+        Set<String> s = new HashSet<>();
+        Set<String> s1 = new HashSet<>();
+        s.add("s");
+        s1.add("s1");
+
+        final Set<String> allParentAccountsNames = Stream.of(s, s1).flatMap(Collection::stream).collect(Collectors.toSet());
+        allParentAccountsNames.add("ss");
+    }
 
     @Test
     public void trappingWaterTest() {
@@ -158,6 +185,21 @@ public class InterviewsTest {
         System.out.println(watch.prettyPrint());
         Assert.assertEquals(forEachResult.size(), mapReduceResult.size());
         Assert.assertEquals(forEachResult, mapReduceResult);
+    }
+
+    @Test
+    public void stopWatchTest() throws InterruptedException {
+        StopWatch stopWatch = new StopWatch("service 1");
+        for (int i = 0; i < 2; i++) {
+            stopWatch.start("stating");
+            Thread.sleep(2500);
+            stopWatch.stop();
+            stopWatch.start("stating2");
+            Thread.sleep(1500);
+            stopWatch.stop();
+        }
+        System.out.println(stopWatch.getTotalTimeSeconds());
+        System.out.println(stopWatch.prettyPrint());
     }
 
     @Test

@@ -5,18 +5,16 @@ import lombok.Getter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.util.StopWatch;
-
 import java.util.stream.Collectors;
 
 public class ObjectMapperTest {
@@ -61,8 +59,8 @@ public class ObjectMapperTest {
         return convertJsonToPOJO1(input, aClass);
     }
 
-    @Getter
-    @AllArgsConstructor
+//    @Getter
+//    @AllArgsConstructor
     public enum ParameterType {
         Boolean(Boolean.class),
         Text(String.class),
@@ -70,6 +68,14 @@ public class ObjectMapperTest {
         Integer(Integer.class);
 
         private Class<?> clazz;
+
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    ParameterType(Class<?> clazz) {
+            this.clazz = clazz;
+        }
     }
 
     @Test
@@ -127,6 +133,9 @@ public class ObjectMapperTest {
         map.put("A", "a");
 
         System.out.println(map);
+        System.out.println(map.get("b"));
+        System.out.println(map.get("B"));
+        System.out.println(map.get("ds"));
 
     }
 

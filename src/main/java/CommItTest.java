@@ -1,6 +1,7 @@
 import org.junit.Test;
 import org.springframework.util.StopWatch;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,10 @@ public class CommItTest {
         System.out.println(calcFibonacciOptimizeByMap(40));
         System.out.println(calcFibonacciOptimizeByMap(40));
         stopWatch.stop();
+        System.out.println("getTotalTimeSeconds:" + stopWatch.getTotalTimeSeconds());
+        System.out.println("Duration: " + Duration.ofMillis((long) (stopWatch.getTotalTimeSeconds() * 1000)));
         System.out.println(stopWatch.prettyPrint());
-        System.out.println("fibCalcResult.size(): "+fibCalcResult.size());
+        System.out.println("fibCalcResult.size(): " + fibCalcResult.size());
 
     }
 

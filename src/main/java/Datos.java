@@ -6,7 +6,7 @@ import java.util.List;
 public class Datos {
 
     static class Singleton {
-        private Singleton INSTANCE;
+        private volatile Singleton INSTANCE;
 
         private Singleton() {
             //TODO
@@ -32,22 +32,22 @@ public class Datos {
 
     @Test
     public void nodeTest() {
-        Node node = new Node(1);
-        node.next = new Node(2);
+        Node<Integer> node = new Node<>(1);
+        node.next = new Node<>(2);
         node.next.next = new Node(3);
-        node.next.next.next = new Node(4);
-        node.next.next.next.next = new Node(5);
-        Node mid = findMid(node);
+        node.next.next.next = new Node<>(4);
+        node.next.next.next.next = new Node<>(5);
+        Node<Integer> mid = findMid(node);
         System.out.println("the mid is: " + mid.value);
     }
 
-    private Node findMid(Node node) {
-        List<Node> nodeList = new ArrayList<>();
+    private <T> Node<T> findMid(Node<T> node) {
+        List<Node<T>> nodeList = new ArrayList<>();
         addToList(node, nodeList);
         return nodeList.get(nodeList.size() / 2);
     }
 
-    private void addToList(Node node, List<Node> nodeList) {
+    private <T> void addToList(Node<T> node, List<Node<T>> nodeList) {
         if (node == null) {
             return;
         }
@@ -63,11 +63,11 @@ public class Datos {
         System.out.println(String.format("after changes: x=%s, y=%s", x, y));
     }
 
-    class Node {
-        int value;
-        Node next;
+    class Node<T> {
+        T value;
+        Node<T> next;
 
-        public Node(int value) {
+        public Node(T value) {
             this.value = value;
         }
 
