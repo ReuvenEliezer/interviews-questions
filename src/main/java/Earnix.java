@@ -61,4 +61,5 @@ public class Earnix {
             return indexToValueMap.getOrDefault(index, value);
         }
     }
+
 }

@@ -1,3 +1,7 @@
+import com.google.common.collect.Sets;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import org.junit.Assert;
 import org.junit.Test;
 import overlapping.ranges.EdgeTimeValue;
@@ -178,6 +182,92 @@ public class AmdocsTest {
         }
         System.out.println(sb);
     }
+
+
+    /**
+     * נתון רשימה של תוכניות טלוויזיה עם זמן התחלה וסיום לכל תוכנית.
+     * יש למצוא את פרק הזמן בו ישנן הכי הרבה תוכניות ולהחזיר מהן ואת משך הזמן
+     */
+
+
+    @Test
+    public void findMaxProgramAtPeriodTimeTest() {
+        List<Program> programs = new ArrayList<>();
+
+        programs.add(new Program("program 1", LocalDateTime.of(2023, 8, 13, 0, 0),
+                LocalDateTime.of(2023, 8, 13, 0, 25)));
+        programs.add(new Program("program 2", LocalDateTime.of(2023, 8, 13, 0, 10),
+                LocalDateTime.of(2023, 8, 13, 0, 25)));
+        programs.add(new Program("program 3", LocalDateTime.of(2023, 8, 13, 0, 20),
+                LocalDateTime.of(2023, 8, 13, 0, 30)));
+
+        programs.add(new Program("program 4", LocalDateTime.of(2023, 8, 13, 1, 0),
+                LocalDateTime.of(2023, 8, 13, 1, 25)));
+        programs.add(new Program("program 5", LocalDateTime.of(2023, 8, 13, 1, 10),
+                LocalDateTime.of(2023, 8, 13, 1, 25)));
+        programs.add(new Program("program 6", LocalDateTime.of(2023, 8, 13, 1, 20),
+                LocalDateTime.of(2023, 8, 13, 1, 30)));
+
+        List<ProgramResult> maxProgramsAtPeriodTime = findMaxProgramAtPeriodTime(programs);
+        System.out.println(maxProgramsAtPeriodTime);
+    }
+
+    private List<ProgramResult> findMaxProgramAtPeriodTime(List<Program> programs) {
+        Map<LocalDateTime, Set<String>> timeInMinutesToProgramNamesMap = new TreeMap<>();
+
+        for (Program program : programs) {
+            for (LocalDateTime time = program.startTime; time.isBefore(program.endTime); time = time.plusMinutes(1)) {
+                timeInMinutesToProgramNamesMap.merge(time, Sets.newHashSet(program.name), (existingNames, newNames) -> {
+                    existingNames.addAll(newNames);
+                    return existingNames;
+                });
+            }
+        }
+
+        int max = getMaxProgramAtPeriod(timeInMinutesToProgramNamesMap);
+
+        //filter all max programs in a period time
+        List<Map.Entry<LocalDateTime, Set<String>>> results = timeInMinutesToProgramNamesMap.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().size() == max)
+                .collect(Collectors.toList());
+
+
+        for (Map.Entry<LocalDateTime, Set<String>> entry : results) {
+            System.out.println(entry);
+        }
+
+
+        //grouping by program names
+        Map<Set<String>, List<Map.Entry<LocalDateTime, Set<String>>>> groupedByProgramNames = results.stream()
+                .collect(Collectors.groupingBy(Map.Entry::getValue, Collectors.toList()));
+
+        //build a result with start and end period time
+        List<ProgramResult> programResults = new ArrayList<>();
+        groupedByProgramNames.forEach((key, value) -> {
+            programResults.add(new ProgramResult(value.get(0).getKey(), value.get(value.size() - 1).getKey(), key));
+        });
+
+        return programResults;
+    }
+
+    private static int getMaxProgramAtPeriod(Map<LocalDateTime, Set<String>> timeInMinutesToProgramNamesMap) {
+        //        Map.Entry<LocalDateTime, Set<String>> max = Collections.max(timeInMinutesToProgramNamesMap.entrySet(), Comparator.comparingInt(entry -> entry.getValue().size()));
+//        Map.Entry<LocalDateTime, Set<String>> max = Collections.max(timeInMinutesToProgramNamesMap.entrySet(), Comparator.comparing(entry -> entry.getValue().size()));
+        return timeInMinutesToProgramNamesMap.entrySet()
+                .stream()
+                .max((entry1, entry2) -> entry1.getValue().size() > entry2.getValue().size() ? 1 : -1)
+                .get()
+                .getValue()
+                .size();
+    }
+
+    record ProgramResult(LocalDateTime start, LocalDateTime end, Set<String> programNames) {
+    }
+
+    record Program(String name, LocalDateTime startTime, LocalDateTime endTime) {
+    }
+
 
     /**
      * בכביש  בו נוסעות מכוניות -מותקנת מצלמה המזהה את המספר ומוסיפה את השעה והרכב למאגר

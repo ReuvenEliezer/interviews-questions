@@ -5,6 +5,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.*;
+
 public class AmazonTest {
 
     @Test
@@ -13,9 +15,9 @@ public class AmazonTest {
          * the greatest common divisor (GTC), also called highest common factor (HCF) of N numbers is the largest positive integer that divides all numbers without giving a remainder.
          * https://www.geeksforgeeks.org/gcd-two-array-numbers/
          */
-        Assert.assertEquals(2, generalizedGCD(new int[]{2, 4, 6, 8, 10}));
-        Assert.assertEquals(2, generalizedGCD(new int[]{10, 8, 6, 4, 2}));
-        Assert.assertEquals(1, generalizedGCD(new int[]{2, 3, 4, 5, 6}));
+        assertEquals(2, generalizedGCD(new int[]{2, 4, 6, 8, 10}));
+        assertEquals(2, generalizedGCD(new int[]{10, 8, 6, 4, 2}));
+        assertEquals(1, generalizedGCD(new int[]{2, 3, 4, 5, 6}));
 
     }
 
@@ -113,11 +115,11 @@ public class AmazonTest {
 //        List<Integer> idsOfSongs = getIDsOfSongs(rideDuration, songDurations);
         List<Integer> idsOfSongs = getIDsOfSongsMemoryFinalOptimistic(rideDuration, songDurations);
 
-        Assert.assertEquals(2, idsOfSongs.size());
-        Assert.assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(2, idsOfSongs.size());
+        assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
         idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
-        Assert.assertEquals(2, idsOfSongs.size());
-        Assert.assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(2, idsOfSongs.size());
+        assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
 
         songDurations.clear();
         songDurations.addAll(Arrays.asList(1, 10, 25, 35, 60));
@@ -125,12 +127,12 @@ public class AmazonTest {
         idsOfSongs = getIDsOfSongs(rideDuration, songDurations);
 
 
-        Assert.assertEquals(2, idsOfSongs.size());
-        Assert.assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(2, idsOfSongs.size());
+        assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
 
         idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
-        Assert.assertEquals(2, idsOfSongs.size());
-        Assert.assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(2, idsOfSongs.size());
+        assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
     }
 
     private List<Integer> getIDsOfSongsMemoryFinalOptimistic(int rideDurationInSec, List<Integer> songDurations) {
@@ -172,8 +174,8 @@ public class AmazonTest {
     public void pairValuesTest() {
 //        https://stackoverflow.com/questions/45928822/pair-object-overriding-equals-so-that-reverse-pairs-are-also-the-same
         List<Integer> integerList = Arrays.asList(1, 2, 3, 4);
-        HashSet<Pair> pairValues = getPairValues(integerList);
-        HashSet<Pair> expected = new HashSet<>();
+        Set<Pair> pairValues = getPairValues(integerList);
+        Set<Pair> expected = new HashSet<>();
         expected.add(new Pair(1, 2));
         expected.add(new Pair(1, 3));
         expected.add(new Pair(1, 4));
@@ -184,9 +186,9 @@ public class AmazonTest {
 
         Pair pair1 = new Pair(3, 4);
         Pair pair2 = new Pair(4, 3);
-        Assert.assertEquals(pair1, pair2);
-        Assert.assertEquals(6, expected.size());
-        Assert.assertEquals(expected, pairValues);
+        assertEquals(pair1, pair2);
+        assertEquals(6, expected.size());
+        assertEquals(expected, pairValues);
     }
 
 
@@ -195,17 +197,17 @@ public class AmazonTest {
         //        https://practice.geeksforgeeks.org/problems/find-all-four-sum-numbers1732/1/?track=hashing-interview&batchId=117
         int[] arr = new int[]{0, 0, 2, 1, 1};
 
-        ArrayList<ArrayList<Integer>> arrayLists = findAllFourSumNumbers(arr, 3);
-        Assert.assertEquals(1, arrayLists.size());
-        Assert.assertEquals(4, arrayLists.get(0).size());
-        Assert.assertEquals(Arrays.asList(0, 0, 1, 2), arrayLists.get(0));
+        List<List<Integer>> arrayLists = findAllFourSumNumbers(arr, 3);
+        assertEquals(1, arrayLists.size());
+        assertEquals(4, arrayLists.get(0).size());
+        assertEquals(Arrays.asList(0, 0, 1, 2), arrayLists.get(0));
 
         int[] arr1 = new int[]{10, 2, 3, 4, 5, 7, 8};
         arrayLists = findAllFourSumNumbers(arr1, 23);
-        Assert.assertEquals(3, arrayLists.size());
-        Assert.assertEquals(Arrays.asList(2, 3, 8, 10), arrayLists.get(0));
-        Assert.assertEquals(Arrays.asList(2, 4, 7, 10), arrayLists.get(1));
-        Assert.assertEquals(Arrays.asList(3, 5, 7, 8), arrayLists.get(2));
+        assertEquals(3, arrayLists.size());
+        assertEquals(Arrays.asList(2, 3, 8, 10), arrayLists.get(0));
+        assertEquals(Arrays.asList(2, 4, 7, 10), arrayLists.get(1));
+        assertEquals(Arrays.asList(3, 5, 7, 8), arrayLists.get(2));
 
         ArrayList<List<Integer>> arrayLists1 = new ArrayList<>();
         arrayLists1.add(Arrays.asList(2, 3, 8, 10));
@@ -227,9 +229,9 @@ public class AmazonTest {
         List<List<Integer>> actualList = extracted(actual);
         List<List<Integer>> expectedList = extracted(expected);
 
-        Assert.assertNotEquals(actualList, expectedList);
-        Assert.assertTrue(actualList.containsAll(expectedList));
-        Assert.assertTrue(expectedList.containsAll(actualList));
+        assertNotEquals(actualList, expectedList);
+        assertTrue(actualList.containsAll(expectedList));
+        assertTrue(expectedList.containsAll(actualList));
     }
 
     private List<List<Integer>> extracted(String s1) {
@@ -244,7 +246,7 @@ public class AmazonTest {
         return result;
     }
 
-    public ArrayList<ArrayList<Integer>> findAllFourSumNumbers(int[] arr, int k) {
+    public List<List<Integer>> findAllFourSumNumbers(int[] arr, int k) {
         int fourNum = 4;
         if (arr.length < fourNum) return null;
 
@@ -254,7 +256,7 @@ public class AmazonTest {
                 sumPairToIndexesMap.put(arr[i] + arr[j], new Pair(i, j));
         }
 
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
         Set<Four> fourIntegerHashSet = new HashSet<>();
         for (int i = 0; i < arr.length - 1; i++) {
             for (int j = i + 1; j < arr.length; j++) {
@@ -367,10 +369,10 @@ public class AmazonTest {
         Set<Four> hashSet = new HashSet<>();
         Four four = new Four(0, 1, 2, 3);
         Four four1 = new Four(0, 2, 1, 3);
-        Assert.assertEquals(four, four1);
+        assertEquals(four, four1);
         hashSet.add(four);
         hashSet.add(four1);
-        Assert.assertEquals(1, hashSet.size());
+        assertEquals(1, hashSet.size());
     }
 
 
@@ -390,9 +392,9 @@ public class AmazonTest {
 
         Pair pair1 = new Pair(3, 4);
         Pair pair2 = new Pair(4, 3);
-        Assert.assertEquals(pair1, pair2);
-        Assert.assertEquals(6, expected.size());
-        Assert.assertEquals(expected, pairIndexes);
+        assertEquals(pair1, pair2);
+        assertEquals(6, expected.size());
+        assertEquals(expected, pairIndexes);
     }
 
 
@@ -548,7 +550,7 @@ public class AmazonTest {
     public void sumExistsTest() {
         int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         int sumOf2Elements = 14;
-        Assert.assertEquals(1, isSumExists(arr, sumOf2Elements));
+        assertEquals(1, isSumExists(arr, sumOf2Elements));
     }
 
     public int isSumExists(int[] arr, int sum) {
@@ -624,15 +626,15 @@ public class AmazonTest {
                 numRoadsToBeRepaired,
                 costRoadsToBeRepaired);
 
-        Assert.assertEquals(20, minimumCostToRepair);
+        assertEquals(20, minimumCostToRepair);
     }
 
     @Test
     public void findAllSubArray() {
         //https://practice.geeksforgeeks.org/problems/sub-array-sum-divisible-by-k2617/1
         long[] arr = new long[]{4, 5, 0, -2, -3, 1};
-        Assert.assertEquals(7, subArraySumDivisibleByK(arr, 5));
-        Assert.assertEquals(7, subArraySumDivisibleByK1(arr, 5));
+        assertEquals(7, subArraySumDivisibleByK(arr, 5));
+        assertEquals(7, subArraySumDivisibleByK1(arr, 5));
     }
 
     private int subArraySumDivisibleByK(long[] arr, int divide) {

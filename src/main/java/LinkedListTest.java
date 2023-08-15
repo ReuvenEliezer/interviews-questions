@@ -7,6 +7,59 @@ import java.util.List;
 
 public class LinkedListTest {
 
+
+
+    @Test
+    public void findElementFromTheEndOfLinkedListTest() {
+        ListNode head = new ListNode(1);
+        ListNode current = head;
+        for (int value = 2; value <= 10; value++) {
+            current.next = new ListNode(value);
+            current = current.next;
+        }
+
+        int k = 3;
+        int result = findElementFromEnd(head, k);
+        if (result != -1) {
+            System.out.println("The " + k + "th element from the end is: " + result);
+        } else {
+            System.out.println("The list has less than " + k + " elements.");
+        }
+
+    }
+
+    private static int findElementFromEnd(ListNode head, int k) {
+        ListNode slowPointer = head;
+        ListNode fastPointer = head;
+
+        // Move the fast pointer K steps ahead
+        for (int i = 0; i < k; i++) {
+            if (fastPointer == null) {
+                return -1;  // K is larger than the list size
+            }
+            fastPointer = fastPointer.next;
+        }
+
+        // Move both pointers together until the fast pointer reaches the end
+        while (fastPointer != null) {
+            slowPointer = slowPointer.next;
+            fastPointer = fastPointer.next;
+        }
+
+        return slowPointer.value;
+    }
+
+
+    static class ListNode {
+        int value;
+        ListNode next;
+
+        ListNode(int value) {
+            this.value = value;
+            this.next = null;
+        }
+    }
+
     @Test
     public void reverseLastElementToFirstTest() {
         List<Integer> integerList = Arrays.asList(1, 2, 3, 4, 5, 6);

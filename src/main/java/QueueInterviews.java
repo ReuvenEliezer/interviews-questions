@@ -1,10 +1,7 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.stream.Collectors;
 
@@ -100,7 +97,7 @@ public class QueueInterviews {
     class MyQueue {
 
         int front, rear;
-        int arr[] = new int[100005];
+        int[] arr = new int[100005];
 
         //Function to push an element x in a queue.
         void push(int x) {
@@ -125,28 +122,28 @@ public class QueueInterviews {
         /**
          * https://practice.geeksforgeeks.org/problems/generate-binary-numbers-1587115620/1
          */
-        ArrayList<String> generateBinaryNumbers = generateBinaryNumbers(12);
-        ArrayList<String> generateBinaryNumbersByQueue = generateBinaryNumbersByQueue(12);
+        List<String> generateBinaryNumbers = generateBinaryNumbers(12);
+        List<String> generateBinaryNumbersByQueue = generateBinaryNumbersByQueue(12);
         Assert.assertEquals(generateBinaryNumbers, generateBinaryNumbersByQueue);
     }
 
 
-    private long minCost(long arr[]) {
+    private long minCost(long[] arr) {
         Queue<Long> queue = new PriorityBlockingQueue<>();
-        queue.addAll(Arrays.stream(arr).boxed().collect(Collectors.toList()));
+        queue.addAll(Arrays.stream(arr).boxed().toList());
 
         long totalCost = 0;
         while (queue.size() > 1) {
             Long first = queue.poll();
             Long second = queue.poll();
             totalCost += (second + first);
-            queue.add(second + first);
+            queue.add(Long.valueOf(second + first));
         }
         return totalCost;
     }
 
-    private ArrayList<String> generateBinaryNumbers(int n) {
-        ArrayList<String> strings = new ArrayList<>();
+    private List<String> generateBinaryNumbers(int n) {
+        List<String> strings = new ArrayList<>();
         strings.add("1");
         for (int i = 1; i < n; i++) {
             String prev = strings.get(strings.size() - 1);
@@ -190,9 +187,9 @@ public class QueueInterviews {
         return sb.toString();
     }
 
-    private ArrayList<String> generateBinaryNumbersByQueue(int n) {
+    private List<String> generateBinaryNumbersByQueue(int n) {
         //using a list to store the answer.
-        ArrayList<String> responseList = new ArrayList<>();
+        List<String> responseList = new ArrayList<>();
 
         //using a queue of string which helps in generating binary numbers.
         Queue<String> q = new LinkedList<>();

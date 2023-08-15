@@ -2,13 +2,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class RandomNumberGenerator implements IRandomNumberGenerator {
 
     //https://leetcode.com/problems/insert-delete-getrandom-o1/submissions/
-    private HashMap<Integer, Integer> valueToIndexHashMap = new HashMap<>();
-    private HashMap<Integer, Integer> indexToValueHashMap = new HashMap<>();
+    private Map<Integer, Integer> valueToIndexHashMap = new HashMap<>();
+    private Map<Integer, Integer> indexToValueHashMap = new HashMap<>();
     private Random random = new Random();
 
     @Override

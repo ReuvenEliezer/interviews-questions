@@ -13,7 +13,7 @@ public class RandomTest {
         int size = 100000;
         int iteration = 10;
 
-        HashSet<Integer> selectedSet = new HashSet<>();
+        Set<Integer> selectedSet = new HashSet<>();
 
         Random random = new Random();
 
@@ -41,7 +41,7 @@ public class RandomTest {
         for (int i = 0; i < linkedListSize; i++) {
             int r = random.nextInt(linkedList.size());
 //            System.out.println("linkedList.size():" + linkedList.size());
-            System.out.println(linkedList.get(r));
+//            System.out.println(linkedList.get(r));
 
             //remove index
             linkedList.remove(r);
@@ -69,7 +69,7 @@ public class RandomTest {
     @Test
     public void timeRandomSortTime_Test() {
         int numOfElements = 6000000;
-        HashMap<Integer, Integer> indexToValueMap = new HashMap<>();
+        Map<Integer, Integer> indexToValueMap = new HashMap<>();
         List<Integer> integerList = new ArrayList<>();
         for (int i = 0; i < numOfElements; i++) {
             indexToValueMap.put(i, i);
@@ -100,7 +100,7 @@ public class RandomTest {
     public void RandomOnMap_Test() {
         int mapSize = 5;
 
-        HashMap<Integer, Integer> indexToValueMap = new HashMap<>();
+        Map<Integer, Integer> indexToValueMap = new HashMap<>();
         for (int i = 0; i < mapSize; i++) {
             indexToValueMap.put(i, i);
         }
@@ -109,10 +109,10 @@ public class RandomTest {
         int mapSizeInitialized = indexToValueMap.size();
         for (int i = 0; i < mapSizeInitialized; i++) {
             int currentMapSize = indexToValueMap.size();
-            System.out.println("map.size:" + currentMapSize);
+//            System.out.println("map.size:" + currentMapSize);
             int randomValue = random.nextInt(currentMapSize);
             Integer value = indexToValueMap.get(randomValue);
-            System.out.println(value);
+//            System.out.println(value);
 
             //move the last key to current random index selected and remove the last index in the map
             indexToValueMap.replace(randomValue, indexToValueMap.get(currentMapSize - 1));
