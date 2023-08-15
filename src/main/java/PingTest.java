@@ -78,7 +78,7 @@ public class PingTest {
 
     public class TaskSchedulerImpl implements TaskScheduler {
         private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
-        private PriorityQueue<TaskTime> priorityQueue = new PriorityQueue(Comparator.comparing(TaskTime::getScheduleTime));
+        private PriorityQueue<TaskTime> priorityQueue = new PriorityQueue(Comparator.comparing(TaskTime::scheduleTime));
 
         public TaskSchedulerImpl() {
             executorService.scheduleWithFixedDelay(this::init, 0, 3, TimeUnit.SECONDS);
@@ -96,17 +96,15 @@ public class PingTest {
                     break;
                 }
                 taskTime = priorityQueue.poll();
-                System.out.println(taskTime.getScheduleTime());
-                executorService.submit(taskTime.getRunnable());
+                System.out.println(taskTime.scheduleTime);
+                executorService.submit(taskTime.runnable);
             }
         }
     }
 
-    @AllArgsConstructor
-    @Getter
-    class TaskTime {
-        Runnable runnable;
-        LocalDateTime scheduleTime;
+    record TaskTime(
+            Runnable runnable,
+            LocalDateTime scheduleTime) {
     }
 
 //    @FunctionalInterface
