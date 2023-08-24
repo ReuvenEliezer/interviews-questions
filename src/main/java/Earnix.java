@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +11,7 @@ import static org.assertj.core.api.Assertions.*;
 public class Earnix {
 
     @Test
-    public void test() {
+    public void setAllInO1Test() {
         //write a collection utils that support the following condition:
         //set will be set the given value into the given index
         //setAll will be set the given value into all indexes
@@ -41,25 +44,48 @@ public class Earnix {
 
     static class MyCollection<T> {
 
-        private Map<Integer, T> indexToValueMap;
-        private T value = null;
+        private Map<Integer, ValueTime<T>> indexToElementValueMap;
+        private ValueTime<T> valueTime = new ValueTime<>(null, LocalDateTime.now());
 
         public MyCollection() {
-            this.indexToValueMap = new HashMap<>();
+            this.indexToElementValueMap = new HashMap<>();
         }
 
-        public T set(Integer index, T value) {
-            return indexToValueMap.put(index, value);
+        public MyCollection(int initialCapacity) {
+            this.indexToElementValueMap = new HashMap<>(initialCapacity);
+        }
+
+        public T set(Integer key, T value) {
+            ValueTime<T> prevValue = indexToElementValueMap.put(key, new ValueTime<>(value, LocalDateTime.now()));
+            return prevValue == null ? null : prevValue.element;
         }
 
         public void setAll(T value) {
-            this.value = value;
-            indexToValueMap = new HashMap<>();
+            this.valueTime = new ValueTime<>(value, LocalDateTime.now());
         }
 
-        public T get(Integer index) {
-            return indexToValueMap.getOrDefault(index, value);
+        public T get(Integer key) {
+            ValueTime<T> valueTime = indexToElementValueMap.get(key);
+            if (valueTime == null) {
+                return this.valueTime.element;
+            } else if (this.valueTime.element == null) {
+                return valueTime.element;
+            } else {
+                LocalDateTime updateTime = valueTime.currentTime();
+                LocalDateTime globalUpdateTime = this.valueTime.currentTime;
+                System.out.println("updateTime: " + updateTime);
+                System.out.println("globalUpdateTime: " + globalUpdateTime);
+                return updateTime.isAfter(globalUpdateTime) ? valueTime.element : this.valueTime.element;
+
+
+//            return updateTime.toInstant(ZoneOffset.UTC).getNano() > globalUpdateTime.toInstant(ZoneOffset.UTC).getNano() ? tValueTime.element : valueTime.element;
+//            Duration deltaTime = Duration.between(globalUpdateTime, updateTime);
+//            return deltaTime.getNano() > 0 ? tValueTime.element : valueTime.element;
+            }
         }
+    }
+
+    record ValueTime<T>(T element, LocalDateTime currentTime) {
     }
 
 }

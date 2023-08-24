@@ -1,60 +1,87 @@
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class LinkedListTest {
 
 
-
     @Test
     public void findElementFromTheEndOfLinkedListTest() {
-        ListNode head = new ListNode(1);
-        ListNode current = head;
+        Node head = new Node(1);
+        Node current = head;
         for (int value = 2; value <= 10; value++) {
-            current.next = new ListNode(value);
+            current.next = new Node(value);
             current = current.next;
         }
 
-        int k = 3;
-        int result = findElementFromEnd(head, k);
-        if (result != -1) {
-            System.out.println("The " + k + "th element from the end is: " + result);
-        } else {
-            System.out.println("The list has less than " + k + " elements.");
-        }
-
+        assertThat(findElementFromEnd(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEnd(head, 11));
+        assertThat(findElementFromEnd1(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEnd1(head, 11));
     }
 
-    private static int findElementFromEnd(ListNode head, int k) {
-        ListNode slowPointer = head;
-        ListNode fastPointer = head;
+    private static int findElementFromEnd(Node head, int k) {
+        if (k < 0) {
+            throw new IllegalArgumentException(String.format("k=%s must not be a negative value", k));
+        }
+        if (head == null) {
+            throw new IllegalArgumentException("head must be not null");
+        }
+        /**
+         * sliding windows of K size
+         */
+        Node startWindow = head;
+        Node endWindow = head;
 
         // Move the fast pointer K steps ahead
         for (int i = 0; i < k; i++) {
-            if (fastPointer == null) {
-                return -1;  // K is larger than the list size
+            if (endWindow == null) {
+                throw new IllegalArgumentException("K is larger than the list size");
             }
-            fastPointer = fastPointer.next;
+            endWindow = endWindow.next;
         }
+        //now we found the pointer to k element from the end
 
         // Move both pointers together until the fast pointer reaches the end
-        while (fastPointer != null) {
-            slowPointer = slowPointer.next;
-            fastPointer = fastPointer.next;
+        while (endWindow != null) {
+            startWindow = startWindow.next;
+            endWindow = endWindow.next;
         }
 
-        return slowPointer.value;
+        return startWindow.value;
     }
 
+    private static int findElementFromEnd1(Node head, int k) {
+        if (head == null) {
+            throw new IllegalArgumentException("head must be not null");
+        }
+        Node node = head;
+        Map<Integer, Node> nodeToIndexMap = new HashMap<>();
+        int nodesCounter = 0;
+        while (node != null) {
+            nodeToIndexMap.put(nodesCounter, node);
+            node = node.next;
 
-    static class ListNode {
+//            optimistic memory : remove all prev value for n-k -> save in every iteration only the n-k elements range.
+            nodeToIndexMap.remove(nodesCounter - k);
+
+
+            nodesCounter++;
+        }
+        if (k > nodesCounter) {
+            throw new IllegalArgumentException("K is larger than the list size");
+        }
+        return nodeToIndexMap.get(nodesCounter - k).value;
+    }
+
+    static class Node {
         int value;
-        ListNode next;
+        Node next;
 
-        ListNode(int value) {
+        Node(int value) {
             this.value = value;
             this.next = null;
         }

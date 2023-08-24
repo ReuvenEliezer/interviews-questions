@@ -1160,7 +1160,7 @@ public class InterviewsTest {
 
         HashSet<Integer> characterHashSet = new LinkedHashSet<>();
         for (int ch : str.toCharArray()) {
-            if (characterHashSet.size() > 26 * 2) //optimization - all character type A-Z a-z
+            if (characterHashSet.size() > 26 * 2) //optimization - all character element A-Z a-z
                 break;
             characterHashSet.add(ch);
         }
