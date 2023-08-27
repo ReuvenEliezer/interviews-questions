@@ -82,17 +82,53 @@ public class DynamicYieldTest {
         assertThat(mostFrequent).isEmpty();
     }
 
-    static class SlidingWindowCache<K> {
+    @Test
+    public void invalidUrlSizeTest() {
+        Duration slidingWindowDuration = Duration.ofSeconds(2);
+        SlidingWindowCache<String> stringSlidingWindowCache = new SlidingWindowCache<>(slidingWindowDuration);
+
+        assertThatThrownBy(() -> stringSlidingWindowCache.getMostFrequentSorted(0))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> stringSlidingWindowCache.getMostFrequentSorted(-1))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void slidingWindowExpirationTest() throws InterruptedException {
+        Duration slidingWindowDuration = Duration.ofSeconds(2);
+
+        SlidingWindowCache<String> stringSlidingWindowCache = new SlidingWindowCache<>(slidingWindowDuration);
+        stringSlidingWindowCache.receive("www.google.com");
+        Thread.sleep(slidingWindowDuration.plusSeconds(3).toMillis());
+
+        List<String> mostFrequent = stringSlidingWindowCache.getMostFrequentSorted(1);
+        assertThat(mostFrequent).isEmpty();
+    }
+
+    @Test
+    public void multipleUrlsExpireTest() throws InterruptedException {
+        Duration slidingWindowDuration = Duration.ofSeconds(2);
+
+        SlidingWindowCache<String> stringSlidingWindowCache = new SlidingWindowCache<>(slidingWindowDuration);
+        stringSlidingWindowCache.receive("www.google.com");
+        stringSlidingWindowCache.receive("www.mc.com");
+        Thread.sleep(slidingWindowDuration.plusSeconds(1).toMillis());
+
+        List<String> mostFrequent = stringSlidingWindowCache.getMostFrequentSorted(2);
+        assertThat(mostFrequent).isEmpty();
+    }
+
+    static class SlidingWindowCache<T> {
         private final Duration periodTimeDuration;
-        private final Map<K, Integer> webUrlToCountMap = new HashMap<>();
-        private final Map<Integer, Set<K>> countToWebUrlMap = new TreeMap<>(Collections.reverseOrder()); // in order to return the result of getMostFrequentSorted in o(1)
-        private final Queue<WebUrlData<K>> webUrlDataQueue = new ArrayDeque<>();
+        private final Map<T, Integer> webUrlToCountMap = new HashMap<>();
+        private final Map<Integer, Set<T>> countToWebUrlMap = new TreeMap<>(Collections.reverseOrder()); // in order to return the result of getMostFrequentSorted in o(1)
+        private final Queue<WebUrlData<T>> webUrlDataQueue = new ArrayDeque<>();
 
         public SlidingWindowCache(Duration periodTimeDuration) {
             this.periodTimeDuration = periodTimeDuration;
         }
 
-        record WebUrlData<K>(K url, LocalDateTime currentTime) {
+        record WebUrlData<T>(T url, LocalDateTime currentTime) {
         }
 
         /**
@@ -100,8 +136,8 @@ public class DynamicYieldTest {
          *
          * @param url
          */
-        public void receive(K url) {
-            WebUrlData<K> webUrlData = new WebUrlData<>(url, LocalDateTime.now());
+        public void receive(T url) {
+            WebUrlData<T> webUrlData = new WebUrlData<>(url, LocalDateTime.now());
             webUrlDataQueue.add(webUrlData);
 
             Integer prevCount = webUrlToCountMap.get(url);
@@ -127,7 +163,7 @@ public class DynamicYieldTest {
         /**
          * : This method retrieves the k most frequent URLs, sorted in descending order by frequency in a sliding window time
          */
-        public List<K> getMostFrequentSorted(int urlSize) {
+        public List<T> getMostFrequentSorted(int urlSize) {
             if (urlSize <= 0) {
                 throw new IllegalArgumentException(String.format("k=%s must be a positive value", urlSize));
             }
@@ -156,11 +192,11 @@ public class DynamicYieldTest {
 
         private void cleanOldMessages() {
             //remove from queue
-            WebUrlData<K> webUrlData = webUrlDataQueue.remove();
+            WebUrlData<T> webUrlData = webUrlDataQueue.remove();
 
             //reduce the counter & increase the prev counter
             Integer totalCount = webUrlToCountMap.get(webUrlData.url);
-            Set<K> urls = countToWebUrlMap.get(totalCount);
+            Set<T> urls = countToWebUrlMap.get(totalCount);
             if (urls.size() <= 1) {
                 countToWebUrlMap.remove(totalCount);
             } else {

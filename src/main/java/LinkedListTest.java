@@ -1,4 +1,3 @@
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.*;
@@ -17,35 +16,89 @@ public class LinkedListTest {
             current = current.next;
         }
 
-        assertThat(findElementFromEnd(head, 3)).isEqualTo(8);
-        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEnd(head, 11));
-        assertThat(findElementFromEnd1(head, 3)).isEqualTo(8);
-        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEnd1(head, 11));
+        assertThat(findElementFromEndWithOutAdditionalMemory(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndWithOutAdditionalMemory(head, 11));
+
+        assertThat(findElementFromEndNaiveSolution(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndNaiveSolution(head, 11));
+
+
+        assertThat(findElementFromEndByStack(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndByStack(head, 11));
+
+        assertThat(findElementFromEndByQueue(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndByQueue(head, 11));
     }
 
-    private static int findElementFromEnd(Node head, int k) {
+    private int findElementFromEndByQueue(Node head, int k) {
+        validate(head, k);
+        //keep the queue with k size. and when the queue size is bigger that k -> we can to remove the old element in order to keep it small.
+        Queue<Node> nodesQueue = new ArrayDeque<>();
+        Node node = head;
+        while (node != null) {
+            nodesQueue.add(node);
+            node = node.next;
+            if (nodesQueue.size() > k) {
+                nodesQueue.remove();
+            }
+        }
+
+        int nodePlace = nodesQueue.size();
+        if (nodePlace < k) {
+            throw new IllegalArgumentException("K is larger than the list size");
+        }
+
+        //return the first element in queue
+        return nodesQueue.poll().value;
+    }
+
+    private static void validate(Node head, int k) {
         if (k < 0) {
             throw new IllegalArgumentException(String.format("k=%s must not be a negative value", k));
         }
         if (head == null) {
             throw new IllegalArgumentException("head must be not null");
         }
+    }
+
+    private int findElementFromEndByStack(Node head, int k) {
+        validate(head, k);
+        Stack<Node> nodesStack = new Stack<>();
+        Node node = head;
+        while (node != null) {
+            nodesStack.add(node);
+            node = node.next;
+        }
+
+        int nodeElementPlaceFromStart = nodesStack.size() - k;
+        if (nodeElementPlaceFromStart < 0) {
+            throw new IllegalArgumentException("K is larger than the list size");
+        }
+
+        //get out until we are going to k
+        for (int i = 1; i < k; i++) {
+            nodesStack.pop();
+        }
+        return nodesStack.pop().value;
+    }
+
+    private static int findElementFromEndWithOutAdditionalMemory(Node head, int k) {
+        validate(head, k);
         /**
          * sliding windows of K size
          */
         Node startWindow = head;
         Node endWindow = head;
 
-        // Move the fast pointer K steps ahead
+        // Move the endWindow pointer K steps ahead until we found the pointer to k element from the end
         for (int i = 0; i < k; i++) {
             if (endWindow == null) {
                 throw new IllegalArgumentException("K is larger than the list size");
             }
             endWindow = endWindow.next;
         }
-        //now we found the pointer to k element from the end
 
-        // Move both pointers together until the fast pointer reaches the end
+        // Move both pointers together until the endWindow pointer go to the end of nodes. so -> return back the startWindow (because of the )
         while (endWindow != null) {
             startWindow = startWindow.next;
             endWindow = endWindow.next;
@@ -54,7 +107,7 @@ public class LinkedListTest {
         return startWindow.value;
     }
 
-    private static int findElementFromEnd1(Node head, int k) {
+    private static int findElementFromEndNaiveSolution(Node head, int k) {
         if (head == null) {
             throw new IllegalArgumentException("head must be not null");
         }
