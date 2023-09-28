@@ -28,7 +28,7 @@ public class BfsAlgoTest {
 //        Tree<Integer> integerTree = search.get();
     }
 
-    private <T extends Comparable> void printBfs(Tree<T> root) {
+    private <T extends Comparable<T>> void printBfs(Tree<T> root) {
         Queue<Tree<T>> queue = new ArrayDeque<>();
         queue.add(root);
 
@@ -48,7 +48,7 @@ public class BfsAlgoTest {
          * https://stackoverflow.com/questions/67297901/how-to-de-link-an-element-from-a-tree/67298783#67298783
          * @param <T>
          */
-        Tree<String> root = new Tree("A1");
+        Tree<String> root = new Tree<>("A1");
 
         Tree<String> b1Child = root.addChild("B1");
         Tree<String> b2Child = root.addChild("B2");
@@ -98,7 +98,7 @@ public class BfsAlgoTest {
         return root;
     }
 
-    public static <T extends Comparable> Tree<T> search(T value, Tree<T> root) {
+    public static <T extends Comparable<T>> Tree<T> search(T value, Tree<T> root) {
         Queue<Tree<T>> queue = new ArrayDeque<>();
         queue.add(root);
 
@@ -118,7 +118,7 @@ public class BfsAlgoTest {
         return null;
     }
 
-    public static <T extends Comparable> void deLinkElement(T value, Tree<T> root) {
+    public static <T extends Comparable<T>> void deLinkElement(T value, Tree<T> root) {
         /**
          * https://stackoverflow.com/questions/67297901/how-to-de-link-an-element-from-a-tree/67298783#67298783
          */
@@ -152,7 +152,7 @@ public class BfsAlgoTest {
         }
     }
 
-    public static <T extends Comparable> void printDfs(Tree<T> root) {
+    public static <T extends Comparable<T>> void printDfs(Tree<T> root) {
         Stack<Tree<T>> stack = new Stack<>();
         Tree<T> current;
         stack.push(root);

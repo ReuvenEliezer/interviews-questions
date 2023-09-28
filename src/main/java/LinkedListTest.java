@@ -1,10 +1,89 @@
 import org.junit.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class LinkedListTest {
+
+
+    //https://leetcode.com/problems/merge-k-sorted-lists/
+    @Test
+    public void mergeKListsTest() {
+        Node head1 = new Node(1);
+        Node current = head1;
+        for (int value = 2; value <= 10; value++) {
+            current.next = new Node(value);
+            current = current.next;
+        }
+
+        Node head2 = new Node(1);
+        Node current1 = head2;
+        for (int value = 4; value <= 7; value++) {
+            current1.next = new Node(value);
+            current1 = current1.next;
+        }
+
+        Node[] nodes = {head1, head2};
+        Node node = mergeKLists(new Node[]{});
+    }
+
+    private Node mergeKLists(Node[] nodes) {
+        if (nodes == null || nodes.length == 0) {
+            return null;
+        }
+
+        if (nodes.length == 1) {
+            return nodes[0];
+        }
+        List<List<Integer>> integerLists = new ArrayList<>();
+        for (Node node : nodes) {
+            List<Integer> integers = new ArrayList<>();
+            Node head = node;
+            while (head != null) {
+                integers.add(head.value);
+                head = head.next;
+            }
+            integerLists.add(integers);
+        }
+
+        List<Integer> result = mergeSortedLists(integerLists);
+        if (result.isEmpty()) {
+            return null;
+        }
+        //build note result
+        Node noteResult = new Node(result.get(0));
+        Node current = noteResult;
+        for (int value = 1; value < result.size(); value++) {
+            current.next = new Node(result.get(value));
+            current = current.next;
+        }
+
+        return noteResult;
+    }
+
+    private List<Integer> mergeSortedLists(List<List<Integer>> lists) {
+        Map<Integer, Integer> valueToCountMap = new TreeMap<>();
+        for (List<Integer> list : lists) {
+            for (Integer value : list) {
+                valueToCountMap.merge(value, 1, Integer::sum);
+            }
+        }
+
+//        List<Integer> result = new ArrayList<>();
+//        valueToCountMap.forEach((key, value) -> {
+//            for (int i = 0; i < value; i++) {
+//                result.add(key);
+//            }
+//        });
+//        return result;
+
+        return valueToCountMap.entrySet()
+                .stream()
+                .flatMap(entry -> Collections.nCopies(entry.getValue(), entry.getKey()).stream())
+                .collect(Collectors.toList());
+    }
 
 
     @Test

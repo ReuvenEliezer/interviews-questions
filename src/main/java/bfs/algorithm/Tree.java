@@ -3,7 +3,7 @@ package bfs.algorithm;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Tree<T extends Comparable> implements Comparable<Tree<T>> {
+public class Tree<T extends Comparable<T>> implements Comparable<Tree<T>> {
     private T value;
     private Tree<T> parent;
     private Set<Tree<T>> children;
