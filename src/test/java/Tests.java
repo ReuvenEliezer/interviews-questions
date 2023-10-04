@@ -1,4 +1,5 @@
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.*;
 
@@ -9,6 +10,7 @@ public class Tests {
         int[] arr = {12, 28, 83, 4, 25, 26, 25, 2, 25, 25, 25, 12};
 
         int i = minSubArrayLen(213, arr);
+        Assertions.fail();
     }
 
     public int minSubArrayLen(int s, int[] nums) {
