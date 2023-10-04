@@ -14,7 +14,7 @@
         <itextpdf.version>5.5.13.3</itextpdf.version>
         <xmlworker.version>5.5.13.3</xmlworker.version>
         <poi-scratchpad.version>5.2.2</poi-scratchpad.version>
-        <batik-transcoder.version>1.14</batik-transcoder.version>
+        <batik-transcoder.version>1.17</batik-transcoder.version>
         <poi-ooxml.version>5.2.2</poi-ooxml.version>
         <log4j2.version>2.18.0</log4j2.version>
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
