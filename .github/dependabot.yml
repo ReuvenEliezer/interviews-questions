@@ -12,3 +12,5 @@ updates:
     allow:
       # Allow both direct and indirect updates for all packages
       - dependency-type: "all"
+    # Allow up to 10 open pull requests for pip dependencies
+    open-pull-requests-limit: 10
