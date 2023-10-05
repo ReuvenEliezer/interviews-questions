@@ -68,6 +68,6 @@ jobs:
         if: always()
         with:
           name: junit-test-report
-          path: target/surefire-reports/*.xml
+          path: reports
           reporter: java-junit
           fail-on-error: true
