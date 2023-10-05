@@ -58,7 +58,7 @@ jobs:
         shell: bash
 
       - name: Upload JUnit Test Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
 #        with:
 #          name: junit-test-report
 #          path: reports
