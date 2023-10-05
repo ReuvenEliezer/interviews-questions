@@ -45,7 +45,7 @@ jobs:
 #      - name: Run JUnit Tests
 #        run: mvn test
       - name: JUnit Test Report
-        uses: actions/upload-artifact@v3 #uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v1
         if: always()
         with:
           name: Maven Tests
