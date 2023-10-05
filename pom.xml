@@ -15,10 +15,10 @@
         <xmlworker.version>5.5.13.3</xmlworker.version>
         <poi-scratchpad.version>5.2.2</poi-scratchpad.version>
         <batik-transcoder.version>1.17</batik-transcoder.version>
-        <poi-ooxml.version>5.2.2</poi-ooxml.version>
+        <poi-ooxml.version>5.2.4</poi-ooxml.version>
         <log4j2.version>2.18.0</log4j2.version>
         <thymeleaf.version>3.0.15.RELEASE</thymeleaf.version>
-        <jackson.version>2.13.4</jackson.version>
+        <jackson.version>2.15.2</jackson.version>
         <flying-saucer-pdf.version>9.1.22</flying-saucer-pdf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
 
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20220320</version>
+            <version>20230618</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>2.7.1</version>
+            <version>3.1.4</version>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.data</groupId>-->
@@ -192,7 +192,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
+            <version>32.1.2-jre</version>
         </dependency>
 
     </dependencies>
