@@ -42,32 +42,13 @@ jobs:
 #        if: success() || failure() # always run even if the previous step fails
 #        with:
 #          report_paths: '**/build/test-results/test/TEST-*.xml'
-      - name: Run JUnit Tests
-        run: mvn test
-
-      - name: Publish JUnit Test Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: junit-test-results
-          path: target/surefire-reports
-
-      - name: Generate JUnit Test Report
-        run: |
-          mkdir -p reports
-          find . -type f -path '**/target/surefire-reports/*.xml' -exec cp {} reports/ \;
-        shell: bash
-
-      - name: Upload JUnit Test Report
-        uses: actions/upload-artifact@v3
-#        with:
-#          name: junit-test-report
-#          path: reports
-#
-#
-#        uses: dorny/test-reporter@v1
+#      - name: Run JUnit Tests
+#        run: mvn test
+      - name: JUnit Test Report
+        uses: actions/upload-artifact@v3 #uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: junit-test-report
-          path: reports
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
