@@ -19,7 +19,7 @@
         <log4j2.version>2.20.0</log4j2.version>
         <thymeleaf.version>3.1.2.RELEASE</thymeleaf.version>
         <jackson.version>2.15.2</jackson.version>
-        <flying-saucer-pdf.version>9.1.22</flying-saucer-pdf.version>
+        <flying-saucer-pdf.version>9.3.1</flying-saucer-pdf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
