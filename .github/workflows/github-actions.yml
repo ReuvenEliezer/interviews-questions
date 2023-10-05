@@ -23,16 +23,16 @@ jobs:
     #
     steps:
       # This step uses the `actions/checkout` action to download a copy of your repository on the runner.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
       # This step uses the `actions/setup-java` action to configure the Eclipse Temurin (Java) 17 JDK by Eclipse Adoptium.
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v2
         with:
           java-version: '17'
           distribution: 'corretto'
       # The "Build with Maven" step runs the Maven `package` target in non-interactive mode to ensure that your code builds, tests pass, and a package can be created.
       - name: Build with Maven
-        run: mvn clean install test
+        run: mvn clean install
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #      - name: Update dependency graph
@@ -42,11 +42,32 @@ jobs:
 #        if: success() || failure() # always run even if the previous step fails
 #        with:
 #          report_paths: '**/build/test-results/test/TEST-*.xml'
-      - name: Report
-        uses: dorny/test-reporter@v1
-        if: always()
+      - name: Run JUnit Tests
+        run: mvn test
+
+      - name: Publish JUnit Test Results
+        uses: actions/upload-artifact@v2
         with:
-          name: Maven Tests
-          path: target/surefire-reports/*.xml
-          reporter: java-junit
-          fail-on-error: true
+          name: junit-test-results
+          path: target/surefire-reports
+
+      - name: Generate JUnit Test Report
+        run: |
+          mkdir -p reports
+          find . -type f -path '**/target/surefire-reports/*.xml' -exec cp {} reports/ \;
+        shell: bash
+
+      - name: Upload JUnit Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: junit-test-report
+          path: reports
+#
+#
+#        uses: dorny/test-reporter@v1
+#        if: always()
+#        with:
+#          name: Maven Tests
+#          path: target/surefire-reports/*.xml
+#          reporter: java-junit
+#          fail-on-error: true
