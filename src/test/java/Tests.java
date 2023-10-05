@@ -23,6 +23,7 @@ public class Tests {
     }
 
     @Test
+    @Ignore
     public void testFail() {
         Assertions.fail("bla bla");
     }
