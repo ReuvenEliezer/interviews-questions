@@ -1,12 +1,13 @@
 package hangman;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Guess {
     private String wordSelected = "";
     private int charsNumber;
-    private HashSet<Character> negativeChar = new HashSet<>();
-    private HashSet<String> relevantWords = new HashSet<>();
+    private Set<Character> negativeChar = new HashSet<>();
+    private Set<String> relevantWords = new HashSet<>();
 
     public Guess(int charsNumber) {
         for (int i = 0; i < charsNumber; i++) {
@@ -31,24 +32,23 @@ public class Guess {
         this.charsNumber = charsNumber;
     }
 
-    public HashSet<Character> getNegativeChar() {
+    public Set<Character> getNegativeChar() {
         return negativeChar;
     }
 
     public void addNegativeChar(Character negativeChar) {
-        if (!this.negativeChar.contains(negativeChar))
-            this.negativeChar.add(negativeChar);
+        this.negativeChar.add(negativeChar);
     }
 
-    public void setNegativeChar(HashSet<Character> negativeChar) {
+    public void setNegativeChar(Set<Character> negativeChar) {
         this.negativeChar = negativeChar;
     }
 
-    public HashSet<String> getRelevantWords() {
+    public Set<String> getRelevantWords() {
         return relevantWords;
     }
 
-    public void setRelevantWords(HashSet<String> relevantWords) {
+    public void setRelevantWords(Set<String> relevantWords) {
         this.relevantWords = relevantWords;
     }
 }

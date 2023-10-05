@@ -14,7 +14,7 @@ public class HangmanPlayer {
         String selectedWord = HangmanService.startGetSelectedWord();
 //        int maxWordLength = FileUtils.getMaxWordLength(allWords);
         Guess guess = new Guess(selectedWord.length());
-        HashSet<String> relevantWords = FileUtils.getRelevantWordsByLength(guess.getCharsNumber());
+        Set<String> relevantWords = FileUtils.getRelevantWordsByLength(guess.getCharsNumber());
         guess.setRelevantWords(relevantWords);
         guessCharRecursive(guess);
     }
@@ -24,14 +24,14 @@ public class HangmanPlayer {
             System.out.println("done !! the final result of word selected is: " + guess.getWordSelected());
             return;
         }
-        HashSet<String> relevantWords = guess.getRelevantWords();
+        Set<String> relevantWords = guess.getRelevantWords();
         Character mostCommonCharacter = FileUtils.getMostCommonCharacter(guess, relevantWords);
         GuessResult guessResult = HangmanService.checkWord(mostCommonCharacter);
         if (guessResult.isSuccess()) {
             String result = guessResult.getResult();
             guess.setWordSelected(result);
         } else {
-            guess.addNegativeChar(new Character(mostCommonCharacter));
+            guess.addNegativeChar(mostCommonCharacter);
         }
         guessCharRecursive(guess);
     }

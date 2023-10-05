@@ -45,9 +45,9 @@ public class FileUtils {
         return result;
     }
 
-    public static Character getMostCommonCharacter(Guess guess, HashSet<String> relevantDictionaryToSearch) {
-        HashMap<Character, Integer> charsNumber = new HashMap<>();
-        HashSet<Character> guessNegativeChar = guess.getNegativeChar();
+    public static Character getMostCommonCharacter(Guess guess, Set<String> relevantDictionaryToSearch) {
+        Map<Character, Integer> charsNumber = new HashMap<>();
+        Set<Character> guessNegativeChar = guess.getNegativeChar();
         String wordSelected = guess.getWordSelected();
 
         Iterator<String> iterator = relevantDictionaryToSearch.iterator();
