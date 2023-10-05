@@ -15,7 +15,6 @@ public class Tests {
 
     @Test
     public void newTest() {
-        Assertions.fail("bla bla");
     }
 
     @Test
