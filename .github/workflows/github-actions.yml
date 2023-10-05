@@ -45,10 +45,10 @@ jobs:
 #      - name: Run JUnit Tests
 #        run: mvn test
       - name: JUnit Test Report
-        uses: actions/upload-artifact@v3 #uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
         with:
           name: Maven Tests
           path: target/surefire-reports/*.xml
-#          reporter: java-junit
-#          fail-on-error: true
+          reporter: java-junit
+          fail-on-error: true
