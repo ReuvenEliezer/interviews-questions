@@ -54,6 +54,19 @@ jobs:
           fail-on-error: true
 
 
+      - name: Generate build number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{secrets.github_token}}
+
+      # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
+      - name: Another step as an example
+        uses: actions/hello-world-docker-action@v1
+        with:
+          who-to-greet: ${{ steps.buildnumber.outputs.build_number }}
+
+
       - name: Output Run ID
         run: echo ${{ github.run_id }}
       - name: Output Run Number
