@@ -1,5 +1,9 @@
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeMap;
+import com.google.common.collect.TreeRangeMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -47,7 +51,7 @@ public class RafaelTest {
 
     @Data
     @AllArgsConstructor
-    //TODO add validations: min value must be smaller than max value & not overlap rank
+            //TODO add validations: min value must be smaller than max value & not overlap rank
     class SalaryTaxRank implements Comparable<SalaryTaxRank> {
         Double minSalary;
         double maxSalary;
@@ -73,5 +77,39 @@ public class RafaelTest {
                 .mapToDouble(salaryTaxRank -> (Math.min(salary, salaryTaxRank.maxSalary) - salaryTaxRank.minSalary) * salaryTaxRank.taxPercent / 100)
                 .sum();
 
+    }
+
+    @Test
+    public void sentimentAnalyticsTest() {
+        /**
+         *  1-49 – negative
+         * • 50 – 74 – neutral
+         * • 75 – 100 - positive
+         */
+        initRangeMap();
+        Assertions.assertThat(calcSentiment(5)).isEqualTo(Sentiment.NEGATIVE);
+        Assertions.assertThat(calcSentiment(75)).isEqualTo(Sentiment.POSITIVE);
+
+    }
+
+    private void initRangeMap() {
+        rangeMap.put(Range.closed(0, 49), Sentiment.NEGATIVE);
+        rangeMap.put(Range.closed(50, 74), Sentiment.NEUTRAL);
+        rangeMap.put(Range.closed(75, 100), Sentiment.POSITIVE);
+    }
+
+    private static final RangeMap<Integer, Sentiment> rangeMap = TreeRangeMap.create();
+    private Sentiment calcSentiment(int value) {
+        return rangeMap.get(value);
+    }
+
+    record SentimentData(int minValue, int maxValue, Sentiment sentiment) {
+    }
+
+    record Sentiment(int minValue, int maxValue) {
+
+        public static final Sentiment POSITIVE = new Sentiment(75, 100);
+        public static final Sentiment NEGATIVE = new Sentiment(1, 49);
+        public static final Sentiment NEUTRAL = new Sentiment(50, 74);
     }
 }

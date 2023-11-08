@@ -23,6 +23,17 @@ public class StringTest {
     }
 
     @Test
+    public void test3(){
+        String s = " a ";
+        String s1 = " a bc   ddr";
+        int i = s.lastIndexOf(" ", 2);
+        int i1 = s1.lastIndexOf(" ", 2);
+
+        String myStr = "Hello planet earth, you are a great planet.";
+        System.out.println(myStr.lastIndexOf(" "));
+    }
+
+    @Test
     public void setContainAll() {
         List<Integer> integerList = Arrays.asList(1, 2, 3);
         Set<Integer> integerSet = new HashSet<>(integerList);

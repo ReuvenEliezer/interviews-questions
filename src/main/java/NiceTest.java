@@ -1,6 +1,7 @@
 
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.*;
@@ -183,5 +184,80 @@ public class NiceTest {
 
     record Coordinates(double x, double y) {
     }
+
+
+    @Test
+    public void stackTest() {
+        /**
+         * • Implement stack using Linked List as a backing structure
+         * • Note: do not use LinkedList from SDK, create own Node class
+         * and implement linked list principle in stack
+         */
+
+        StackUsingLinkedlist<Integer> stack = new StackUsingLinkedlist<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        stack.push(4);
+
+        Assertions.assertThat(stack.size()).isEqualTo(4);
+        Assertions.assertThat(stack.peek()).isEqualTo(4);
+        Assertions.assertThat(stack.size()).isEqualTo(4);
+        Assertions.assertThat(stack.pop()).isEqualTo(4);
+        Assertions.assertThat(stack.size()).isEqualTo(3);
+        Assertions.assertThat(stack.pop()).isEqualTo(3);
+        Assertions.assertThat(stack.peek()).isEqualTo(2);
+        Assertions.assertThat(stack.size()).isEqualTo(2);
+    }
+
+    static class StackUsingLinkedlist<T> {
+        Node<T> head;
+
+        int size;
+
+
+        public void push(T data) {
+            Node<T> node = new Node<>(data);
+            node.next = head;
+            head = node;
+            size++;
+        }
+
+        public boolean isEmpty() {
+            return head == null;
+        }
+
+        public T pop() {
+            if (head == null) {
+                return null;
+            }
+
+            T data = head.data;
+            head = head.next;
+            size--;
+            return data;
+        }
+
+        public T peek() {
+            if (head == null) {
+                return null;
+            }
+            return head.data;
+        }
+
+        public int size() {
+            return size;
+        }
+    }
+
+    static class Node<T> {
+        T data;
+        Node<T> next;
+
+        public Node(T data) {
+            this.data = data;
+        }
+    }
+
 
 }
