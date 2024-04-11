@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import com.interviews.questions.ranges.EdgeTimeValue;
 import com.interviews.questions.ranges.PeriodTimeResult;
@@ -155,6 +156,7 @@ public class AmdocsTest {
     }
 
     @Test
+    @Ignore
     public void yairTest() throws IOException {
         Runtime.getRuntime().exec("notepad");//will open a new notepad
         StringBuilder sb = new StringBuilder();
