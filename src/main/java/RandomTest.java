@@ -1,3 +1,4 @@
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -6,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class RandomTest {
-
+    private static final Random random = new Random();
 
     @Test
     public void _Test() {
@@ -15,7 +16,7 @@ public class RandomTest {
 
         Set<Integer> selectedSet = new HashSet<>();
 
-        Random random = new Random();
+
 
         for (int i = 0; i < iteration; i++) {
             int randomValue = random.nextInt(size);
@@ -36,7 +37,7 @@ public class RandomTest {
         for (int i = 0; i < linkedListSize; i++) {
             linkedList.add(i);
         }
-        Random random = new Random();
+
 
         for (int i = 0; i < linkedListSize; i++) {
             int r = random.nextInt(linkedList.size());
@@ -56,7 +57,7 @@ public class RandomTest {
         for (int i = 0; i < listSize; i++) {
             list.add(i);
         }
-        Random random = new Random();
+
 
         for (int i = 0; i < listSize; i++) {
             int r = random.nextInt(list.size());
@@ -74,7 +75,7 @@ public class RandomTest {
         for (int i = 0; i < numOfElements; i++) {
             indexToValueMap.put(i, i);
         }
-        Random random = new Random();
+
 
         int mapSizeInitialized = indexToValueMap.size();
         for (int i = 0; i < mapSizeInitialized; i++) {
@@ -104,7 +105,7 @@ public class RandomTest {
         for (int i = 0; i < mapSize; i++) {
             indexToValueMap.put(i, i);
         }
-        Random random = new Random();
+
 
         int mapSizeInitialized = indexToValueMap.size();
         for (int i = 0; i < mapSizeInitialized; i++) {
@@ -128,7 +129,7 @@ public class RandomTest {
         for (int i = 0; i < mapSize; i++) {
             map.put(i, i);
         }
-        Random random = new Random();
+
 
         Map<Integer, Integer> mapTest = new HashMap<>();
         int size = map.size();
@@ -197,7 +198,7 @@ public class RandomTest {
         for (int i = 0; i < value; i++)
             indexToValueMap.put(i, i);
 
-        Random random = new Random();
+
         for (int i = 0; i < value; i++) {
             int randomIndex = random.nextInt(indexToValueMap.size());
             Integer randomValue = indexToValueMap.get(randomIndex);
@@ -219,7 +220,7 @@ public class RandomTest {
         for (int i = 0; i < songArr.length; i++) {
             indexToRandomMap.put(i, i);
         }
-        Random random = new Random();
+
 
         String[] result = new String[songArr.length];
         int mapSize = indexToRandomMap.size();
@@ -237,13 +238,12 @@ public class RandomTest {
     @Test
     public void randomSpecificRange() {
         int randomInt = getRandomInt(5, 6);
+        Assertions.assertThat(randomInt).isBetween(5, 6);
     }
 
-    static Random random = new Random();
 
     public static int getRandomInt(int fromInclusive, int toExclusive) {
-        int result = random.nextInt(toExclusive - fromInclusive) + fromInclusive;
-        return result;
+        return random.nextInt(toExclusive - fromInclusive) + fromInclusive;
     }
 
 }

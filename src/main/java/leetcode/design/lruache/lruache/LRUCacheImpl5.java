@@ -42,9 +42,11 @@ public class LRUCacheImpl5<K, V> extends LinkedHashMap<K, V> {//implements LRUCa
      */
 
     private Map<K, Lock> mapLock = new ConcurrentHashMap<>();
-    private Map<K, Node> map = new ConcurrentHashMap<>();
-    private int capacity, count;
-    private Node head, tail;
+    private final Map<K, Node> map = new ConcurrentHashMap<>();
+    private final int capacity;
+    private int count;
+    private final Node head;
+    private final Node tail;
 
     @AllArgsConstructor
     @Getter

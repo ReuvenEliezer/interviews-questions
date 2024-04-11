@@ -8,14 +8,14 @@ import java.util.PriorityQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class LRUCacheImpl2 implements LRUCache<Integer, Integer> {
-    private Map<Integer, RecentlyValueUsed> map;
+    private final Map<Integer, RecentlyValueUsed> map;
     private final int maxSize;
-    private PriorityQueue<RecentlyValueUsed> queue;
+    private final PriorityQueue<RecentlyValueUsed> queue;
 
     public LRUCacheImpl2(final int capacity) {
         map = new HashMap<>(capacity);
         maxSize = capacity;
-        queue = new PriorityQueue(capacity, Comparator.comparing(RecentlyValueUsed::getLocalDateTime));
+        queue = new PriorityQueue<>(capacity, Comparator.comparing(RecentlyValueUsed::getLocalDateTime));
     }
 
     @Override
