@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,6 +31,12 @@ public class ListTest {
         arrayList.add("d");
 //        arrayList.add("b");
         arrayList.add(1, "b");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void immutableList() {
+        List<String> singletonList = Collections.singletonList("ONE");
+        singletonList.add("two");
     }
 
     @Test

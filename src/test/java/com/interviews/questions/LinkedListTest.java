@@ -28,7 +28,8 @@ public class LinkedListTest {
         }
 
         Node[] nodes = {head1, head2};
-        Node node = mergeKLists(new Node[]{});
+        Node node = mergeKLists(nodes);
+        Node node1 = mergeKLists(new Node[]{});
     }
 
     private Node mergeKLists(Node[] nodes) {

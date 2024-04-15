@@ -1,16 +1,14 @@
 package com.interviews.questions;
 
 import com.google.common.net.InternetDomainName;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class StringTest {
 
@@ -33,6 +31,19 @@ public class StringTest {
 
         String myStr = "Hello planet earth, you are a great planet.";
         System.out.println(myStr.lastIndexOf(" "));
+    }
+
+    @Test
+    public void JSONObjectTest(){
+        String[] stringsArray = {"teamId", "sd"};
+
+        JSONObject jsonFields = new JSONObject();
+
+        for (int i = 0; i < stringsArray.length; i++) {
+            jsonFields.put(Integer.toString(i), stringsArray[i]);
+        }
+
+        System.out.println(jsonFields.toString(0));
     }
 
     @Test

@@ -417,12 +417,12 @@ public class HashInterviews {
     }
 
     private int maxDistance(int[] arr) {
-        Map<Integer, ArrayList<Integer>> instanceToIndexesMap = new HashMap<>();
+        Map<Integer, List<Integer>> instanceToIndexesMap = new HashMap<>();
         for (int i = 0; i < arr.length; i++) {
             instanceToIndexesMap.computeIfAbsent(arr[i], v -> new ArrayList<>()).add(i);
         }
         int maxDistance = 0;
-        for (Map.Entry<Integer, ArrayList<Integer>> entry : instanceToIndexesMap.entrySet()) {
+        for (Map.Entry<Integer, List<Integer>> entry : instanceToIndexesMap.entrySet()) {
             if (entry.getValue().size() >= 2) {
                 List<Integer> indexesList = entry.getValue();
                 Collections.sort(indexesList);

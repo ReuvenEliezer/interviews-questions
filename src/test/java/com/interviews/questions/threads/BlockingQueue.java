@@ -1,11 +1,8 @@
 package com.interviews.questions.threads;
 
-import lombok.SneakyThrows;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -16,9 +13,22 @@ public class BlockingQueue<T> {
      * https://www.geeksforgeeks.org/blockingqueue-interface-in-java/
      */
 
-    private List<T> list = new LinkedList<>();
+    private final Long limitation;
+    private LinkedList<T> list = new LinkedList<>();
+
+    public BlockingQueue() {
+        limitation = null;
+    }
+
+    public BlockingQueue(long limitation) {
+        this.limitation = limitation;
+    }
 
     public synchronized void put(T t) {
+        if (limitation != null && list.size() == limitation) {
+            System.out.println("queue is full (limitation: " + list.size());
+            throw new IllegalStateException();
+        }
         System.out.println("put value: " + t);
         list.add(t);
         System.out.println("notifyAll");
@@ -32,20 +42,9 @@ public class BlockingQueue<T> {
             wait();
 //            wait(300);
         }
-        T value = list.remove(0);
+        T value = list.removeFirst();
         System.out.println("get value: " + value);
         return value;
-    }
-
-    @Test
-    public void test() throws InterruptedException, ExecutionException {
-        ExecutorService executorService = new ScheduledThreadPoolExecutor(2);
-        BlockingQueue<Integer> blockingQueue = new BlockingQueue();
-        Future<?> get = executorService.submit(blockingQueue::get);
-        Thread.sleep(5000);
-        Future<?> put = executorService.submit(() -> blockingQueue.put(1));
-        Object o = get.get();
-        put.get();
     }
 
 }
