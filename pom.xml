@@ -18,7 +18,7 @@
         <poi-ooxml.version>5.2.5</poi-ooxml.version>
         <log4j2.version>2.23.1</log4j2.version>
         <thymeleaf.version>3.1.2.RELEASE</thymeleaf.version>
-        <jackson.version>2.17.0</jackson.version>
+        <jackson.version>2.17.1</jackson.version>
         <flying-saucer-pdf.version>9.7.2</flying-saucer-pdf.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
