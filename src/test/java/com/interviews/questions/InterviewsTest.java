@@ -3,6 +3,7 @@ package com.interviews.questions;
 import com.google.common.collect.Sets;
 
 import lombok.ToString;
+import org.assertj.core.api.Assertions;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
@@ -1457,10 +1458,11 @@ public class InterviewsTest {
 
     @Test
     public void removeObjFromListTest() {
-        List<Integer> integerList = Arrays.asList(1, 3, 5, 7).stream().toList();
+        List<Integer> integerList = new ArrayList<>(List.of(1, 3, 5, 7));
         integerList.remove(1);
         integerList.remove(new Integer(7));
         System.out.println(integerList);
+        Assertions.assertThat(integerList).containsExactly(1, 5);
     }
 
     @Test
