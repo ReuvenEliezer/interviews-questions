@@ -54,7 +54,7 @@ public class TipaltiTest {
         people.forEach(person -> {
             List<Person> peopleListLevelOne = people.parallelStream()
                     .filter(innerPerson -> innerPerson != person && (innerPerson.fullName.equals(person.fullName) || innerPerson.address.equals(person.address)))
-                    .collect(Collectors.toList());
+                    .toList();
             personToOneLevelPersonsMap.put(person, peopleListLevelOne);
         });
     }
@@ -115,7 +115,7 @@ public class TipaltiTest {
             relatedPeople = personToOneLevelPersonsMap.get(currentPerson);
             if (relatedPeople.isEmpty())
                 return -1;
-            relatedPeople = relatedPeople.stream().filter(p -> !visited.contains(p)).collect(Collectors.toList());
+            relatedPeople = relatedPeople.stream().filter(p -> !visited.contains(p)).toList();
             System.out.println(String.format("relatedPeople size: %s, %s", relatedPeople.size(), relatedPeople));
             Person personFind = relatedPeople.parallelStream()
                     .filter(relatedPerson -> relatedPerson.equals(personB))

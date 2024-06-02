@@ -2,6 +2,7 @@ package com.interviews.questions.hangman;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -12,13 +13,12 @@ public class HangmanService {
 
 
     public static String startGetSelectedWord() {
-        HashSet<String> allWords = FileUtils.getAllWord();
-        List<String> allWordsList = allWords.stream().collect(Collectors.toList());
+        Set<String> allWords = FileUtils.getAllWord();
+        List<String> allWordsList = allWords.stream().toList();
         int randomNum = ThreadLocalRandom.current().nextInt(0, allWords.size());
         wordSelected = allWordsList.get(randomNum);
 //        wordSelected ="gaga";
-        for (int i = 0; i < wordSelected.length(); i++)
-            wordGuess.append("_");
+        wordGuess.append("_".repeat(wordSelected.length()));
 
         System.out.println("wordSelected result by hangman service: " + wordSelected);
         return wordSelected;

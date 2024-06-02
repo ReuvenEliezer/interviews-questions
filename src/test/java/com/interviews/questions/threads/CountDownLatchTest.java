@@ -24,7 +24,7 @@ public class CountDownLatchTest {
                 .generate(() -> new Thread(new Worker(outputScraper, countDownLatch)))
 //                .limit(10)
                 .limit(5)
-                .collect(Collectors.toList());
+                .toList();
 
         workers.forEach(Thread::start);
         countDownLatch.await(3, TimeUnit.SECONDS);
@@ -52,7 +52,7 @@ public class CountDownLatchTest {
                 .generate(() -> new Thread(new WaitingWorker(
                         outputScraper, readyThreadCounter, callingThreadBlocker, completedThreadCounter)))
                 .limit(5)
-                .collect(Collectors.toList());
+                .toList();
 
         workers.forEach(Thread::start);
         readyThreadCounter.await(3, TimeUnit.SECONDS);

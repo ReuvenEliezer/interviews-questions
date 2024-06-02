@@ -294,7 +294,7 @@ public class HashInterviews {
         List<Integer> collect = map.entrySet().stream()
                 .sorted(comparing1.thenComparing(comparing2))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .toList();
 
         for (Integer key : collect) {
             Integer totalInstances = map.get(key);
@@ -325,7 +325,7 @@ public class HashInterviews {
 //        List<Integer> list = map.entrySet()
 //                .stream().sorted(comparing1.thenComparing(comparing2))
 //                .map(Map.Entry::getKey)
-//                .collect(Collectors.toList());
+//                .toList();
 
         for (Map.Entry<Integer, Integer> entry : entries) {
             Integer key = entry.getKey();

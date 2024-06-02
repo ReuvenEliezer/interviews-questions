@@ -1,10 +1,10 @@
 package com.interviews.questions.digibank;
 
-public class EndWordRule extends com.interviews.questions.digibank.DigiRule {
-    private boolean isAllowedAtEndWord;
+public class EndWordRule extends DigiRule {
+    private final boolean isAllowedAtEndWord;
 
     public EndWordRule(Character character, boolean isAllowedAtEndWord) {
-        this.character = character;
+        super(character);
         this.isAllowedAtEndWord = isAllowedAtEndWord;
     }
 

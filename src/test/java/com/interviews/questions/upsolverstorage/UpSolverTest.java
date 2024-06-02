@@ -42,11 +42,11 @@ public class UpSolverTest {
     public void readFileTest() {
 //        Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\");
         Path fullPath = Paths.get("C:\\Users\\fileName1");
-        com.interviews.questions.upsolverstorage.File content = new com.interviews.questions.upsolverstorage.File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
-        com.interviews.questions.upsolverstorage.Storage storage = new com.interviews.questions.upsolverstorage.StorageImpl();
+        File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
+        Storage storage = new StorageImpl();
         storage.write(fullPath.toString(), content);
 
-        com.interviews.questions.upsolverstorage.Content result = storage.read(fullPath.toString());
+        Content result = storage.read(fullPath.toString());
         assertNotNull(result);
         assertEquals(content, result);
     }
@@ -54,23 +54,23 @@ public class UpSolverTest {
     @Test
     public void readFileOverrideFile_AddDirAndListAndListRecursiveTest() throws InterruptedException {
         Path fullPath = Paths.get("C:\\Users\\fileName1");
-        com.interviews.questions.upsolverstorage.File content = new com.interviews.questions.upsolverstorage.File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
-        com.interviews.questions.upsolverstorage.Storage storage = new com.interviews.questions.upsolverstorage.StorageImpl();
+        File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
+        Storage storage = new StorageImpl();
         storage.write(fullPath.toString(), content);
 
-        com.interviews.questions.upsolverstorage.Content result = storage.read(fullPath.toString());
+        Content result = storage.read(fullPath.toString());
         assertNotNull(result);
         assertEquals(content, result);
         Assert.assertEquals(result.getProp().getCreateDateTime(), result.getProp().getUpdatedDateTime());
 
-        com.interviews.questions.upsolverstorage.File content2 = new com.interviews.questions.upsolverstorage.File("fileName1Override".getBytes(StandardCharsets.UTF_8), "fileName1");
+        File content2 = new File("fileName1Override".getBytes(StandardCharsets.UTF_8), "fileName1");
         Thread.sleep(10);
         storage.write(fullPath.toString(), content2);
-        com.interviews.questions.upsolverstorage.Content result2 = storage.read(fullPath.toString());
+        Content result2 = storage.read(fullPath.toString());
         Assert.assertNotEquals(result2.getProp().getCreateDateTime(), result2.getProp().getUpdatedDateTime());
         assertNotNull(result2);
-        assertTrue(result2 instanceof com.interviews.questions.upsolverstorage.File);
-        com.interviews.questions.upsolverstorage.File file = (com.interviews.questions.upsolverstorage.File) result2;
+        assertTrue(result2 instanceof File);
+        File file = (File) result2;
         String value = new String(file.getContent(), StandardCharsets.UTF_8);
         assertEquals(new String(content2.getContent(), StandardCharsets.UTF_8), value);
         assertEquals(content2, result2);
@@ -78,53 +78,53 @@ public class UpSolverTest {
 
         //create new dir
         Path fullPath3 = Paths.get("C:\\Users\\Directory");
-        com.interviews.questions.upsolverstorage.Content content3 = new com.interviews.questions.upsolverstorage.Directory("Directory");
+        Content content3 = new Directory("Directory");
         storage.write(fullPath3.toString(), content3);
 
-        com.interviews.questions.upsolverstorage.Content result3 = storage.read(fullPath3.toString());
+        Content result3 = storage.read(fullPath3.toString());
         assertNotNull(result3);
-        assertTrue(result3 instanceof com.interviews.questions.upsolverstorage.Directory);
+        assertTrue(result3 instanceof Directory);
         Assert.assertEquals(content3.getProp().getName(), result3.getProp().getName());
 
 
-        List<com.interviews.questions.upsolverstorage.Content> list = storage.list(Paths.get("C:\\").toString());
+        List<Content> list = storage.list(Paths.get("C:\\").toString());
         assertEquals(1, list.size());
 //        assertEquals(List.of(content3), list);
 
-        List<com.interviews.questions.upsolverstorage.Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
+        List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
         assertEquals(3, listRecursively.size());
     }
 
     @Test
     public void listAndListRecursiveTest() {
-        com.interviews.questions.upsolverstorage.Storage storage = new com.interviews.questions.upsolverstorage.StorageImpl();
+        Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\eliez\\IdeaProjects\\Interviews-Questions\\src\\main\\resources\\fileName1.scv");
-        storage.write(fullPath.toString(), new com.interviews.questions.upsolverstorage.File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1.scv"));
-        List<com.interviews.questions.upsolverstorage.Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
+        storage.write(fullPath.toString(), new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1.scv"));
+        List<Content> listRecursively = storage.listRecursively(Paths.get("C:\\").toString());
         assertEquals(8, listRecursively.size());
         String[] split = StringUtils.split(fullPath, "\\");
         for (int i = 1; i < split.length; i++) {
             Assert.assertEquals(split[i], listRecursively.get(i - 1).getProp().getName());
         }
-//        IntStream.range(1, split.length).boxed().collect(Collectors.toList());
+//        IntStream.range(1, split.length).boxed().toList();
     }
 
     @Test
     public void readDirectoryTest() {
-        com.interviews.questions.upsolverstorage.Storage storage = new com.interviews.questions.upsolverstorage.StorageImpl();
+        Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\Directory");
-        com.interviews.questions.upsolverstorage.Content content = new com.interviews.questions.upsolverstorage.Directory("Directory");
+        Content content = new Directory("Directory");
         storage.write(fullPath.toString(), content);
 
-        com.interviews.questions.upsolverstorage.Content result = storage.read(fullPath.toString());
+        Content result = storage.read(fullPath.toString());
         assertNotNull(result);
-        assertTrue(result instanceof com.interviews.questions.upsolverstorage.Directory);
+        assertTrue(result instanceof Directory);
         Assert.assertEquals(content.getProp().getName(), result.getProp().getName());
     }
 
     @Test
     public void deleteTest() {
-        com.interviews.questions.upsolverstorage.Storage storage = new com.interviews.questions.upsolverstorage.StorageImpl();
+        Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\Directory");
         Content content = new Directory("Directory");
         storage.write(fullPath.toString(), content);
@@ -137,9 +137,9 @@ public class UpSolverTest {
 
     @Test(expected = NoSuchElementException.class)
     public void readFileNotExistPathTest() {
-        com.interviews.questions.upsolverstorage.Storage storage = new com.interviews.questions.upsolverstorage.StorageImpl();
+        Storage storage = new StorageImpl();
         Path fullPath = Paths.get("C:\\Users\\fileName1");
-        com.interviews.questions.upsolverstorage.File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
+        File content = new File("fileName1".getBytes(StandardCharsets.UTF_8), "fileName1");
         storage.write(fullPath.toString(), content);
         storage.read(fullPath.toString() + 1);
     }

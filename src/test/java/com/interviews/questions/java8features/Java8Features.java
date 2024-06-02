@@ -74,7 +74,7 @@ public class Java8Features {
     public void functionsTest() {
         List<String> names = Arrays.asList("Smith", "Gourav", "Heather", "John", "Catania");
         Function<String, Integer> nameMappingFunction = String::length;
-        List<Integer> nameLength = names.stream().map(nameMappingFunction).collect(Collectors.toList());
+        List<Integer> nameLength = names.stream().map(nameMappingFunction).toList();
         System.out.println(nameLength);
     }
 

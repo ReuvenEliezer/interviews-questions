@@ -1,9 +1,9 @@
 package com.interviews.questions.java8features;
 
-public class CreateProcessor extends AbstractConsumerService<com.interviews.questions.java8features.CreateRequest> {
+public class CreateProcessor extends AbstractConsumerService<CreateRequest> {
 
     public CreateProcessor() {
-        add(RequestType.CREATE, request -> processReq(request));
+        add(RequestType.CREATE, this::processReq);
     }
 
     private Boolean processReq(CreateRequest request) {

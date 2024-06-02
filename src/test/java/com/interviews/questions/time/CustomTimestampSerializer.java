@@ -35,7 +35,7 @@ public class CustomTimestampSerializer extends StdSerializer<Timestamp> {
                 e.printStackTrace();
             }
         }
-        throw new IllegalArgumentException(String.format("Invalid input for timestamp. Given %s, expecting format %s", timestamp.toString(), Arrays.stream(SIMPLE_TIMESTAMP_FORMATS).map(s -> s.toPattern()).collect(Collectors.toList())));
+        throw new IllegalArgumentException(String.format("Invalid input for timestamp. Given %s, expecting format %s", timestamp.toString(), Arrays.stream(SIMPLE_TIMESTAMP_FORMATS).map(s -> s.toPattern()).toList()));
 
 //        jsonGenerator.writeStartObject();
 //        jsonGenerator.writeObject();

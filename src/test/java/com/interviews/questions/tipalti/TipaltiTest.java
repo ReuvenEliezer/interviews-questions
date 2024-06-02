@@ -13,7 +13,7 @@ public class TipaltiTest {
 
     @Test
     public void genericLinkedListWithString() {
-        com.interviews.questions.tipalti.CustomLinkedList<String> customLinkedList = new com.interviews.questions.tipalti.CustomLinkedList<>();
+        CustomLinkedList<String> customLinkedList = new CustomLinkedList<>();
         customLinkedList.add("first");
         customLinkedList.add("second");
         customLinkedList.dump();
@@ -21,7 +21,7 @@ public class TipaltiTest {
 
     @Test
     public void genericLinkedListWithObject() {
-        com.interviews.questions.tipalti.CustomLinkedList<Name> customLinkedList = new com.interviews.questions.tipalti.CustomLinkedList<>();
+        CustomLinkedList<Name> customLinkedList = new CustomLinkedList<>();
         customLinkedList.add(new Name("first name-2", "last name-2"));
         customLinkedList.add(new Name("first name-1", "last name-1"));
         customLinkedList.dump();
@@ -86,7 +86,7 @@ public class TipaltiTest {
         /**
          * https://www.baeldung.com/java-reflection
          */
-        com.interviews.questions.tipalti.CustomLinkedList<Object> customLinkedList = new CustomLinkedList<>();
+        CustomLinkedList<Object> customLinkedList = new CustomLinkedList<>();
         Name name = new Name("first name-2", "last name-2");
         customLinkedList.add(name);
         customLinkedList.add(new Person(name, 50));

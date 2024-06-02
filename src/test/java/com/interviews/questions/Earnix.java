@@ -1,11 +1,8 @@
 package com.interviews.questions;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,26 +11,29 @@ import static org.assertj.core.api.Assertions.*;
 public class Earnix {
 
     @Test
-    @Ignore
-    public void setAllInO1Test() {
+    public void setAllInO1Test() throws InterruptedException {
         //write a collection utils that support the following condition:
         //set will be set the given value into the given index
         //setAll will be set the given value into all indexes
         //get func will be retrieve the value in o(1) complexity
-        MyCollection<String> myCollection = new MyCollection<>();
+        MyCollection<Integer, String> myCollection = new MyCollection<>();
 
         assertThat(myCollection.get(0)).isNull();
 
+        Thread.sleep(1);
         myCollection.set(0, "a");
 
         assertThat(myCollection.get(0)).isEqualTo("a");
         assertThat(myCollection.get(1)).isNull();
 
+        Thread.sleep(1);
         myCollection.setAll("b");
+
         assertThat(myCollection.get(0)).isEqualTo("b");
         assertThat(myCollection.get(1)).isEqualTo("b");
         assertThat(myCollection.get(2)).isEqualTo("b");
 
+        Thread.sleep(1);
         myCollection.set(1, "c");
         assertThat(myCollection.get(0)).isEqualTo("b");
         assertThat(myCollection.get(1)).isEqualTo("c");
@@ -45,51 +45,64 @@ public class Earnix {
 
     }
 
+    @Test
+    public void imprevaTest() throws InterruptedException {
+        MyCollection<Integer, Integer> mapCom = new MyCollection<>();
 
-    static class MyCollection<T> {
+        mapCom.set(6, 20);
+        Thread.sleep(1);
+        mapCom.set(14, 25);
+        Thread.sleep(1);
+        mapCom.set(6, 25);
+        Thread.sleep(1);
+        mapCom.setAll(1);
+        Thread.sleep(1);
+        mapCom.setAll(17);
+        Thread.sleep(1);
+        mapCom.set(14, 13);
 
-        private Map<Integer, ValueTime<T>> indexToElementValueMap;
-        private ValueTime<T> valueTime = new ValueTime<>(null, LocalDateTime.now());
+        assertThat(mapCom.get(14)).isEqualTo(13);
+        assertThat(mapCom.get(6)).isEqualTo(17);
+        assertThat(mapCom.get(3)).isEqualTo(17);
+    }
+
+
+    static class MyCollection<K, V> {
+
+        private Map<K, ValueTime<V>> map;
+        private ValueTime<V> globalValueTime = new ValueTime<>(null, LocalDateTime.now());
 
         public MyCollection() {
-            this.indexToElementValueMap = new HashMap<>();
+            this.map = new HashMap<>();
         }
 
         public MyCollection(int initialCapacity) {
-            this.indexToElementValueMap = new HashMap<>(initialCapacity);
+            this.map = new HashMap<>(initialCapacity);
         }
 
-        public T set(Integer key, T value) {
-            ValueTime<T> prevValue = indexToElementValueMap.put(key, new ValueTime<>(value, LocalDateTime.now()));
-            return prevValue == null ? null : prevValue.element;
+        public V set(K key, V value) {
+            ValueTime<V> prevValue = map.put(key, new ValueTime<>(value, LocalDateTime.now()));
+            return prevValue == null ? null : prevValue.value;
         }
 
-        public void setAll(T value) {
-            this.valueTime = new ValueTime<>(value, LocalDateTime.now());
+        public void setAll(V value) {
+            this.globalValueTime = new ValueTime<>(value, LocalDateTime.now());
         }
 
-        public T get(Integer key) {
-            ValueTime<T> valueTime = indexToElementValueMap.get(key);
-            if (valueTime == null) {
-                return this.valueTime.element;
-            } else if (this.valueTime.element == null) {
-                return valueTime.element;
-            } else {
-                LocalDateTime updateTime = valueTime.currentTime();
-                LocalDateTime globalUpdateTime = this.valueTime.currentTime;
-                System.out.println("updateTime: " + updateTime);
-                System.out.println("globalUpdateTime: " + globalUpdateTime);
-                return updateTime.isAfter(globalUpdateTime) ? valueTime.element : this.valueTime.element;
+        public V get(K key) {
+            ValueTime<V> valueTime = map.get(key);
 
-
-//            return updateTime.toInstant(ZoneOffset.UTC).getNano() > globalUpdateTime.toInstant(ZoneOffset.UTC).getNano() ? tValueTime.element : valueTime.element;
-//            Duration deltaTime = Duration.between(globalUpdateTime, updateTime);
-//            return deltaTime.getNano() > 0 ? tValueTime.element : valueTime.element;
+            if (valueTime != null) {
+                if (valueTime.currentTime.isAfter(this.globalValueTime.currentTime)) {
+                    return valueTime.value;
+                }
             }
+            return this.globalValueTime.value();
         }
+
     }
 
-    record ValueTime<T>(T element, LocalDateTime currentTime) {
+    record ValueTime<V>(V value, LocalDateTime currentTime) {
     }
 
 }

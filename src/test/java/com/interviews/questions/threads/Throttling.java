@@ -8,14 +8,13 @@ public class Throttling {
     private static final int MAX_TASKS = 3;
     // The maximum number of tasks that can be queued for
     // execution
-    private static final int MAX_QUEUE = 3;
 
     public static void main(String[] args) throws InterruptedException {
         // Create a ThreadPoolExecutor with the desired
         // settings
         ExecutorService executor = new ThreadPoolExecutor(
                 MAX_TASKS, MAX_TASKS, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(MAX_QUEUE));
+                new LinkedBlockingQueue<>());
         // Create a Semaphore with the desired maximum
         // number of permits
         Semaphore semaphore = new Semaphore(MAX_TASKS);

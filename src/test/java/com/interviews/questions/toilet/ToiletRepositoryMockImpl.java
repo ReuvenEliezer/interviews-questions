@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 
 public class ToiletRepositoryMockImpl implements ToiletRepository {
 
-    private List<com.interviews.questions.toilet.Toilet> toiletList;
+    private final List<Toilet> toiletList;
 
-    public ToiletRepositoryMockImpl(List<com.interviews.questions.toilet.Toilet> toiletList) {
+    public ToiletRepositoryMockImpl(List<Toilet> toiletList) {
         this.toiletList = toiletList;
     }
 
-    public ToiletRepositoryMockImpl(com.interviews.questions.toilet.Toilet... toilets) {
-        this.toiletList = Arrays.stream(toilets).collect(Collectors.toList());
+    public ToiletRepositoryMockImpl(Toilet... toilets) {
+        this.toiletList = Arrays.stream(toilets).toList();
     }
 
     @Override

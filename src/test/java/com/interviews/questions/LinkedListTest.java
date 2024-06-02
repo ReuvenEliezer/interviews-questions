@@ -85,7 +85,7 @@ public class LinkedListTest {
         return valueToCountMap.entrySet()
                 .stream()
                 .flatMap(entry -> Collections.nCopies(entry.getValue(), entry.getKey()).stream())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 

@@ -15,9 +15,8 @@ public class FileUtils {
         String filePath = "src" + File.separator + "main" + File.separator + "java" + File.separator + "hangman" + File.separator;
         String fileName = "dictionary.txt";
         File file = new File(filePath + fileName);
-        try (
-                Stream<String> linesStream = Files.lines(file.toPath())) {
-            List<String> collect = linesStream.map(String::toLowerCase).collect(Collectors.toList());
+        try (Stream<String> linesStream = Files.lines(file.toPath())) {
+            List<String> collect = linesStream.map(String::toLowerCase).toList();
             Collections.sort(collect);
             allWord = (HashSet<String>) collect.stream().collect(Collectors.toSet());
         } catch (IOException e) {

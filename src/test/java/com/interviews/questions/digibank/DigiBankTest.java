@@ -45,13 +45,13 @@ public class DigiBankTest {
     @Test
     public void test() throws Exception {
 
-        com.interviews.questions.digibank.EndWordRule endWordRuleA = new com.interviews.questions.digibank.EndWordRule('a', true);
-        com.interviews.questions.digibank.EndWordRule endWordRuleB = new com.interviews.questions.digibank.EndWordRule('b', false);
-        com.interviews.questions.digibank.EndWordRule endWordRuleC = new EndWordRule('c', true);
+        EndWordRule endWordRuleA = new EndWordRule('a', true);
+        EndWordRule endWordRuleB = new EndWordRule('b', false);
+        EndWordRule endWordRuleC = new EndWordRule('c', true);
 
-        com.interviews.questions.digibank.AllowedFollowersRule allowedFollowersRuleA = new com.interviews.questions.digibank.AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
-        com.interviews.questions.digibank.AllowedFollowersRule allowedFollowersRuleB = new com.interviews.questions.digibank.AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
-        com.interviews.questions.digibank.AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
+        AllowedFollowersRule allowedFollowersRuleA = new AllowedFollowersRule('a', Stream.of('a', 'b', 'd').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
+        AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
 
          Map<Character, Set<DigiRule>> characterToRulesMap = new HashMap<>();
 
@@ -59,7 +59,7 @@ public class DigiBankTest {
         characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).collect(Collectors.toSet()));
         characterToRulesMap.put('c', Stream.of(allowedFollowersRuleC, endWordRuleC).collect(Collectors.toSet()));
 
-        com.interviews.questions.digibank.DigiBankService digiBankService = new DigiBankService(characterToRulesMap);
+        DigiBankService digiBankService = new DigiBankService(characterToRulesMap);
 
         Assert.assertTrue(digiBankService.isValid("add"));
         Assert.assertTrue(digiBankService.isValid("ad"));

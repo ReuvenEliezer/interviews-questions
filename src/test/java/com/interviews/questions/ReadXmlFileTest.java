@@ -1,5 +1,6 @@
 package com.interviews.questions;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,12 +16,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ReadXmlFileTest {
+class ReadXmlFileTest {
 
     @Test
+    @Disabled
     void test() throws Exception {
 //        File file = new File("C:\\Users\\eliezerr\\Downloads\\climent (1)\\spring-shell-reactive\\pom.xml");
-//        File file = new File("C:\\Users\\eliezerr\\IdeaProjects\\saas-platform-lib-java17\\pom.xml");
+//        File file = new File("C:\\Users\\eliezerr\\IdeaProjects\\intervies-questions\\pom.xml");
         File file = new File("C:\\Users\\eliezerr\\IdeaProjects\\saas-platform-lib-java17\\binary-file-access\\impl\\pom.xml");
 
 

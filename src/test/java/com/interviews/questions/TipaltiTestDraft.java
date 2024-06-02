@@ -47,7 +47,7 @@
 //        people.forEach(person -> {
 //            List<Person> peopleListLevelOne = people.parallelStream()
 //                    .filter(innerPerson -> innerPerson != person && (innerPerson.equals(person)))
-//                    .collect(Collectors.toList());
+//                    .toList();
 //            personToOneLevelPersonsMap.put(person, peopleListLevelOne);
 //        });
 //

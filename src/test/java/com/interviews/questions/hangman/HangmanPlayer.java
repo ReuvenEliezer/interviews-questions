@@ -9,12 +9,12 @@ public class HangmanPlayer {
     @Test
     public void start() {
         //init all words
-        com.interviews.questions.hangman.FileUtils.setAllSortedWords();
+        FileUtils.setAllSortedWords();
 
-        String selectedWord = com.interviews.questions.hangman.HangmanService.startGetSelectedWord();
+        String selectedWord = HangmanService.startGetSelectedWord();
 //        int maxWordLength = FileUtils.getMaxWordLength(allWords);
-        com.interviews.questions.hangman.Guess guess = new com.interviews.questions.hangman.Guess(selectedWord.length());
-        Set<String> relevantWords = com.interviews.questions.hangman.FileUtils.getRelevantWordsByLength(guess.getCharsNumber());
+        Guess guess = new Guess(selectedWord.length());
+        Set<String> relevantWords = FileUtils.getRelevantWordsByLength(guess.getCharsNumber());
         guess.setRelevantWords(relevantWords);
         guessCharRecursive(guess);
     }

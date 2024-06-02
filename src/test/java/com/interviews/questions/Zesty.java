@@ -24,8 +24,8 @@ public class Zesty {
     @Test
     public void test() {
         int[] ints = new int[]{-7, 4, -3, 2, 2, -8, -2, 3, 3, 7, -2, 3, -2};
-        Assert.assertEquals(Arrays.asList(7, 3, 2, 2).stream().sorted().collect(Collectors.toList()),
-                calcResult(ints).stream().sorted().collect(Collectors.toList()));
+        Assert.assertEquals(Arrays.asList(7, 3, 2, 2).stream().sorted().toList(),
+                calcResult(ints).stream().sorted().toList());
 
     }
 
@@ -125,7 +125,7 @@ public class Zesty {
 
             List<Coordinate> nonVisitedNeighbors = getPossibleNeighbors(maze, currentCoordinate).stream()
                     .filter(neighbor -> !coordinatesVisited.contains(neighbor))
-                    .collect(Collectors.toList());
+                    .toList();
 
             nonVisitedNeighbors.forEach(e -> childToParentMap.put(e, currentCoordinate));
 

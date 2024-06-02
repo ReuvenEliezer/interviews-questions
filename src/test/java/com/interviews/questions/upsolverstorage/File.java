@@ -8,7 +8,7 @@ public class File extends Content {
 
     public File(byte[] content, String name) {
         this.content = content;
-        this.prop = new com.interviews.questions.upsolverstorage.Prop(name);
+        this.prop = new Prop(name);
     }
 
 }

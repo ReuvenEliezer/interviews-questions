@@ -2,11 +2,11 @@ package com.interviews.questions.digibank;
 
 import java.util.Set;
 
-public class AllowedFollowersRule extends com.interviews.questions.digibank.DigiRule {
-    private Set<Character> allowedFollowers;
+public class AllowedFollowersRule extends DigiRule {
+    private final Set<Character> allowedFollowers;
 
     public AllowedFollowersRule(Character character, Set<Character> allowedFollowers) {
-        this.character = character;
+        super(character);
         this.allowedFollowers = allowedFollowers;
     }
 

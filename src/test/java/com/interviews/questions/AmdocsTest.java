@@ -234,7 +234,7 @@ public class AmdocsTest {
         List<Map.Entry<LocalDateTime, Set<String>>> results = timeInMinutesToProgramNamesMap.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().size() == max)
-                .collect(Collectors.toList());
+                .toList();
 
 
         for (Map.Entry<LocalDateTime, Set<String>> entry : results) {

@@ -39,6 +39,6 @@ public class CustomTimestampDeserializer extends StdDeserializer<Timestamp> {
             } catch (ParseException e) {
             }
         }
-        throw new IllegalArgumentException(String.format("Invalid input for timestamp. Given %s, expecting format %s", node.asText(), Arrays.stream(SIMPLE_TIMESTAMP_FORMATS).map(s -> s.toPattern()).collect(Collectors.toList())));
+        throw new IllegalArgumentException(String.format("Invalid input for timestamp. Given %s, expecting format %s", node.asText(), Arrays.stream(SIMPLE_TIMESTAMP_FORMATS).map(s -> s.toPattern()).toList()));
     }
 }

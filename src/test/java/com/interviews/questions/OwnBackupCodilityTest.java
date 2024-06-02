@@ -90,7 +90,7 @@ public class OwnBackupCodilityTest {
                 missingNumbersList.add(i);
         }
 
-        List<Integer> duplicateNumberSortedList = duplicateNumberHashSet.stream().sorted().collect(Collectors.toList());
+        List<Integer> duplicateNumberSortedList = duplicateNumberHashSet.stream().sorted().toList();
 
         long totalMoves = 0;
         for (Integer duplicateNumber : duplicateNumberSortedList) {
@@ -117,7 +117,7 @@ public class OwnBackupCodilityTest {
             Integer integer1 = allPointsList.get(i);
             for (int j = i + 1; j < allPointsList.size(); j++) {
                 Integer integer2 = allPointsList.get(j);
-                List<Integer> sortedIntList = Stream.of(integer1, integer2).sorted().collect(Collectors.toList()); // for unique a key map
+                List<Integer> sortedIntList = Stream.of(integer1, integer2).sorted().toList(); // for unique a key map
                 possibleCoordinatorToSumPoints.put(sortedIntList, sortedIntList.stream().mapToInt(Integer::intValue).sum());
             }
         }
