@@ -52,8 +52,8 @@ public class MyInternalMapTest {
         assertTrue(map.containsValue("1"));
         assertTrue(map.containsValue("2"));
         assertFalse(map.containsValue("3"));
-        assertEquals(Arrays.asList("1", "2"), map.values().stream().sorted().collect(Collectors.toList()));
-        assertEquals(Arrays.asList(1, 17), map.keySet().stream().sorted().collect(Collectors.toList()));
+        assertEquals(Arrays.asList("1", "2"), map.values().stream().sorted().toList());
+        assertEquals(Arrays.asList(1, 17), map.keySet().stream().sorted().toList());
         Set<Map.Entry<Integer, String>> entrySet = map.entrySet();
         assertEquals(2, entrySet.size());
 

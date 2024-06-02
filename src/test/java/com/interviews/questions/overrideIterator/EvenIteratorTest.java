@@ -10,8 +10,8 @@ public class EvenIteratorTest {
 
     @Test
     public void evenIteratorPrinterTest() {
-        List<Integer> integerList = IntStream.range(0, 10).boxed().collect(Collectors.toList());
-        com.interviews.questions.overrideIterator.EvenIterator evenIterator = new EvenIterator(integerList);
+        List<Integer> integerList = IntStream.range(0, 10).boxed().toList();
+        EvenIterator evenIterator = new EvenIterator(integerList);
         while (evenIterator.hasNext()) {
             System.out.println(evenIterator.next());
         }

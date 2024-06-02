@@ -53,10 +53,10 @@ public class Varonis {
 
     private boolean findPairSum(int[] arr, int sum) {
         Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < arr.length; i++) {
-            if (set.contains(sum - arr[i]))
+        for (int value : arr) {
+            if (set.contains(sum - value))
                 return true;
-            set.add(arr[i]);
+            set.add(value);
         }
         return false;
     }

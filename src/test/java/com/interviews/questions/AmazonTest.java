@@ -108,7 +108,20 @@ public class AmazonTest {
     @Test
     public void amazonIdsOfSongs() {
         /**
-         * Amazon Music is worldng on a new feature to pair songs together to play while on the bus The goal of this feature is to select two songs from a list that will end exactly 30 seconds before the listener reaches their stop You are tasked with witing the method that selects the songs from a list. Each song is assigned a unique ID, numbered from 0 to N-1 Assumptions 1. You will pick exactly 2 songs 2. You cannot pick the same song twice 3.1f you have multiple pairs with the same total time, select the pair with the longest song. Input The input to the functionmethod consits of two arguments- rideDuration an integer representing the duration of the ride in seconds songDurations, a list of integers roprestoo the duration of the songs. Output Return a list of integers repr finish exactly 30 seconds beteh sorigs whose combined runtime will dos Example Input rideDuration=90 o s = suoneingbuos anding 12.31 During the ride duration of 90 seconds, the nider listens to the thirdID-2) and fourthiD-3) song which end exactly 30 sconds before the bus arrives at their stop. uoneuejdg
+         * Amazon Music is worldng on a new feature to pair songs together
+         * to play while on the bus The goal of this feature is to select two songs from a list
+         * that will end exactly 30 seconds before the listener reaches their stop You are tasked with witing the method
+         * that selects the songs from a list.
+         * Each song is assigned a unique ID, numbered from 0 to N-1 Assumptions
+         * 1. You will pick exactly 2 songs
+         * 2. You cannot pick the same song twice
+         * 3.1f you have multiple pairs with the same total time, select the pair with the longest song.
+         * Input The input to the functionmethod consits of two arguments-
+         * rideDuration an integer representing the duration of the ride in seconds songDurations,
+         * a list of integers roprestoo the duration of the songs. Output Return a list of integers repr
+         * finish exactly 30 seconds beteh sorigs whose combined runtime will dos Example Input rideDuration=90 o s = suoneingbuos anding
+         * 12.31 During the ride duration of 90 seconds, the nider listens to the thirdID-2) and fourthiD-3)
+         * song which end exactly 30 sconds before the bus arrives at their stop. uoneuejdg
          */
         int rideDuration = 250;
         List<Integer> songDurations = new ArrayList<>(Arrays.asList(100, 180, 40, 120, 10));
@@ -119,10 +132,10 @@ public class AmazonTest {
         List<Integer> idsOfSongs = getIDsOfSongsMemoryFinalOptimistic(rideDuration, songDurations);
 
         assertEquals(2, idsOfSongs.size());
-        assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().toList());
         idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
         assertEquals(2, idsOfSongs.size());
-        assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(Arrays.asList(1, 2), idsOfSongs.stream().sorted().toList());
 
         songDurations.clear();
         songDurations.addAll(Arrays.asList(1, 10, 25, 35, 60));
@@ -131,11 +144,11 @@ public class AmazonTest {
 
 
         assertEquals(2, idsOfSongs.size());
-        assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().toList());
 
         idsOfSongs = getIDsOfSongsMemoryOptimistic(rideDuration, songDurations);
         assertEquals(2, idsOfSongs.size());
-        assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().collect(Collectors.toList()));
+        assertEquals(Arrays.asList(2, 3), idsOfSongs.stream().sorted().toList());
     }
 
     private List<Integer> getIDsOfSongsMemoryFinalOptimistic(int rideDurationInSec, List<Integer> songDurations) {
@@ -143,12 +156,10 @@ public class AmazonTest {
          * https://www.geeksforgeeks.org/given-an-array-a-and-a-number-x-check-for-pair-in-a-with-sum-as-x/
          */
         int timeBeforeArrivedBusInSeconds = 30;
-        int totalSongTime = rideDurationInSec - timeBeforeArrivedBusInSeconds;
+        int requiredTotalTimeSongs = rideDurationInSec - timeBeforeArrivedBusInSeconds;
 
-        Integer firstSongIndex = null;
-        Integer secondSongIndex = null;
-        Integer firstSongDuration = null;
-        Integer secondSongDuration = null;
+        SongData songData1 = null;
+        SongData songData2 = null;
         Map<Integer, Integer> songDurationToIndexMap = new HashMap<>();
         for (int i = 0; i < songDurations.size(); i++) {
             songDurationToIndexMap.put(songDurations.get(i), i);
@@ -156,21 +167,26 @@ public class AmazonTest {
 
         Set<Integer> songDurationSet = new HashSet<>();
         for (int index = 0; index < songDurations.size(); index++) {
-            int temp = totalSongTime - songDurations.get(index);
-            if (songDurationSet.contains(temp)) {
+            int songDurationTemp = requiredTotalTimeSongs - songDurations.get(index);
+            if (songDurationSet.contains(songDurationTemp)) {
                 //if (currentMax>prevMax replace result)
-                if (firstSongIndex == null || secondSongIndex == null || Math.max(songDurations.get(index), temp) > Math.max(firstSongDuration, secondSongDuration)) {
-                    firstSongIndex = songDurationToIndexMap.get(temp);
-                    secondSongIndex = index;
-                    firstSongDuration = songDurations.get(index);
-                    secondSongDuration = temp;
+                if (songData1 == null || songData2 == null || Math.max(songDurations.get(index), songDurationTemp) > Math.max(songData1.duration, songData2.duration)) {
+                    songData1 = new SongData(songDurationToIndexMap.get(songDurationTemp), songDurations.get(index));
+                    songData2 = new SongData(index, songDurationTemp);
                 }
+            } else {
+                songDurationSet.add(songDurations.get(index));
             }
-            songDurationSet.add(songDurations.get(index));
         }
-        if (firstSongIndex != null && secondSongIndex != null)
-            return Arrays.asList(firstSongIndex, secondSongIndex);
+        if (songData1 != null && songData2 != null)
+            return Arrays.asList(songData1.index, songData2.index);
         return new ArrayList<>();
+    }
+
+    record PairSong(SongData songData1, SongData songData2) {
+    }
+
+    record SongData(int index, int duration) {
     }
 
     @Test
@@ -314,7 +330,7 @@ public class AmazonTest {
 //            }
 //        }
 
-//        List<Four> collect = fourIntegerHashMap.entrySet().stream().filter(e -> e.getValue() == k).map(e -> e.getKey()).collect(Collectors.toList());
+//        List<Four> collect = fourIntegerHashMap.entrySet().stream().filter(e -> e.getValue() == k).map(e -> e.getKey()).toList();
 
 //        Comparator<ArrayList<Integer>> comparator1 = (o1, o2) -> o1.get(0).compareTo(o2.get(0));
 //        Comparator<ArrayList<Integer>> comparator2 = (o1, o2) -> o1.get(1).compareTo(o2.get(1));
@@ -333,7 +349,7 @@ public class AmazonTest {
 //                }
 //            }
 //            return Integer.compare(o1.size(), o2.size());
-//        }).collect(Collectors.toList());
+//        }).toList();
 
         result.sort(new ListComparator<>());
 //        Collections.sort(result, new ListComparator<>());
@@ -383,8 +399,8 @@ public class AmazonTest {
     public void pairIndexesTest() {
 //        https://stackoverflow.com/questions/45928822/pair-object-overriding-equals-so-that-reverse-pairs-are-also-the-same
         List<Integer> integerList = Arrays.asList(1, 2, 3, 4);
-        HashSet<Pair> pairIndexes = getPairIndexes(integerList);
-        HashSet<Pair> expected = new HashSet<>();
+        Set<Pair> pairIndexes = getPairIndexes(integerList);
+        Set<Pair> expected = new HashSet<>();
         expected.add(new Pair(0, 1));
         expected.add(new Pair(0, 2));
         expected.add(new Pair(0, 3));
@@ -592,7 +608,7 @@ public class AmazonTest {
                 }
             }
         }
-        return Stream.of(firstSongIndex, secondSongIndex).sorted().collect(Collectors.toList());
+        return Stream.of(firstSongIndex, secondSongIndex).sorted().toList();
     }
 
     @Test

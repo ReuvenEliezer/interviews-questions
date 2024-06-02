@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Toilet {
 
     UUID id; //Generated
-    com.interviews.questions.toilet.Location location;
+    Location location;
 
     public Toilet(Location location) {
         this.location = location;

@@ -722,10 +722,10 @@ public class InterviewsTest {
         tree.root.left.right = new Node(5);
 
         List<Integer> integers = postOrder(tree.root);
-        assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers);
+        assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().toList(), integers);
 
         List<Integer> integers2 = postOrderWithoutRecursive(tree.root);
-        assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().collect(Collectors.toList()), integers2);
+        assertEquals(IntStream.of(4, 5, 2, 3, 1).boxed().toList(), integers2);
 
     }
 
@@ -743,10 +743,10 @@ public class InterviewsTest {
         tree.root.left.right = new Node(5);
 
         List<Integer> integers = inOrder(tree.root);
-        assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers);
+        assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().toList(), integers);
 
         List<Integer> integers2 = inOrderWithoutRecursive(tree.root);
-        assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().collect(Collectors.toList()), integers2);
+        assertEquals(IntStream.of(4, 2, 5, 1, 3).boxed().toList(), integers2);
 
     }
 
@@ -934,7 +934,7 @@ public class InterviewsTest {
     public List<Long> calcAllPerfectNumbersUpTo_MapReduce(long n) {
         Supplier<Stream<Long>> boxed = () -> LongStream.range(1l, n).parallel().filter(i -> (n % i == 0)).boxed();
         if (boxed.get().parallel().reduce(0l, Long::sum) == n)
-            return boxed.get().parallel().collect(Collectors.toList());
+            return boxed.get().parallel().toList();
         return new ArrayList<>();
     }
 
@@ -1457,7 +1457,7 @@ public class InterviewsTest {
 
     @Test
     public void removeObjFromListTest() {
-        List<Integer> integerList = Arrays.asList(1, 3, 5, 7).stream().collect(Collectors.toList());
+        List<Integer> integerList = Arrays.asList(1, 3, 5, 7).stream().toList();
         integerList.remove(1);
         integerList.remove(new Integer(7));
         System.out.println(integerList);

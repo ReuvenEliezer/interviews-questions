@@ -7,7 +7,7 @@ public class TrieTest {
 
     @Test
     public void test() {
-        com.interviews.questions.lruache.trie.Trie trie = new Trie();
+        Trie trie = new Trie();
 
         trie.insert("apple");
         Assert.assertTrue(trie.search("apple"));   // returns true

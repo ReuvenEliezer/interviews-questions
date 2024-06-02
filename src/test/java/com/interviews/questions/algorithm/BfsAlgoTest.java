@@ -69,7 +69,7 @@ public class BfsAlgoTest {
         deLinkElement("C1", root);
         logger.info("printDfs after remove C1");
         printDfs(root);
-        List<com.interviews.questions.algorithm.Tree<String>> children = root.getChildren().stream().collect(Collectors.toList());
+        List<com.interviews.questions.algorithm.Tree<String>> children = root.getChildren().stream().toList();
         Assert.assertTrue(children.containsAll(Stream.of(b1Child, b2Child, b3Child).collect(Collectors.toSet())));
         Assert.assertEquals(3, children.size());
         Collections.sort(children, Comparator.comparing(com.interviews.questions.algorithm.Tree<String>::getValue));

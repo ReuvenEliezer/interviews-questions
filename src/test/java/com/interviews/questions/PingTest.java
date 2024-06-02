@@ -127,8 +127,8 @@ public class PingTest {
 //    }
 //
 //    public class CreateCallbackImpl1 extends ExecutorTask implements CreateCallback {
-//        public CreateCallbackImpl1(Runnable runnable, TaskScheduler taskScheduler, LocalDateTime localDateTime) {
-//            taskScheduler.schedule(runnable, localDateTime);
+//        public CreateCallbackImpl1(Runnable runnable, TaskScheduler taskScheduler, LocalDateTime lastUpdateTime) {
+//            taskScheduler.schedule(runnable, lastUpdateTime);
 //        }
 //
 ////        @Override
@@ -141,9 +141,9 @@ public class PingTest {
 //    public class CreateCallbackImpl2 implements CreateCallback {
 ////        private TaskSchedulerImpl taskScheduler;
 //
-//        public CreateCallbackImpl2(Runnable runnable, TaskSchedulerImpl taskScheduler, LocalDateTime localDateTime) {
+//        public CreateCallbackImpl2(Runnable runnable, TaskSchedulerImpl taskScheduler, LocalDateTime lastUpdateTime) {
 ////            this.taskScheduler = taskScheduler;
-//            taskScheduler.schedule(runnable, localDateTime);
+//            taskScheduler.schedule(runnable, lastUpdateTime);
 //        }
 //
 //        @Override

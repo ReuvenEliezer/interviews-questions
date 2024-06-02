@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 public abstract class AbstractConsumerService<T extends Request> implements ConsumerService<T> {
 
-    private Map<com.interviews.questions.java8features.RequestType, Function<T, Boolean>> requestTypeMap = new HashMap<>();
+    private Map<RequestType, Function<T, Boolean>> requestTypeMap = new HashMap<>();
 
     @Override
     public Boolean process(T request) {

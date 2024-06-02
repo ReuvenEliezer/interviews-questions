@@ -27,7 +27,7 @@ public class GeneralTests {
     public void test2() {
         List<String> strings = Arrays.asList("hhf/ds", "df/ff/f");
         System.out.println(Arrays.toString(strings.toArray()));
-        strings = strings.stream().map(e -> e + ".csv").collect(Collectors.toList());
+        strings = strings.stream().map(e -> e + ".csv").toList();
         System.out.println(Arrays.toString(strings.toArray()));
     }
 
@@ -35,7 +35,7 @@ public class GeneralTests {
     public void test3() {
         List<String> strings = Arrays.asList("1/aaa/ddd");
         Map<String, String> map = new HashMap<>();
-        List<String> collect = strings.stream().map(s -> map.put(s, s.toUpperCase())).collect(Collectors.toList());
+        List<String> collect = strings.stream().map(s -> map.put(s, s.toUpperCase())).toList();
         System.out.println(map);
         System.out.println(Arrays.toString(collect.toArray()));
     }

@@ -74,7 +74,7 @@ public class StorageImpl implements Storage {
         UpSolverNode upSolverNode = findRelevantPath(fullPath);
         if (upSolverNode != null) {
             Map<String, UpSolverNode> children = upSolverNode.getChildren();
-            return children.values().stream().map(UpSolverNode::getContent).collect(Collectors.toList());
+            return children.values().stream().map(UpSolverNode::getContent).toList();
         }
         return Collections.emptyList();
     }

@@ -1,6 +1,6 @@
 package com.interviews.questions.digibank;
 
-class EndWordRuleHandler implements DigiRuleHandler<com.interviews.questions.digibank.EndWordRule> {
+class EndWordRuleHandler implements DigiRuleHandler<EndWordRule> {
 
     @Override
     public boolean isValid(String input, int index, EndWordRule digiRule) {

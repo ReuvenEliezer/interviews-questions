@@ -3,7 +3,11 @@ package com.interviews.questions.digibank;
 import java.util.Objects;
 
 public abstract class DigiRule {
-    protected Character character;
+    protected final Character character;
+
+    protected DigiRule(Character character) {
+        this.character = character;
+    }
 
     protected abstract Class<? extends DigiRule> getRuleCondition();
 

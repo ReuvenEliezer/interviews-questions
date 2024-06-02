@@ -162,12 +162,12 @@ public class OverlappingIntervalsVisitSolution {
 
         OverlappingIntervalsVisitSolution overlappingIntervalsVisitSolution = new OverlappingIntervalsVisitSolution();
 
-        SolutionResult result = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnce(Stream.of(visit1, visit2, visit3, visit4, visit5).collect(Collectors.toList()));
+        SolutionResult result = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnce(Stream.of(visit1, visit2, visit3, visit4, visit5).toList());
         Assert.assertEquals(3, result.maxVisitors);
         Assert.assertEquals(visit2.getEntryTime(), result.startDate);
         Assert.assertEquals(visit4.getExitTime(), result.endDate);
 
-        SolutionResult result2 = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnc2(Stream.of(visit1, visit2, visit3, visit4, visit5).collect(Collectors.toList()));
+        SolutionResult result2 = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnc2(Stream.of(visit1, visit2, visit3, visit4, visit5).toList());
         Assert.assertEquals(3, result2.maxVisitors);
         Assert.assertEquals(visit2.getEntryTime(), result2.startDate);
         Assert.assertEquals(visit4.getExitTime(), result2.endDate);
@@ -194,14 +194,14 @@ public class OverlappingIntervalsVisitSolution {
 
         SolutionResult result = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnce(Stream.of(visit1, visit2, visit3, visit4
                 , visit5, visit6, visit7
-        ).collect(Collectors.toList()));
+        ).toList());
         Assert.assertEquals(5, result.maxVisitors);
         Assert.assertEquals(visit5.getEntryTime(), result.startDate);
         Assert.assertEquals(visit7.getExitTime(), result.endDate);
 
         SolutionResult result2 = overlappingIntervalsVisitSolution.calculateMaxPeopleAtOnc2(Stream.of(visit1, visit2, visit3, visit4
                 , visit5, visit6, visit7
-        ).collect(Collectors.toList()));
+        ).toList());
         Assert.assertEquals(5, result2.maxVisitors);
         Assert.assertEquals(visit5.getEntryTime(), result2.startDate);
         Assert.assertEquals(visit7.getExitTime(), result2.endDate);

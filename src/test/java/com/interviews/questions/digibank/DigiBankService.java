@@ -5,9 +5,9 @@ import java.util.Set;
 
 public class DigiBankService {
 
-    private Map<Character, Set<com.interviews.questions.digibank.DigiRule>> characterToRulesMap;
+    private final Map<Character, Set<DigiRule>> characterToRulesMap;
 
-    public DigiBankService(Map<Character, Set<com.interviews.questions.digibank.DigiRule>> characterToRulesMap) {
+    public DigiBankService(Map<Character, Set<DigiRule>> characterToRulesMap) {
         this.characterToRulesMap = characterToRulesMap;
     }
 
@@ -15,13 +15,13 @@ public class DigiBankService {
     public boolean isValid(String input) throws Exception {
         char[] chars = input.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            Set<com.interviews.questions.digibank.DigiRule> ruleList = characterToRulesMap.get(chars[i]);
+            Set<DigiRule> ruleList = characterToRulesMap.get(chars[i]);
             if (ruleList == null)
                 continue;
             for (DigiRule digiRule : ruleList) {
-                Class<? extends com.interviews.questions.digibank.DigiRuleHandler> digiRuleHandler = RuleEnum.getDigiRuleHandler(digiRule.getRuleCondition());
+                Class<? extends DigiRuleHandler> digiRuleHandler = RuleEnum.getDigiRuleHandler(digiRule.getRuleCondition());
                 if (digiRuleHandler == null)
-                    throw new UnsupportedOperationException(digiRule.getRuleCondition() + " not supported. missing handler for this");
+                    throw new UnsupportedOperationException("Missing handle for rule:" + digiRule.getRuleCondition().getSimpleName());
                 DigiRuleHandler handler = digiRuleHandler.getDeclaredConstructor().newInstance();
                 if (!handler.isValid(input, i, digiRule))
                     return false;

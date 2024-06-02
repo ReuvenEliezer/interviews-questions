@@ -29,9 +29,9 @@ public class GeekForGeekRotation {
         int loop = 1 + testCaseNum * elementsListIndex;
         for (int i = 0; i < loop - elementsListIndex; i++, sizeAndRotationIndex++, elementsListIndex++) {
             Integer rotationNum = Integer.valueOf("5 2".split(" ")[1]);
-            List<Integer> elements = Arrays.stream("1 2 3 4 5".split(" ")).map(value -> Integer.parseInt(value)).collect(Collectors.toList());
+            List<Integer> elements = Arrays.stream("1 2 3 4 5".split(" ")).map(value -> Integer.parseInt(value)).toList();
 //            Integer rotationNum = Integer.valueOf(scan.nextLine().split(" ")[1]);
-//            List<Integer> elements = Arrays.stream(scan.nextLine().split(" ")).map(value -> Integer.parseInt(value)).collect(Collectors.toList());
+//            List<Integer> elements = Arrays.stream(scan.nextLine().split(" ")).map(value -> Integer.parseInt(value)).toList();
             int[] arr = elements.stream().mapToInt(Integer::intValue).toArray();
             int[] result = rotateArray(-rotationNum, arr);
             for (int j : result)
@@ -218,7 +218,7 @@ public class GeekForGeekRotation {
 //
 //        System.out.println();
 
-        List<Integer> collect = Arrays.stream(array).boxed().collect(Collectors.toList());
+        List<Integer> collect = Arrays.stream(array).boxed().toList();
         Collections.rotate(collect, numberOfRotation);
         array = collect.stream().mapToInt(Integer::intValue).toArray();
         System.out.println("After " + Arrays.toString(array));
@@ -290,9 +290,9 @@ public class GeekForGeekRotation {
         int sizeAndRotationIndex1 = 1;
         for (int i = 0; i < loop - elementsListIndex1; i++, sizeAndRotationIndex1++, elementsListIndex1++) {
 //            Integer rotationNum = Integer.valueOf("5 2".split(" ")[1]);
-//            List<Integer> elementsArr = Arrays.stream("1 2 3 4 5".split(" ")).map(value -> Integer.parseInt(value)).collect(Collectors.toList());
+//            List<Integer> elementsArr = Arrays.stream("1 2 3 4 5".split(" ")).map(value -> Integer.parseInt(value)).toList();
             Integer rotationNum = Integer.valueOf(scan.nextLine().split(" ")[1]);
-            List<Integer> elementsArr = Arrays.stream(scan.nextLine().split(" ")).map(value -> Integer.parseInt(value)).collect(Collectors.toList());
+            List<Integer> elementsArr = Arrays.stream(scan.nextLine().split(" ")).map(value -> Integer.parseInt(value)).toList();
             RotationParams rotationParams = new RotationParams(elementsArr, rotationNum);
             rotationParamsMap.put(i, rotationParams);
         }

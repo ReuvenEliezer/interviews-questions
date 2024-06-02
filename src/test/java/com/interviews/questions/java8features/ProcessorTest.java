@@ -7,8 +7,8 @@ public class ProcessorTest {
 
     @Test
     public void test(){
-        com.interviews.questions.java8features.CreateRequest createRequest = new CreateRequest("createReq");
-        com.interviews.questions.java8features.CreateProcessor consumerService = new CreateProcessor();
+        CreateRequest createRequest = new CreateRequest("createReq");
+        CreateProcessor consumerService = new CreateProcessor();
         Boolean result = consumerService.process(createRequest);
         Assertions.assertThat(result).isTrue();
     }

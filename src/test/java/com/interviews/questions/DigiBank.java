@@ -43,9 +43,9 @@ public class DigiBank {
         AllowedFollowersRule allowedFollowersRuleB = new AllowedFollowersRule('b', Stream.of('a', 'f').collect(Collectors.toSet()));
         AllowedFollowersRule allowedFollowersRuleC = new AllowedFollowersRule('c', Collections.singleton('b'));
 
-        characterToRulesMap.put('a', Stream.of(allowedFollowersRuleA, endWordRuleA).collect(Collectors.toList()));
-        characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).collect(Collectors.toList()));
-        characterToRulesMap.put('c', Stream.of(allowedFollowersRuleC, endWordRuleC).collect(Collectors.toList()));
+        characterToRulesMap.put('a', Stream.of(allowedFollowersRuleA, endWordRuleA).toList());
+        characterToRulesMap.put('b', Stream.of(allowedFollowersRuleB, endWordRuleB).toList());
+        characterToRulesMap.put('c', Stream.of(allowedFollowersRuleC, endWordRuleC).toList());
     }
 
 

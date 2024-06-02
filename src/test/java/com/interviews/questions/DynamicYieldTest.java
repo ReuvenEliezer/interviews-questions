@@ -21,7 +21,7 @@ public class DynamicYieldTest {
     @Ignore
     public void returnTheSixthLargestElementTest() {
         List<Integer> integerList = Lists.newArrayList(1, 1, 1, 2, 3, 5, 8, 7, 9, 8, 7, 4, 5, 8, 11, 55, 4);
-        List<Integer> integerList2 = IntStream.range(1, 100000000).parallel().boxed().collect(Collectors.toList());
+        List<Integer> integerList2 = IntStream.range(1, 100000000).parallel().boxed().toList();
         integerList.addAll(integerList2);
         int max = 6; //
 

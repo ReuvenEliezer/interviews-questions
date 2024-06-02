@@ -22,8 +22,8 @@ public class ProximityCitiBankTest {
 
     @Test
     public void isAnagramTwoArr() {
-        long arr1[] = {1, 2, 5, 4, 4};
-        long arr2[] = {2, 4, 5, 4, 1};
+        long[] arr1 = {1, 2, 5, 4, 4};
+        long[] arr2 = {2, 4, 5, 4, 1};
         Assert.assertTrue(isAnagramArrays(arr1, arr2));
     }
 
@@ -32,7 +32,7 @@ public class ProximityCitiBankTest {
         for (Long aLong : arr1) {
             Long count = map.get(aLong);
             if (count == null) {
-                count = 0l;
+                count = 0L;
             }
             map.put(aLong, ++count);
         }
