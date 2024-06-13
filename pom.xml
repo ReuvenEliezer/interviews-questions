@@ -12,7 +12,7 @@
         <!--        <pdfbox-tools.version>2.0.3</pdfbox-tools.version>-->
         <pdf2dom.version>1.6</pdf2dom.version>
         <itextpdf.version>5.5.13.3</itextpdf.version>
-        <xmlworker.version>5.5.13.3</xmlworker.version>
+        <xmlworker.version>5.5.13.4</xmlworker.version>
         <poi-scratchpad.version>5.2.5</poi-scratchpad.version>
         <batik-transcoder.version>1.17</batik-transcoder.version>
         <poi-ooxml.version>5.2.5</poi-ooxml.version>
