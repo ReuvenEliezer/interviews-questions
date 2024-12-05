@@ -69,6 +69,39 @@ public class Zesty {
 
 
     @Test
+    //https://www.techiedelight.com/terminology-and-representations-of-graphs/
+    public void terminologyAndRepresentationsOfGraphsTest() {
+        int[][] arr = {
+                {1, 2},
+                {2, 3},
+                {4, 2}
+        };
+        assertThat(findCenter(arr)).isEqualTo(2);
+        int[][] arr2 = {
+                {1, 2},
+                {5, 1},
+                {1, 3},
+                {1, 4}
+        };
+        assertThat(findCenter(arr2)).isEqualTo(1);
+    }
+
+    private int findCenter(int[][] arr) {
+        int x = arr[0][0];
+        int y = arr[0][1];
+        for (int i = 1; i < arr.length; i++) {
+            int xTag = arr[i][0];
+            int yTag = arr[i][1];
+            if (xTag == x) {
+                return x;
+            } else if (yTag == y) {
+                return y;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    @Test
     public void mazeSolverBfsAndDfsTest() {
         // 1 mean wall (no way to pass), 0 mean - can to move via this point
         int[][] maze = {
@@ -137,7 +170,7 @@ public class Zesty {
         List<Coordinate> coordinatesPath = new ArrayList<>();
         coordinatesPath.add(endPoint);
         Coordinate current = endPoint;
-        while (!current.equals(startPoint)){
+        while (!current.equals(startPoint)) {
             current = childToParentMap.get(current);
             coordinatesPath.add(current);
         }

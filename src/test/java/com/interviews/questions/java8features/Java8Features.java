@@ -79,6 +79,12 @@ public class Java8Features {
     }
 
     @Test
+    public void optionalTest() {
+        Optional<Object> o = Optional.ofNullable(null);
+        Optional<Object> o1 = Optional.empty();
+    }
+
+    @Test
     public void groupingBy() {
         List<Trade> trades = new ArrayList<>();
         trades.add(new Trade(1, 1, 2, LocalDate.now(), 100));

@@ -90,7 +90,7 @@ public class LinkedListTest {
 
 
     @Test
-    public void findElementFromTheEndOfLinkedListTest() {
+    public void findElementFromTheEndOfLinkedListBySlidingWindowTest() {
         Node head = new Node(1);
         Node current = head;
         for (int value = 2; value <= 10; value++) {
