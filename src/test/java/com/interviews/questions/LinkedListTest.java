@@ -93,13 +93,14 @@ public class LinkedListTest {
     public void findElementFromTheEndOfLinkedListBySlidingWindowTest() {
         Node head = new Node(1);
         Node current = head;
-        for (int value = 2; value <= 10; value++) {
+        int totalNodes = 10;
+        for (int value = 2; value <= totalNodes; value++) {
             current.next = new Node(value);
             current = current.next;
         }
 
-        assertThat(findElementFromEndWithOutAdditionalMemory(head, 3)).isEqualTo(8);
-        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndWithOutAdditionalMemory(head, 11));
+        assertThat(findElementFromEndWithOutAdditionalMemoryBySlidingWindowAlgo(head, 3)).isEqualTo(8);
+        assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndWithOutAdditionalMemoryBySlidingWindowAlgo(head, totalNodes + 1));
 
         assertThat(findElementFromEndNaiveSolution(head, 3)).isEqualTo(8);
         assertThatIllegalArgumentException().isThrownBy(() -> findElementFromEndNaiveSolution(head, 11));
@@ -164,7 +165,7 @@ public class LinkedListTest {
         return nodesStack.pop().value;
     }
 
-    private static int findElementFromEndWithOutAdditionalMemory(Node head, int k) {
+    private static int findElementFromEndWithOutAdditionalMemoryBySlidingWindowAlgo(Node head, int k) {
         validate(head, k);
         /**
          * sliding windows of K size
