@@ -112,18 +112,6 @@ public class DynamicYieldTest {
     }
 
     @Test
-    public void outdatedUrlsTest() throws InterruptedException {
-        Duration slidingWindowDuration = Duration.ofSeconds(2);
-
-        SlidingWindowCache<String> stringSlidingWindowCache = new SlidingWindowCache<>(slidingWindowDuration);
-        stringSlidingWindowCache.receive("www.google.com");
-        Thread.sleep(slidingWindowDuration.plusSeconds(1).toMillis()); // Wait for the sliding window to expire
-
-        List<String> mostFrequent = stringSlidingWindowCache.getMostFrequentSorted(1);
-        assertThat(mostFrequent).isEmpty();
-    }
-
-    @Test
     public void invalidUrlSizeTest() {
         Duration slidingWindowDuration = Duration.ofSeconds(2);
         SlidingWindowCache<String> stringSlidingWindowCache = new SlidingWindowCache<>(slidingWindowDuration);
@@ -136,11 +124,11 @@ public class DynamicYieldTest {
 
     @Test
     public void slidingWindowExpirationTest() throws InterruptedException {
-        Duration slidingWindowDuration = Duration.ofSeconds(2);
+        Duration slidingWindowDuration = Duration.ofSeconds(1);
 
         SlidingWindowCache<String> stringSlidingWindowCache = new SlidingWindowCache<>(slidingWindowDuration);
         stringSlidingWindowCache.receive("www.google.com");
-        Thread.sleep(slidingWindowDuration.plusSeconds(3).toMillis());
+        Thread.sleep(slidingWindowDuration.plusMillis(1).toMillis());
 
         List<String> mostFrequent = stringSlidingWindowCache.getMostFrequentSorted(1);
         assertThat(mostFrequent).isEmpty();

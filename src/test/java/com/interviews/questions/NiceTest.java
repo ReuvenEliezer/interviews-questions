@@ -60,6 +60,8 @@ public class NiceTest {
         boolean alive1 = t1.isAlive();
 
         System.out.println("----------------  the final counter value is: " + counter + "  ----------------");
+
+        assertThat(counter).isEqualTo(2);
     }
 
     @SneakyThrows
@@ -201,14 +203,14 @@ public class NiceTest {
         stack.push(3);
         stack.push(4);
 
-        Assertions.assertThat(stack.size()).isEqualTo(4);
-        Assertions.assertThat(stack.peek()).isEqualTo(4);
-        Assertions.assertThat(stack.size()).isEqualTo(4);
-        Assertions.assertThat(stack.pop()).isEqualTo(4);
-        Assertions.assertThat(stack.size()).isEqualTo(3);
-        Assertions.assertThat(stack.pop()).isEqualTo(3);
-        Assertions.assertThat(stack.peek()).isEqualTo(2);
-        Assertions.assertThat(stack.size()).isEqualTo(2);
+        assertThat(stack.size()).isEqualTo(4);
+        assertThat(stack.peek()).isEqualTo(4);
+        assertThat(stack.size()).isEqualTo(4);
+        assertThat(stack.pop()).isEqualTo(4);
+        assertThat(stack.size()).isEqualTo(3);
+        assertThat(stack.pop()).isEqualTo(3);
+        assertThat(stack.peek()).isEqualTo(2);
+        assertThat(stack.size()).isEqualTo(2);
     }
 
     static class StackUsingLinkedlist<T> {

@@ -327,7 +327,7 @@ public class LinkedListTest {
     }
 
     @Test
-    public void findElementFromTheEndOfLinkedListTest() {
+    public void findElementFromTheEndOfLinkedListBySlidingWindowTest() {
         Node head = new Node(1);
         Node current = head;
         int totalNodes = 10;

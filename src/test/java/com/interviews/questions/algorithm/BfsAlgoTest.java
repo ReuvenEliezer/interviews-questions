@@ -43,7 +43,6 @@ public class BfsAlgoTest {
     }
 
     @Test
-    @Ignore //TODO fix
     public void dfsAlgoTreeRemoveElementMprestTest() {
 //        Tree<String> root = createTree();
         /**
@@ -71,7 +70,7 @@ public class BfsAlgoTest {
         deLinkElement("C1", root);
         logger.info("printDfs after remove C1");
         printDfs(root);
-        List<Tree<String>> children = root.getChildren().stream().toList();
+        List<Tree<String>> children = new ArrayList<>(root.getChildren());
         Assert.assertTrue(children.containsAll(Stream.of(b1Child, b2Child, b3Child).collect(Collectors.toSet())));
         Assert.assertEquals(3, children.size());
         Collections.sort(children, Comparator.comparing(Tree<String>::getValue));
@@ -81,7 +80,7 @@ public class BfsAlgoTest {
         Tree<String> b3 = children.get(2);
         Assert.assertTrue(b1.getChildren().containsAll(Stream.of(d1Child, d2Child).collect(Collectors.toSet())));
         Assert.assertTrue(b2.getChildren().containsAll(Collections.EMPTY_LIST));
-        Assert.assertTrue(b3.getChildren().containsAll(Collections.singleton(c2Child)));
+        Assert.assertTrue(b3.getChildren().contains(c2Child));
     }
 
     private Tree<String> createTree() {
