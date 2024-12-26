@@ -1,25 +1,34 @@
 package com.interviews.questions;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.util.StopWatch;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.*;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.util.StopWatch;
-
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class ObjectMapperTest {
@@ -35,6 +44,37 @@ public class ObjectMapperTest {
         Boolean aTrue1 = convertJsonToPOJO1("true", ParameterType.Boolean.getClazz());
         Double value = convertJsonToPOJO1("5.5", ParameterType.Double.getClazz());
         String str = convertJsonToPOJO1("dsjfskjdhjkesf", ParameterType.Text.getClazz());
+    }
+
+    @Test
+    public void test1() throws Exception {
+        Data data = new Data(Duration.ofDays(1), LocalDateTime.now(), LocalDate.now());
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new Jdk8Module());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String s = objectMapper.writeValueAsString(data);
+        System.out.println(s);
+        Data data1 = objectMapper.readValue(s, Data.class);
+        System.out.println(data1);
+
+        String s1 = objectMapper().writeValueAsString(data);
+        System.out.println(s1);
+        Data data2 = objectMapper.readValue(s1, Data.class);
+        System.out.println(data2);
+    }
+
+    record Data(Duration duration, LocalDateTime localDateTime, LocalDate localDate) {
+
+    }
+
+    public ObjectMapper objectMapper() {
+        return Jackson2ObjectMapperBuilder.json()
+                .modules(new Jdk8Module(), new JavaTimeModule())
+                .featuresToDisable(
+                        SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+                        DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
+                )
+                .build();
     }
 
 
