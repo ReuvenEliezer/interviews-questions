@@ -1,5 +1,6 @@
 package com.interviews.questions;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -45,14 +46,17 @@ public class LogTests {
     }
 
     @Test
+//    @Ignore
     public void getMaxLogMessageInLastTimeTest3() {
         LogSystem logSystem = new LogSystem();
         logSystem.addLog("log1", LocalDateTime.now().minusMinutes(2));
         logSystem.addLog("log1", LocalDateTime.now().minusMinutes(2));
         logSystem.addLog("log2", LocalDateTime.now());
-        Set<String> mostFrequentLog = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
-        assertThat(mostFrequentLog).containsExactly("log1");
+        assertThat(logSystem.getMostFrequentLog(Duration.ofMinutes(5))).containsExactly("log1");
         assertThat(logSystem.getMostFrequentLog(Duration.ofMinutes(1))).containsExactly("log2");
+        logSystem.addLog("log2", LocalDateTime.now());
+        assertThat(logSystem.getMostFrequentLog(Duration.ofMinutes(1))).containsExactlyInAnyOrder("log2");
+        assertThat(logSystem.getMostFrequentLog(Duration.ofMinutes(3))).containsExactlyInAnyOrder("log2", "log1");
     }
 
 
