@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.*;
+
 public class OwnBackupCodilityTest {
 
     @Test
@@ -24,35 +26,35 @@ public class OwnBackupCodilityTest {
     @Test
     public void codilityTask2() {
         int[] arr1 = {1, 2, 1};
-        Assert.assertEquals(2, findMinMovedToMakeArrDistinctNum(arr1));
+        assertEquals(2, findMinMovedToMakeArrDistinctNum(arr1));
 
         int[] arr2 = {1, 1, 1};
-        Assert.assertEquals(3, findMinMovedToMakeArrDistinctNum(arr2));
+        assertEquals(3, findMinMovedToMakeArrDistinctNum(arr2));
 
         int[] arr3 = {2, 2, 2};
-        Assert.assertEquals(2, findMinMovedToMakeArrDistinctNum(arr3));
+        assertEquals(2, findMinMovedToMakeArrDistinctNum(arr3));
 
         int[] arr33 = {3, 3, 3};
-        Assert.assertEquals(3, findMinMovedToMakeArrDistinctNum(arr33));
+        assertEquals(3, findMinMovedToMakeArrDistinctNum(arr33));
 
         int[] arr4 = {2, 1, 4, 4};
-        Assert.assertEquals(1, findMinMovedToMakeArrDistinctNum(arr4));
+        assertEquals(1, findMinMovedToMakeArrDistinctNum(arr4));
 
         int[] arr5 = {6, 2, 3, 5, 6, 3};
-        Assert.assertEquals("min total moves to make the arr as distinct not as expected",
+        assertEquals("min total moves to make the arr as distinct not as expected",
                 4, findMinMovedToMakeArrDistinctNum(arr5));
         int[] arr6 = {6, 2, 3, 6, 6, 3};
-        Assert.assertEquals("min total moves to make the arr as distinct not as expected",
+        assertEquals("min total moves to make the arr as distinct not as expected",
                 5, findMinMovedToMakeArrDistinctNum(arr6));
 
         int[] arr7 = IntStream.range(1, 200000).parallel().toArray();
-        Assert.assertEquals("min total moves to make the arr as distinct not as expected",
+        assertEquals("min total moves to make the arr as distinct not as expected",
                 0, findMinMovedToMakeArrDistinctNum(arr7));
 
         int[] arr8 = IntStream.range(1, 99999).parallel().toArray();
         int[] arr9 = IntStream.range(1, 50).parallel().toArray();
         int[] arr10 = ArrayUtils.addAll(arr8, arr9);
-        Assert.assertEquals("min total moves to make the arr as distinct not as expected",
+        assertEquals("min total moves to make the arr as distinct not as expected",
                 4899902, findMinMovedToMakeArrDistinctNum(arr10));
 
 
@@ -61,7 +63,7 @@ public class OwnBackupCodilityTest {
         for (int i = 0; i < 20000; i++) {
             arr11[i] = 1;
         }
-        Assert.assertEquals("min total moves to make the arr as distinct not as expected",
+        assertEquals("min total moves to make the arr as distinct not as expected",
                 199990000, findMinMovedToMakeArrDistinctNum(arr11));
     }
 
@@ -147,9 +149,9 @@ public class OwnBackupCodilityTest {
 
     @Test
     public void findSmallestPositive() {
-        Assert.assertEquals(5, solution(new int[]{1, 3, 6, 4, 1, 2}));
-        Assert.assertEquals(4, solution(new int[]{1, 2, 3}));
-        Assert.assertEquals(1, solution(new int[]{-1, -3}));
+        assertEquals(5, solution(new int[]{1, 3, 6, 4, 1, 2}));
+        assertEquals(4, solution(new int[]{1, 2, 3}));
+        assertEquals(1, solution(new int[]{-1, -3}));
     }
 
     public int solution(int[] a) {

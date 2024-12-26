@@ -1,8 +1,10 @@
 package com.interviews.questions;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
@@ -88,6 +90,241 @@ public class LinkedListTest {
                 .toList();
     }
 
+    @Test
+    public void sortBinaryArrTest() {
+        int[] arr = {0, 1, 0, 1, 0, 0, 1};
+        assertThat(sortBinaryArr(arr))
+                .containsExactly(0, 0, 0, 0, 1, 1, 1);
+    }
+
+    private int[] sortBinaryArr(int[] arr) {
+        int negativeCounter = 0;
+        for (int j : arr) {
+            if (j == 0) {
+                negativeCounter++;
+            }
+        }
+
+        int[] result = new int[arr.length];
+        for (int i = 0; i <= negativeCounter; i++) {
+            result[i] = 0;
+        }
+        for (int i = negativeCounter; i < arr.length; i++) {
+            result[i] = 1;
+        }
+        return result;
+    }
+
+    @Test
+    public void mergeOverlapWindowsTest() {
+        /**
+         *         1-3 , 2-4 -> 1-4
+         *          1-3, 3-4 ->  1-4
+         *         1-4, 2-3 -> 1-4
+         *            1-3, 4-5   -> 1-3, 4-5
+         */
+        List<Window> windows = List.of(
+                new Window(2, 4),
+                new Window(1, 3),
+                new Window(5, 6));
+
+        List<Window> pairsResult = mergeOverlapWindows(windows);
+        assertThat(pairsResult).hasSize(2);
+//        Assertions.assertThat(pairsResult).contains(2);
+
+        assertThat(mergeOverlapWindows(List.of(
+                new Window(1, 4),
+                new Window(2, 3))))
+                .hasSize(1);
+
+    }
+
+    private List<Window> mergeOverlapWindows(List<Window> windowList) {
+        /**
+         * ###
+         *  ###
+         *  ##
+         *      ##
+         *  #####
+         *
+         * Result<List>
+         * steps:
+         * 1. Pair start,end
+         * 2. comparing by int
+         * pair_to_add
+         * 3. for each:
+         * 	pair_to_add.start
+         * 	getY ->
+         * 	go to next element
+         * 	if (next.start>end)
+         * 		result.add(new Pair(prev.start, prev.end)
+         * 	else {
+         * 	pair_to_add.start
+         *        }
+         */
+        List<Window> result = new ArrayList<>();
+        //TODO validation
+        List<Window> pairsSortedList = new ArrayList<>(windowList).stream()
+                .sorted(Comparator.comparing(Window::start))
+                .toList();
+        int start = pairsSortedList.get(0).start;
+        int end = pairsSortedList.get(0).end;
+        for (int i = 1; i < pairsSortedList.size(); i++) {
+            Window window = pairsSortedList.get(i);
+            if (window.start > end || window.end <= end) {
+                result.add(new Window(start, end));
+                start = window.start;
+            }
+            end = window.end;
+        }
+        int endLastWindow = result.get(result.size() - 1).end;
+        if (start > endLastWindow) {
+            result.add(new Window(start, end));
+        }
+        return result;
+    }
+
+    record Window(int start, int end) {
+    }
+
+    @Test
+    public void sunbitPostLikesTest() {
+        /**
+         * A problem
+         *  Suppose, we have to implement a part of a social network to be able to fetch top posts in a
+         *  minimal time. The posts should be counted by unique likes from different users.
+         *  Implement a class with two methods:
+         * like(postId, userId)- record a like event on the post postId given by the user userId--
+         *  Notes:
+         *  unlike(postId, userId)- remove a like on the post postId given by the user userId
+         *  top(n)- get top n posts by likes count in descending order
+         *  The content is managed outside. LikesTracker should work with ids only.
+         *  Wewant the “top” method to be the minimum run time. There are no space complexity
+         *  limitations.
+         *  Skeleton and run example:
+         *  class LikesTracker {
+         *  fun like(postId: Int, userId: Int) {
+         *  }
+         *  fun unlike(postId: Int, userId: Int) {
+         *  }
+         *  fun top(n: Int): List<Int> {
+         *  }
+         *  }
+         *  fun main() {
+         *  val likesTracker = LikesTracker()
+         *  likesTracker.like(1, 1)
+         *  likesTracker.like(2, 1)
+         *  likesTracker.like(1, 2)
+         *  likesTracker.like(1, 1)
+         *  likesTracker.like(3, 1)
+         *  likesTracker.top(3) // should return 1, 2, 3
+         *  likesTracker.like(1, 1)
+         *  likesTracker.like(2, 3)
+         *  likesTracker.like(2, 4)
+         *  likesTracker.like(3, 1)
+         *  likesTracker.top(2) // should return 2, 1
+         *  likesTracker.like(4, 1)
+         *  likesTracker.unlike(3, 1)
+         *  likesTracker.top(3) // should return 2, 1, 4
+         */
+
+        LikesTracker likesTracker = new LikesTracker();
+        likesTracker.like(1, 1);
+        likesTracker.like(2, 1);
+        likesTracker.like(1, 2);
+        likesTracker.like(1, 1);
+        likesTracker.like(3, 1);
+        assertThat(likesTracker.top(3))
+                .containsExactly(1, 2, 3); // should return 2, 1,
+        likesTracker.like(1, 1);
+        likesTracker.like(2, 3);
+        likesTracker.like(2, 4);
+        likesTracker.like(3, 1);
+        assertThat(likesTracker.top(2))
+                .containsExactly(2, 1); // should return 2, 1,
+        likesTracker.like(4, 1);
+        likesTracker.unlike(3, 1);
+        assertThat(likesTracker.top(3))
+                .containsExactly(2, 1, 4); // should return 2, 1,
+
+        LikesTracker likesTracker1 = new LikesTracker();
+        likesTracker1.like(11, 111);
+        likesTracker1.like(22, 222);
+        assertThat(likesTracker1.top(3))
+                .containsExactlyInAnyOrder(11, 22); // should return 11, 22,
+    }
+
+    static class LikesTracker {
+
+        private final Map<Integer, Set<Integer>> postIdToUserIdsMap = new ConcurrentHashMap<>();
+        private final Map<Integer, Set<Integer>> likeCountToPostIdsMap = new TreeMap<>(Comparator.reverseOrder());
+
+        public synchronized void like(int postId, int userId) {
+            //Returns: true if this set did not already contain the specified element
+            if (postIdToUserIdsMap.computeIfAbsent(postId, k -> new HashSet<>()).add(userId)) {
+
+                // update likeCountToPostsMap :
+                Set<Integer> likesCount = postIdToUserIdsMap.get(postId);
+
+                //increase the new likesCounter
+                likeCountToPostIdsMap.computeIfAbsent(likesCount.size(), k -> new HashSet<>()).add(postId);
+
+                //decrease the prev likesCounter
+                likeCountToPostIdsMap.computeIfPresent(likesCount.size() - 1, (k, v) -> {
+                    v.remove(postId);
+                    return v;
+                });
+                Set<Integer> likesCountPrev = likeCountToPostIdsMap.get(likesCount.size() - 1);
+
+                //optimization remove if empty
+                if (likesCountPrev != null && likesCountPrev.isEmpty()) {
+                    likeCountToPostIdsMap.remove(likesCount.size() - 1);
+                }
+            }
+        }
+
+        public synchronized void unlike(int postId, int userId) {
+            if (postIdToUserIdsMap.containsKey(postId) && postIdToUserIdsMap.get(postId).remove(userId)) {
+                Set<Integer> totalLikesAfterUnlike = postIdToUserIdsMap.get(postId);
+                if (totalLikesAfterUnlike.isEmpty()) {
+                    postIdToUserIdsMap.remove(postId);
+                }
+                // update likeCountToPostsMap
+                int totalLikesBeforeUnlike = totalLikesAfterUnlike.size() + 1;
+                likeCountToPostIdsMap.get(totalLikesBeforeUnlike).remove(postId);
+                //optimization remove if empty
+                if (likeCountToPostIdsMap.get(totalLikesBeforeUnlike).isEmpty()) {
+                    likeCountToPostIdsMap.remove(totalLikesBeforeUnlike);
+                }
+            }
+        }
+
+        public List<Integer> top(int top) {
+            return likeCountToPostIdsMap.entrySet().stream()
+                    .flatMap(entry -> entry.getValue().stream())
+                    .limit(top)
+                    .collect(Collectors.toCollection(() -> new ArrayList<>(top)));
+        }
+    }
+
+    @Test
+    public void isSumPairTest() {
+        int[] arr = {1, 2, 1};
+        Assert.assertTrue(isSumPair(arr, 2));
+        Assert.assertFalse(isSumPair(arr, 1));
+        Assert.assertFalse(isSumPair(arr, 4));
+    }
+
+    private boolean isSumPair(int[] arr, int target) {
+        Set<Integer> values = new HashSet<>(arr.length);
+        for (int i : arr) {
+            if (values.contains(target - i)) {
+                return true;
+            }
+            values.add(i);
+        }
+        return false;
+    }
 
     @Test
     public void findElementFromTheEndOfLinkedListBySlidingWindowTest() {
