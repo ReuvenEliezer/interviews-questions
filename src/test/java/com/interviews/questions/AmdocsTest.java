@@ -1,14 +1,12 @@
 package com.interviews.questions;
 
 import com.google.common.collect.Sets;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import com.interviews.questions.ranges.EdgeTimeValue;
+import com.interviews.questions.ranges.PeriodTimeResult;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import com.interviews.questions.ranges.EdgeTimeValue;
-import com.interviews.questions.ranges.PeriodTimeResult;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -17,6 +15,8 @@ import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class AmdocsTest {
 
@@ -146,7 +146,7 @@ public class AmdocsTest {
     }
 
     @Test
-    public void test() {
+    public void atomicInteger() {
         List<String> stringList = Arrays.asList("a", "b");
         AtomicInteger counter = new AtomicInteger();
         Map<Integer, String> map = stringList
@@ -154,6 +154,57 @@ public class AmdocsTest {
                 .collect(Collectors.toMap((c) -> counter.incrementAndGet(), (c) -> c));
         System.out.println(map);
     }
+
+    @Test
+    public void getMaxLogMessageInLastTimeTest() {
+        LogSystem logSystem = new LogSystem();
+        logSystem.addLog("log1");
+        logSystem.addLog("log1");
+        logSystem.addLog("log2");
+        String mostFrequentLog = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
+        String mostFrequentLog1 = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
+        String mostFrequentLog2 = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
+        assertThat(mostFrequentLog).isEqualTo("log1");
+        assertThat(mostFrequentLog1).isEqualTo("log1");
+        assertThat(mostFrequentLog2).isEqualTo("log1");
+    }
+
+
+    static class LogSystem {
+
+        private final Map<String, Stack<LocalDateTime>> logData= new HashMap<>();
+
+        public void addLog(String logMessage) {
+            logData.computeIfAbsent(logMessage, k -> new Stack<>()).push(LocalDateTime.now());
+        }
+
+        public String getMostFrequentLog(Duration duration) {
+            LocalDateTime now = LocalDateTime.now();
+
+            int instancesInLastTime = 0;
+            String logMessageResult = null;
+
+            for (Map.Entry<String, Stack<LocalDateTime>> entry : logData.entrySet()) {
+                String logMessage = entry.getKey();
+                Stack<LocalDateTime> logTimesStack = new Stack<>();
+                logTimesStack.addAll(entry.getValue());
+                int stackSize = logTimesStack.size();
+                int result = 0;
+                while (!logTimesStack.isEmpty() && stackSize > instancesInLastTime && now.minus(duration).isBefore(logTimesStack.peek())) {
+                    logTimesStack.pop();
+                    result++;
+                }
+
+                if (result > instancesInLastTime) {
+                    instancesInLastTime = result;
+                    logMessageResult = logMessage;
+                }
+            }
+            return logMessageResult;
+        }
+
+    }
+
 
     @Test
     @Ignore

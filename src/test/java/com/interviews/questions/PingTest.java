@@ -80,7 +80,7 @@ public class PingTest {
 
     public class TaskSchedulerImpl implements TaskScheduler {
         private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
-        private PriorityQueue<TaskTime> priorityQueue = new PriorityQueue(Comparator.comparing(TaskTime::scheduleTime));
+        private PriorityQueue<TaskTime> priorityQueue = new PriorityQueue<>(Comparator.comparing(TaskTime::scheduleTime));
 
         public TaskSchedulerImpl() {
             executorService.scheduleWithFixedDelay(this::init, 0, 3, TimeUnit.SECONDS);
