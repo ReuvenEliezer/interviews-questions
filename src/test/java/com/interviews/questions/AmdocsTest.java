@@ -16,6 +16,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.*;
+
 public class AmdocsTest {
 
     class Node {
@@ -162,9 +164,9 @@ public class AmdocsTest {
         String mostFrequentLog = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
         String mostFrequentLog1 = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
         String mostFrequentLog2 = logSystem.getMostFrequentLog(Duration.ofMinutes(5));
-        Assertions.assertThat(mostFrequentLog).isEqualTo("log1");
-        Assertions.assertThat(mostFrequentLog1).isEqualTo("log1");
-        Assertions.assertThat(mostFrequentLog2).isEqualTo("log1");
+        assertThat(mostFrequentLog).isEqualTo("log1");
+        assertThat(mostFrequentLog1).isEqualTo("log1");
+        assertThat(mostFrequentLog2).isEqualTo("log1");
     }
 
 
