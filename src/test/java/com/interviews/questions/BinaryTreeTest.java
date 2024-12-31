@@ -1,38 +1,15 @@
 package com.interviews.questions;
 
-// Java program to find height of tree
+import org.junit.Test;
+
 //https://www.geeksforgeeks.org/write-a-c-program-to-find-the-maximum-depth-or-height-of-a-tree/
-// A binary tree node 
-class Node {
-    int data;
-    Node left, right;
-
-    Node(int item) {
-        data = item;
-        left = right = null;
-    }
-}
-
-class BinaryTree {
-    Node root;
-
-    int maxDepth(Node node) {
-        if (node == null)
-            return 0;
-        return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
-    }
-
-    static void inOrder(Node node) {
-        if (node == null)
-            return;
-        System.out.println(node.data + " ");
-
-        inOrder(node.left);
-        inOrder(node.right);
-    }
+// A binary tree node
+public class BinaryTreeTest {
 
     /* Driver program to test above functions */
-    public static void main(String[] args) {
+
+    @Test
+    public void binaryTreeTest() {
 
 /**
  * https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
@@ -41,36 +18,50 @@ class BinaryTree {
  (b) Preorder (Root, Left, Right) : 1 2 4 5 3
  (c) Postorder (Left, Right, Root) : 4 5 2 3 1
  */
-        BinaryTree tree = new BinaryTree();
 
-        tree.root = new Node(1);
-        tree.root.left = new Node(2);
-        tree.root.right = new Node(3);
-        tree.root.left.left = new Node(4);
-        tree.root.left.right = new Node(5);
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
 
         System.out.println("Height of tree is : " +
-                tree.maxDepth(tree.root));
+                maxDepth(root));
 
         System.out.println("Sum Values of tree is : " +
-                tree.sumValues(tree.root));
+                sumValues(root));
 
 
         System.out.println("Preorder traversal of binary tree is ");
-        tree.printPreorder(tree.root);
+        printPreorder(root);
 
         System.out.println("Inorder traversal of binary tree is ");
-        tree.printInorder(tree.root);
+        printInorder(root);
 
         System.out.println("Postorder traversal of binary tree is ");
-        tree.printPostorder(tree.root);
+        printPostorder(root);
 
         System.out.println("Before mirror:");
-        inOrder(tree.root);
-        mirror(tree.root);
+        inOrder(root);
+        mirror(root);
         System.out.println("After mirror:");
-        inOrder(tree.root);
+        inOrder(root);
 
+    }
+
+    public int maxDepth(Node node) {
+        if (node == null)
+            return 0;
+        return Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
+    }
+
+    public void inOrder(Node node) {
+        if (node == null)
+            return;
+        System.out.println(node.data + " ");
+
+        inOrder(node.left);
+        inOrder(node.right);
     }
 
     static Node mirror(Node node) {
@@ -138,5 +129,16 @@ class BinaryTree {
         /* now recur on right subtree */
         printPreorder(node.right);
     }
+    // Root of the
+    class Node {
+        int data;
+        Node left, right;
+
+        Node(int item) {
+            data = item;
+            left = right = null;
+        }
+    }
+
 
 }
