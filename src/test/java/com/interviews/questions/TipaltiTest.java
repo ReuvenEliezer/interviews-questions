@@ -4,7 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static org.junit.Assert.*;
 
 public class TipaltiTest {
 
@@ -23,27 +24,27 @@ public class TipaltiTest {
 
         init(new Person[]{graceHopper, alanTuring1, joanClarke1, alanTuring2, joanClarke2, anotherMen, mePt, morPt, nadavCambridge});
 
-        Assert.assertEquals(-1, findMinRelationLevel(graceHopper, alanTuring1));
-        Assert.assertEquals(-1, findMinRelationLevel(alanTuring1, alanTuring1));
-        Assert.assertEquals(1, findMinRelationLevel(alanTuring1, alanTuring2));
-        Assert.assertEquals(2, findMinRelationLevel(alanTuring1, joanClarke2));
-        Assert.assertEquals(2, findMinRelationLevel(joanClarke2, alanTuring1));
-        Assert.assertEquals(3, findMinRelationLevel(anotherMen, alanTuring1));
-        Assert.assertEquals(4, findMinRelationLevel(mePt, alanTuring1));
-        Assert.assertEquals(5, findMinRelationLevel(morPt, alanTuring1));
-        Assert.assertEquals(1, findMinRelationLevel(nadavCambridge, alanTuring2));
-        Assert.assertEquals(2, findMinRelationLevel(nadavCambridge, alanTuring1));
+        assertEquals(-1, findMinRelationLevel(graceHopper, alanTuring1));
+        assertEquals(-1, findMinRelationLevel(alanTuring1, alanTuring1));
+        assertEquals(1, findMinRelationLevel(alanTuring1, alanTuring2));
+        assertEquals(2, findMinRelationLevel(alanTuring1, joanClarke2));
+        assertEquals(2, findMinRelationLevel(joanClarke2, alanTuring1));
+        assertEquals(3, findMinRelationLevel(anotherMen, alanTuring1));
+        assertEquals(4, findMinRelationLevel(mePt, alanTuring1));
+        assertEquals(5, findMinRelationLevel(morPt, alanTuring1));
+        assertEquals(1, findMinRelationLevel(nadavCambridge, alanTuring2));
+        assertEquals(2, findMinRelationLevel(nadavCambridge, alanTuring1));
 
-        Assert.assertEquals(-1, findMinRelationLevelByQueue(graceHopper, alanTuring1));
-        Assert.assertEquals(-1, findMinRelationLevelByQueue(alanTuring1, alanTuring1));
-        Assert.assertEquals(1, findMinRelationLevelByQueue(alanTuring1, alanTuring2));
-        Assert.assertEquals(2, findMinRelationLevelByQueue(alanTuring1, joanClarke2));
-        Assert.assertEquals(2, findMinRelationLevelByQueue(joanClarke2, alanTuring1));
-        Assert.assertEquals(3, findMinRelationLevelByQueue(anotherMen, alanTuring1));
-        Assert.assertEquals(4, findMinRelationLevelByQueue(mePt, alanTuring1));
-        Assert.assertEquals(5, findMinRelationLevelByQueue(morPt, alanTuring1));
-        Assert.assertEquals(1, findMinRelationLevelByQueue(nadavCambridge, alanTuring2));
-        Assert.assertEquals(2, findMinRelationLevelByQueue(nadavCambridge, alanTuring1));
+        assertEquals(-1, findMinRelationLevelByQueue(graceHopper, alanTuring1));
+        assertEquals(-1, findMinRelationLevelByQueue(alanTuring1, alanTuring1));
+        assertEquals(1, findMinRelationLevelByQueue(alanTuring1, alanTuring2));
+        assertEquals(2, findMinRelationLevelByQueue(alanTuring1, joanClarke2));
+        assertEquals(2, findMinRelationLevelByQueue(joanClarke2, alanTuring1));
+        assertEquals(3, findMinRelationLevelByQueue(anotherMen, alanTuring1));
+        assertEquals(4, findMinRelationLevelByQueue(mePt, alanTuring1));
+        assertEquals(5, findMinRelationLevelByQueue(morPt, alanTuring1));
+        assertEquals(1, findMinRelationLevelByQueue(nadavCambridge, alanTuring2));
+        assertEquals(2, findMinRelationLevelByQueue(nadavCambridge, alanTuring1));
     }
 
 
@@ -116,7 +117,7 @@ public class TipaltiTest {
             if (relatedPeople.isEmpty())
                 return -1;
             relatedPeople = relatedPeople.stream().filter(p -> !visited.contains(p)).toList();
-            System.out.println(String.format("relatedPeople size: %s, %s", relatedPeople.size(), relatedPeople));
+            System.out.printf("relatedPeople size: %s, %s%n", relatedPeople.size(), relatedPeople);
             Person personFind = relatedPeople.parallelStream()
                     .filter(relatedPerson -> relatedPerson.equals(personB))
                     .findAny()
@@ -134,21 +135,19 @@ public class TipaltiTest {
     }
 
     private void duplicatePathByLastPerson(List<Person> relatedPeople, List<List<Person>> personPathList, Person currentPerson) {
-        List<List> listToAdd = new ArrayList<>();
+        List<List<Person>> listToAdd = new ArrayList<>();
         for (Person relatedPerson : relatedPeople) {
             for (List<Person> personPath : personPathList) {
                 if (personPath.get(personPath.size() - 1).equals(currentPerson)) {
                     List<Person> listToDuplicate = new ArrayList<>(personPath);
                     listToDuplicate.add(relatedPerson);
                     listToAdd.add(listToDuplicate);
-                    System.out.println(String.format("create new path for relatedPerson %s on list: %s ", relatedPerson, listToDuplicate));
+                    System.out.printf("create new path for relatedPerson %s on list: %s %n", relatedPerson, listToDuplicate);
                     break;
                 }
             }
         }
-        for (List<Person> list : listToAdd) {
-            personPathList.add(list);
-        }
+        personPathList.addAll(listToAdd);
     }
 
 //    class CustomArrayDeque<E> extends ArrayDeque<E> {
@@ -162,95 +161,15 @@ public class TipaltiTest {
 //        }
 //    }
 
-    private class Person {
-        Name fullName;
-        Address address;
-
-        public Person(Name fullName, Address address) {
-            this.fullName = fullName;
-            this.address = address;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Person person = (Person) o;
-            return Objects.equals(fullName, person.fullName) && Objects.equals(address, person.address);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(fullName, address);
-        }
-
-        @Override
-        public String toString() {
-            return "Person{" +
-                    "fullName=" + fullName +
-                    ", address=" + address +
-                    '}';
-        }
+    record Person(Name fullName, Address address) {
     }
 
-    private class Name {
-        String firstName;
-        String lastName;
-
-        public Name(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Name name = (Name) o;
-            return Objects.equals(firstName, name.firstName) && Objects.equals(lastName, name.lastName);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(firstName, lastName);
-        }
-
-        @Override
-        public String toString() {
-            return "Name{" +
-                    "firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    '}';
-        }
+    record Name(String firstName, String lastName) {
     }
 
-    private class Address {
-        String street;
-        String city;
-
-        public Address(String city) {
-            this.city = city;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Address address = (Address) o;
-            return Objects.equals(street, address.street) && Objects.equals(city, address.city);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(street, city);
-        }
-
-        @Override
-        public String toString() {
-            return "Address{" +
-                    "street='" + street + '\'' +
-                    ", city='" + city + '\'' +
-                    '}';
+    record Address(String city,String street) {
+        Address(String city) {
+            this(city, null);
         }
     }
 

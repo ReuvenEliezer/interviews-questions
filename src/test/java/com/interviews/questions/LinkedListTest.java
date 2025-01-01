@@ -303,7 +303,7 @@ public class LinkedListTest {
             return likeCountToPostIdsMap.entrySet().stream()
                     .flatMap(entry -> entry.getValue().stream())
                     .limit(top)
-                    .collect(Collectors.toCollection(() -> new ArrayList<>(top)));
+                    .toList();
         }
     }
 
