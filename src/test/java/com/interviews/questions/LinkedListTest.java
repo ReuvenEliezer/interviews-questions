@@ -5,9 +5,9 @@ import org.junit.Test;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 public class LinkedListTest {
 
@@ -32,6 +32,64 @@ public class LinkedListTest {
         Node[] nodes = {head1, head2};
         Node node = mergeKLists(nodes);
         Node node1 = mergeKLists(new Node[]{});
+    }
+
+    @Test
+    public void add2NodesTest() {
+        Node head1 = new Node(1);
+        Node current = head1;
+        for (int value = 4; value <= 9; value++) {
+            current.next = new Node(value);
+            current = current.next;
+        }
+
+        Node head2 = new Node(1);
+        Node current1 = head2;
+        for (int value = 4; value <= 9; value++) {
+            current1.next = new Node(value);
+            current1 = current1.next;
+        }
+        Node node = add2NodesTest(head1, head2);
+        printList(node);
+    }
+
+    private void printList(Node node) {
+        while (node != null) {
+            System.out.println(node.value);
+            node = node.next;
+        }
+    }
+
+    private Node add2NodesTest(Node root1, Node root2) {
+        if (root1 == null) {
+            return root2;
+        }
+        if (root2 == null) {
+            return root1;
+        }
+        Node dummy = new Node(0);
+        Node current = dummy;
+        int carry = 0;
+
+        while (root1 != null || root2 != null || carry != 0) {
+            int valueNode1 = root1 != null ? root1.value : 0;
+            int valueNode2 = root2 != null ? root2.value : 0;
+
+            int sum = valueNode1 + valueNode2 + carry;
+            carry = sum / 10;
+            int value = sum % 10;
+
+            current.next = new Node(value);
+            current = current.next;
+
+            if (root1 != null) {
+                root1 = root1.next;
+            }
+            if (root2 != null) {
+                root2 = root2.next;
+            }
+        }
+        return dummy.next;
     }
 
     private Node mergeKLists(Node[] nodes) {

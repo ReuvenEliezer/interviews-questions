@@ -248,13 +248,13 @@ public class OverlapsMainlines {
             EdgeTimeValue endEdgeTimeValue = new EdgeTimeValue(end, capacity, true);
             edgeTimeValues.addAll(Arrays.asList(startEdgeTimeValue, endEdgeTimeValue));
         }
-        Collections.sort(edgeTimeValues, Comparator.comparing(EdgeTimeValue::getTime).thenComparing(EdgeTimeValue::isEndTime));
+        edgeTimeValues.sort(Comparator.comparing(EdgeTimeValue::getTime).thenComparing(EdgeTimeValue::isEndTime));
         System.out.println(edgeTimeValues);
         List<PeriodTimeResult> resultList = new ArrayList<>();
         List<StartEndShift> shiftResultList = new ArrayList<>();
         List<Integer> currentS = new ArrayList<>();
         for (int i = 0; i < edgeTimeValues.size(); i++) {
-            EdgeTimeValue triplet = edgeTimeValues.get(i);
+            EdgeTimeValue edgeTimeValue = edgeTimeValues.get(i);
 
             LocalDateTime timeTagN;
 //            if (triplet.isEndTime()) {
@@ -265,12 +265,12 @@ public class OverlapsMainlines {
 //                timeTagN = triplet.getTime();
 //            }
 
-            if (triplet.isEndTime()) {
-                currentS.remove(triplet.getValue().get(0));
+            if (edgeTimeValue.isEndTime()) {
+                currentS.remove(edgeTimeValue.getValue().get(0));
             } else {
-                currentS.add(triplet.getValue().get(0));
+                currentS.add(edgeTimeValue.getValue().get(0));
             }
-            timeTagN = triplet.getTime();
+            timeTagN = edgeTimeValue.getTime();
 
             LocalDateTime timeTagM;
 
@@ -283,7 +283,7 @@ public class OverlapsMainlines {
 //                }
                 timeTagM = next.getTime();
             } else {
-                timeTagM = triplet.getTime();
+                timeTagM = edgeTimeValue.getTime();
             }
 
             /**
@@ -294,7 +294,7 @@ public class OverlapsMainlines {
             if (!timeTagN.isEqual(timeTagM)
                     && !timeTagN.isAfter(timeTagM)
                     && i + 1 < edgeTimeValues.size()
-                    && ((triplet.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
+                    && ((edgeTimeValue.isEndTime && !edgeTimeValues.get(i + 1).isEndTime) == false)) {
 
                 PeriodTimeResult tripletsResult = new PeriodTimeResult(timeTagN, timeTagM, currentS);
 //                System.out.println(tripletsResult);
@@ -312,7 +312,7 @@ public class OverlapsMainlines {
         if (shifts == null || shifts.isEmpty() || shifts.size() == 1)
             return shifts;
 
-        Collections.sort(shifts, Comparator.comparing(StartEndShift::getStart).thenComparing(StartEndShift::getEnd));
+        shifts.sort(Comparator.comparing(StartEndShift::getStart).thenComparing(StartEndShift::getEnd));
 
         StartEndShift first = shifts.get(0);
         LocalDateTime start = first.getStart();
