@@ -216,7 +216,7 @@ public class ComparatorTest {
 //            int i = 0;
 //        }
 
-        ArrayList<Integer> integers = new ArrayList<>();
+        List<Integer> integers = new ArrayList<>();
         integers.add(2);
         integers.add(1);
         integers.add(0);
