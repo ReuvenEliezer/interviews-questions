@@ -1,8 +1,5 @@
 package com.interviews.questions;
 
-import com.google.common.collect.Sets;
-import com.interviews.questions.ranges.EdgeTimeValue;
-import com.interviews.questions.ranges.PeriodTimeResult;
 import org.junit.Ignore;
 import org.junit.Test;
 

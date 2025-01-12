@@ -37,9 +37,9 @@ public class EverC {
 
     }
 
-    class EverCStack extends Stack<Integer> {
+    static class EverCStack extends Stack<Integer> {
 
-        private TreeMap<Integer, Integer> intToNumOfInstanceMap = new TreeMap<>();
+        private final TreeMap<Integer, Integer> intToNumOfInstanceMap = new TreeMap<>();
 
         @Override
         public Integer pop() {

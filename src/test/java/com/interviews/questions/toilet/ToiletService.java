@@ -1,29 +1,35 @@
 package com.interviews.questions.toilet;
 
-import java.util.*;
 
 public class ToiletService {
-    private final List<Toilet> toilets;
+
     private final ToiletRepository toiletRepository;
 
-    ToiletService(ToiletRepository toiletRepository) {
+    public ToiletService(ToiletRepository toiletRepository) {
         this.toiletRepository = toiletRepository;
-        this.toilets = toiletRepository.findAll();
     }
 
-    public Toilet calcNearestLocation(Location location) {
-        if (toilets.isEmpty())
-            return null;
-        Map<Toilet, Double> toiletToDistanceMap = new HashMap<>();
-        for (Toilet toilet : toilets) {
-            double distance = calcDistance(location.lat, toilet.location.lat, location.along, toilet.location.along);
-            toiletToDistanceMap.put(toilet, distance);
+    public Toilet calcNearestLocation(Location sourceLocation) {
+        Toilet toiletResult = null;
+        double distanceResult = 0;
+        for (Toilet toilet : toiletRepository.findAll()) {
+            double distance = calcDistance(sourceLocation, toilet.location);
+            if (toiletResult == null || distance < distanceResult) {
+                toiletResult = toilet;
+                distanceResult = distance;
+            }
         }
-        return Collections.min(toiletToDistanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+        return toiletResult;
+//        Map<Toilet, Double> toiletToDistanceMap = new HashMap<>();
+//        for (Toilet toilet : toilets) {
+//            double distance = calcDistance(location, toilet.location);
+//            toiletToDistanceMap.put(toilet, distance);
+//        }
+//        return Collections.min(toiletToDistanceMap.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
-    private double calcDistance(double x1, double x2, double y1, double y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    private double calcDistance(Location sourceLocation, Location distanationLocation) {
+        return Math.sqrt(Math.pow(sourceLocation.lat - distanationLocation.lat, 2) + Math.pow(sourceLocation.along - distanationLocation.along, 2));
     }
 
 }
