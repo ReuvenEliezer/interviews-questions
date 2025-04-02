@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 public class OverlappingIntervalsVisitSolution {
     /**
      * find the interval with highest visitor and return the interval and amx visitors
+     *
      * @param visitList
      * @return
      */
@@ -171,6 +173,40 @@ public class OverlappingIntervalsVisitSolution {
         Assert.assertEquals(3, result2.maxVisitors);
         Assert.assertEquals(visit2.getEntryTime(), result2.startDate);
         Assert.assertEquals(visit4.getExitTime(), result2.endDate);
+    }
+
+    @Test
+    public void mergeIntervalsTest() {
+        int[][] intervals = {
+                {1, 3},
+                {2, 6},
+                {8, 10},
+                {15, 18}
+        };
+        int[][] Output = merge(intervals); //[[1,6],[8,10],[15,18]]
+        Assert.assertEquals(3, Output.length);
+    }
+
+    private int[][] merge(int[][] intervals) {
+        if (intervals.length <= 1)
+            return intervals;
+
+        List<int[]> result = new ArrayList<>();
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+
+        int[] newInterval = intervals[0];
+        result.add(newInterval);
+
+        for (int[] interval : intervals) {
+            if (interval[0] <= newInterval[1]) {
+                newInterval[1] = Math.max(interval[1], newInterval[1]);
+            } else {
+                newInterval = interval;
+                result.add(newInterval);
+            }
+        }
+
+        return result.toArray(new int[result.size()][]);
     }
 
     @Test

@@ -42,7 +42,7 @@ public class LRUCacheImpl5<K, V> extends LinkedHashMap<K, V> {//implements LRUCa
      */
 
     private Map<K, Lock> mapLock = new ConcurrentHashMap<>();
-    private final Map<K, Node> map = new ConcurrentHashMap<>();
+    private final Map<K, Node> map;
     private final int capacity;
     private int count;
     private final Node head;
@@ -58,6 +58,10 @@ public class LRUCacheImpl5<K, V> extends LinkedHashMap<K, V> {//implements LRUCa
 
     public LRUCacheImpl5(final int capacity) {
         //        super(Collections.synchronizedMap(new LinkedHashMap()));
+        if (capacity < 1) {
+            throw new IllegalArgumentException("capacity should be more than 0");
+        }
+        map = new ConcurrentHashMap<>(capacity);
         this.capacity = capacity;
         head = new Node(null, null);
         tail = new Node(null, null);

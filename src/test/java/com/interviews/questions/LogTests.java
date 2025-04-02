@@ -6,10 +6,122 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LogTests {
+
+
+    @Test
+    public void test() {
+
+        assertThat(isWin(List.of(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1), 3)).isTrue();
+
+        assertThat(isWin(List.of(0, 0, 0, 1), 3)).isTrue();
+
+        assertThat(isWin(List.of(0, 0, 0, 0), 0)).isTrue();
+
+        assertThat(isWin(List.of(0, 1, 0, 1, 0, 1, 0), 0)).isFalse();
+        assertThat(isWin(List.of(0, 0, 0, 1, 0, 0), 3)).isTrue();
+        assertThat(isWin(List.of(0, 0, 0, 1, 1, 1), 3)).isFalse();
+        assertThat(isWin(List.of(0, 0, 0, 1, 1, 0), 3)).isTrue();
+        assertThat(isWin(List.of(0, 0, 0, 1, 1, 0, 1, 1, 1), 3)).isFalse();
+    }
+
+    private boolean isWin(List<Integer> list, int m) {
+        //TODO validation
+        if (list == null) {
+            throw new IllegalArgumentException("list cannot be null");
+        }
+        int totalNegative = 0;
+
+        for (Integer value : list) {
+            if (value == 1) {
+                totalNegative++;
+                if (totalNegative == m || m < 1) {
+                    return false;
+                }
+            } else if (value == 0) { //0
+                totalNegative = 0;
+            } else {
+                throw new IllegalArgumentException(String.format("value %s should be 0 or 1", value));
+            }
+        }
+        return true;
+    }
+
+
+    Duration maxAllowDuration = Duration.ofSeconds(90);
+    int maxReqPerSec = 5;
+    //    Map<UserUrl, List<LocalDateTime>> urlUserToReqTimeMap = new ConcurrentHashMap<>();
+    Map<UserUrl, Integer> urlUserToReqInstancesMap = new ConcurrentHashMap<>();
+    //        Queue<UserUrlMetaData> reqQueue = new PriorityQueue<>(Comparator.comparing(UserUrlMetaData::localDateTime));
+    Queue<UserUrlMetaData> reqQueue = new PriorityBlockingQueue<>();
+
+    @Test
+    public void rateLimitTest() {
+        assertThat(isAllowed("url1")).isTrue();
+        assertThat(isAllowed("url1")).isTrue();
+        assertThat(isAllowed("url1")).isTrue();
+        assertThat(isAllowed("url1")).isTrue();
+        assertThat(isAllowed("url1")).isTrue();
+        assertThat(isAllowed("url1")).isTrue();
+        assertThat(isAllowed("url1")).isFalse();
+    }
+
+    public boolean isAllowed(String url) {
+        String userid = getUserid();
+        boolean isAllowed;
+        UserUrl userUrl = new UserUrl(userid, url);
+        Integer numOfInstances = urlUserToReqInstancesMap.get(userUrl);
+        if (numOfInstances != null && numOfInstances > maxReqPerSec) {
+            isAllowed = false;
+        } else {
+            urlUserToReqInstancesMap.merge(userUrl, 1, Integer::sum);
+            isAllowed = true;
+        }
+
+        //TODO consider to do add & clean queue - Async
+        reqQueue.add(new UserUrlMetaData(userUrl, LocalDateTime.now()));
+        cleanOldData();
+
+        return isAllowed;
+    }
+
+    private String getUserid() {
+        //get userId from security context
+        return "1234";
+    }
+
+    private void cleanOldData() {
+        LocalDateTime now = LocalDateTime.now();
+        while (!reqQueue.isEmpty() && reqQueue.peek().localDateTime.isBefore(now.minus(maxAllowDuration))) {
+            UserUrlMetaData removed = reqQueue.remove();
+            urlUserToReqInstancesMap.computeIfPresent(removed.userUrl, (userUrl, numOfInstances) -> numOfInstances - 1);
+        }
+    }
+
+
+    /**
+     * get :
+     * put to urlUserToReqInstancesMap
+     * add to reqQueue
+     * white
+     *
+     * @param userUrl
+     * @param localDateTime
+     */
+    record UserUrlMetaData(UserUrl userUrl, LocalDateTime localDateTime) implements Comparable<UserUrlMetaData> {
+        @Override
+        public int compareTo(UserUrlMetaData other) {
+            return this.localDateTime.compareTo(other.localDateTime);
+        }
+    }
+
+    record UserUrl(String userId, String url) {
+    }
 
     @Test
     public void getMaxLogMessageInLastTimeTest() {
