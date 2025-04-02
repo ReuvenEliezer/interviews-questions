@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
-public class AmdocsTest {
+public class MapTest {
 
     class Node {
         int value;
@@ -317,7 +317,7 @@ public class AmdocsTest {
     public class Schedule {
         //        private Map<Long, List<Task>> taskToTimeMap = new HashMap<>();
 //        private long elapsedTime;
-        private PriorityBlockingQueue<TaskTime> queue = new PriorityBlockingQueue(2, Comparator.comparing(TaskTime::getTaskExecutionTime));
+        private PriorityBlockingQueue<TaskTime> queue = new PriorityBlockingQueue<>(2, Comparator.comparing(TaskTime::getTaskExecutionTime));
 
         void schedule(Task task, LocalDateTime localDateTime) {
             queue.add(new TaskTime(task, localDateTime));
